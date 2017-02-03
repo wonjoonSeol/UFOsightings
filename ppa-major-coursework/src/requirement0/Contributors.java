@@ -5,5 +5,6 @@ public class Contributors {
 	public static void main(String[] args){
 	
 		System.out.println("Wonjoon Seol");
+		System.out.println("Munkhtulga Battogtokh"); 
 	}
 }
