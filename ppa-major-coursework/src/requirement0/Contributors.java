@@ -6,5 +6,7 @@ public class Contributors {
 	
 		System.out.println("Wonjoon Seol");
 		System.out.println("Munkhtulga Battogtokh"); 
+		System.out.println("Eugene Fong"); 
+
 	}
 }
