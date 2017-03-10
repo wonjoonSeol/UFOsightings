@@ -1,6 +1,7 @@
 package assessment.model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import api.ripley.Incident;
 import api.ripley.Ripley;
@@ -9,44 +10,71 @@ import api.ripley.Ripley;
  * Created by wonjoonseol on 09/03/2017.
  */
 public class Model extends Observable{
-    private String startYear;
-    private String endYear;
+    private int currentStartYear;
+    private int currentEndYear;
+    private int minYear;
+    private int maxYear;
     private ArrayList<Incident> incidents;
     private Ripley ripley;
 
     public Model(Ripley ripley) {
-        incidents = new ArrayList<Incident>();
         this.ripley = ripley;
+        incidents = new ArrayList<Incident>();
+        minYear = Integer.MAX_VALUE;
+        maxYear = Integer.MIN_VALUE;
     }
 
-    public void setStartYear(String year) {
-        startYear = year;
-        setChanged();
-        if (endYear != null && Integer.parseInt(endYear) >= Integer.parseInt(startYear)) {
-            notifyObservers(startYear + " " + endYear);
-        } else if (endYear != null) {
-            notifyObservers("wrongStart");
-        }
+    public void setStartYear(int year) {
+        currentStartYear = year;
+        notifyYear();
     }
 
-    public void setEndYear(String year) {
-        endYear = year;
-        setChanged();
-        if (startYear != null && Integer.parseInt(endYear) >= Integer.parseInt(startYear)) {
-            notifyObservers(startYear + " " + endYear);
-        } else if (startYear != null) {
-            notifyObservers("wrongStart");
-        }
+    public void setEndYear(int year) {
+        currentEndYear = year;
+        notifyYear();
     }
 
-    public void grabData() {
+    public List<Incident> getRequestedData() {
+        // Currently the data returned from Ripley is unsorted. So this doesn't work.
+        // Eugene can do this while implementing 'Sorting Sightings' in the brief?
+        int startIndex = currentStartYear - minYear;
+        int endIndex = incidents.size() - (maxYear - currentEndYear) - 1;
+        return incidents.subList(startIndex, endIndex);
+    }
+
+    private void initCaching() {
+        ArrayList<Incident> incidents = new ArrayList<Incident>();
         long startTime = System.currentTimeMillis();
-        String start = startYear + "-01-01 00:00:00";
-        String end = endYear + "-12-31 23:59:59";
-        incidents = ripley.getIncidentsInRange(start, end);
+
+        if (currentStartYear < minYear && maxYear < currentEndYear || this.incidents.size() == 0) {
+            this.incidents = grabData(currentStartYear, currentEndYear);
+//            System.out.println("1");              //Debugging, delete later
+            minYear = currentStartYear;
+            maxYear = currentEndYear;
+        } else if (currentStartYear < minYear) {
+            incidents = grabData(currentStartYear, minYear - 1);
+            this.incidents.addAll(0, incidents);
+            minYear = currentStartYear;
+//            System.out.println("2");              //Debugging, delete later
+        } else if (maxYear < currentEndYear) {
+            incidents = grabData(maxYear + 1, currentEndYear);
+            this.incidents.addAll(this.incidents.size() - 1, incidents);
+            maxYear = currentEndYear;
+//            System.out.println("3");              //Debugging, delete later
+        }
 
         long duration = System.currentTimeMillis() - startTime;
+        System.out.println(this.incidents);
+        notifyDuration(duration);
+    }
 
+    private ArrayList<Incident> grabData(int currentStartYear, int currentEndYear) {
+        String start = currentStartYear + "-01-01 00:00:00";
+        String end = currentEndYear + "-12-31 23:59:59";
+        return ripley.getIncidentsInRange(start, end);
+    }
+
+    private void notifyDuration(long duration) {
         int h = (int) ((duration / 1000) / 3600);
         int m = (int) (((duration / 1000) / 60) % 60);
         int s = (int) ((duration / 1000) % 60);
@@ -58,8 +86,14 @@ public class Model extends Observable{
         }
     }
 
-    public boolean isBothValueCorrect() {
-        if (startYear != null && endYear != null && Integer.parseInt(endYear) >= Integer.parseInt(startYear)) return true;
-        return false;
+    private void notifyYear() {
+        setChanged();
+        if (currentStartYear != 0 && currentStartYear <= currentEndYear) {
+            notifyObservers(currentStartYear + " " + currentEndYear);
+            initCaching();
+
+        } else if (currentStartYear != 0) {
+            notifyObservers("wrongStart");
+        }
     }
 }

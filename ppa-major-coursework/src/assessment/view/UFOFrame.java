@@ -123,7 +123,7 @@ public class UFOFrame extends JFrame implements Observer{
             }
 
         } else if (command.equalsIgnoreCase("wrongStart")) {
-            jlLog.setText(loadingText + "Please provide correct start and end year<br></div></html>");
+            jlLog.setText(loadingText + "<b>Please provide correct start and end dates</b><br></div></html>");
 
         } else if (commandParts[0].equals("DATA")) {
             String string = "";

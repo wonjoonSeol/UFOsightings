@@ -24,14 +24,11 @@ public class Controller implements ActionListener{
         if (!combo.getSelectedItem().equals("-")) {
             if (combo.getName().equals("fromCombo")) {
                 String from = (String) combo.getSelectedItem();
-                model.setStartYear(from);
-                if (model.isBothValueCorrect()) model.grabData();
-
+                model.setStartYear(Integer.parseInt(from));
 
             } else if (combo.getName().equals("toCombo")) {
                 String to = (String) combo.getSelectedItem();
-                model.setEndYear(to);
-                if (model.isBothValueCorrect()) model.grabData();
+                model.setEndYear(Integer.parseInt(to));
             }
         }
     }
