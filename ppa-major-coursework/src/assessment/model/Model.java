@@ -20,7 +20,7 @@ public class Model extends Observable{
     private int maxYear;
     private ArrayList<Incident> incidents;
     private Ripley ripley;
-    private int methodNumber;
+    private int methodNumber;       // do we need this?
 
     public Model(Ripley ripley) {
         this.ripley = ripley;
@@ -113,10 +113,6 @@ public class Model extends Observable{
     	
     	
     } 
-    
-    
-    
-    
     
     private void initCaching() {
         ArrayList<Incident> incidents = new ArrayList<Incident>();

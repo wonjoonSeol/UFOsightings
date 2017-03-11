@@ -18,6 +18,7 @@ public class Main {
         Model model = new Model(ripley);
         Controller controller = new Controller(model);
         UFOFrame mainView = new UFOFrame(controller, ripley);
+        controller.setView(mainView);
         mainView.setVisible(true);
         model.addObserver(mainView);
 
