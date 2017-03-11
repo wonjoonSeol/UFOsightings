@@ -2,7 +2,11 @@ package assessment.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Observable;
+import java.util.TreeMap;
+
 import api.ripley.Incident;
 import api.ripley.Ripley;
 
@@ -16,6 +20,7 @@ public class Model extends Observable{
     private int maxYear;
     private ArrayList<Incident> incidents;
     private Ripley ripley;
+    private int methodNumber;
 
     public Model(Ripley ripley) {
         this.ripley = ripley;
@@ -41,7 +46,78 @@ public class Model extends Observable{
         int endIndex = incidents.size() - (maxYear - currentEndYear) - 1;
         return incidents.subList(startIndex, endIndex);
     }
-
+    
+    /*
+     * Return the number of hoaxes within the current dataset.
+     */
+    public int getNumHoaxes() {
+    	List<Incident> data = getRequestedData();
+    	int count = 0;
+    	for(Incident i : data) // Iterate through the incident list, increase count if a HOAX match is found.
+    	{
+    		if(i.getSummary().contains("HOAX"))
+    		{
+    			count++;
+    		}
+    	}
+    	return count; // Return counter variable.
+    	
+    }
+    
+    /*
+     * Return the number of non-US sightings within the current dataset.
+     */
+    public int getNonUSSight()
+    {
+    	List<Incident> data = getRequestedData();
+    	int count = 0;
+    	for(Incident i : data) // Iterate through the incident list, increase count if a Non-US match is found.
+    	{
+    		if(!i.getState().equals("Not specified."))
+    		{
+    			count++;
+    		}
+    	}
+    	return count; // Return counter variable.
+    }
+    
+    /*
+     * Returns the likeliest state to receive a sighting within the current dataset.
+     */
+    public String getLikeliestState()
+    {
+    	List<Incident> data = getRequestedData();
+    	
+    	TreeMap<String, Integer> map = new TreeMap<String, Integer>();
+    	for(Incident i : data) // Iterate through the incident list
+    	{
+    		if(map.containsKey(i.getState())) 
+    		{
+    			Integer temp = map.get(i.getState());
+    			map.put(i.getState(), temp+1);
+    		}
+    		else
+    			map.put(i.getState(), 1);
+    	}
+    	
+    	Entry<String, Integer> maximumEntry = null;
+    	for(Entry<String, Integer> entry : map.entrySet())
+    	{
+    		if(maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0)
+    		{
+    			maximumEntry = entry;
+    		}
+    	}
+    	
+    	return maximumEntry.getKey();
+    	
+    	
+    } 
+    
+    
+    
+    
+    
     private void initCaching() {
         ArrayList<Incident> incidents = new ArrayList<Incident>();
         long startTime = System.currentTimeMillis();
@@ -96,4 +172,6 @@ public class Model extends Observable{
             notifyObservers("wrongStart");
         }
     }
+    
+    
 }
