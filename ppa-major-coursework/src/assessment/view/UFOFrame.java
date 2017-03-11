@@ -21,6 +21,7 @@ public class UFOFrame extends JFrame implements Observer{
     private JPanel jpTop;
     private JPanel jpBottom;
     private JPanel jpTopRight;
+    private JPanel jpCenter;
     private JComboBox<String> jcFrom;
     private JComboBox<String> jcTo;
     private Controller controller;
@@ -33,53 +34,70 @@ public class UFOFrame extends JFrame implements Observer{
         this.controller = controller;
         this.ripley = ripley;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        initJComboBox();
-        initWidgets();
+
+        initTop();
+        initCenter();
+        initBottom();
+        initFrame();
         pack();
     }
 
-    public void initWidgets() {
-        setLayout(new BorderLayout());
-
-        jlLog = new JLabel("", SwingConstants.CENTER);
-        jlLog.setBorder(BorderFactory.createLineBorder(Color.black));
-        jlLog.setPreferredSize(new Dimension(800, 400));
-
-        jbLeft = new JButton("<");
-        jbLeft.setEnabled(false);
-        jbRight = new JButton(">");
-        jbRight.setEnabled(false);
-
+    private void initTop() {
+        initJComboBox();
         jlFrom = new JLabel("From: ");
         jlTo = new JLabel("To: ");
-        jlStatus = new JLabel(ripley.getLastUpdated(), SwingConstants.CENTER);
-
-        jpTop = new JPanel();
-        jpTop.setLayout(new BorderLayout());
-
-        jpTopRight = new JPanel();
-        jpTopRight.setLayout(new FlowLayout());
-
-        jpBottom = new JPanel();
-        jpBottom.setLayout(new BorderLayout());
-
+        jpTop = new JPanel(new BorderLayout());
+        jpTopRight = new JPanel(new FlowLayout());
         jpTopRight.add(jlFrom);
         jpTopRight.add(jcFrom);
         jpTopRight.add(jlTo);
         jpTopRight.add(jcTo);
         jpTop.add(jpTopRight, BorderLayout.LINE_END);
+    }
 
-        add(jpTop, BorderLayout.PAGE_START);
-        add(jlLog, BorderLayout.CENTER);
-        add(jpBottom, BorderLayout.PAGE_END);
+    private void initCenter() {
+        jlLog = new JLabel("", SwingConstants.CENTER);
+
+        jpCenter = new JPanel();
+        jpCenter.setBorder(BorderFactory.createLineBorder(Color.black));
+        jpCenter.setPreferredSize(new Dimension(800, 400));
+        jpCenter.setLayout(new CardLayout());
+        jpCenter.add(jlLog);
+
+        //test start
+        JLabel testLabel = new JLabel("123213");
+        jpCenter.add(testLabel);
+        //test finishes
+    }
+
+    private void initBottom() {
+        jpBottom = new JPanel(new BorderLayout());
+
+        jbLeft = new JButton("<");
+        jbLeft.setName("jbLeft");
+        jbLeft.setEnabled(false);
+        jbRight = new JButton(">");
+        jbRight.setName("jbRight");
+        jbRight.setEnabled(false);
+        jlStatus = new JLabel(ripley.getLastUpdated(), SwingConstants.CENTER);
 
         jpBottom.add(jbLeft, BorderLayout.LINE_START);
         jpBottom.add(jbRight, BorderLayout.LINE_END);
         jpBottom.add(jlStatus, BorderLayout.CENTER);
+
+        jbLeft.addActionListener(controller);
+        jbRight.addActionListener(controller);
+    }
+
+    private void initFrame() {
+        setLayout(new BorderLayout());
+        add(jpTop, BorderLayout.PAGE_START);
+        add(jpCenter, BorderLayout.CENTER);
+        add(jpBottom, BorderLayout.PAGE_END);
         loadingScreen();
     }
 
-    public void initJComboBox() {
+    private void initJComboBox() {
         jcFrom = new JComboBox<String>();
         jcFrom.setName("fromCombo");
         jcTo = new JComboBox<String>();
@@ -96,6 +114,7 @@ public class UFOFrame extends JFrame implements Observer{
 
         jcFrom.addActionListener(controller);
         jcTo.addActionListener(controller);
+
     }
 
     private void loadingScreen() {
@@ -103,6 +122,16 @@ public class UFOFrame extends JFrame implements Observer{
                              "Please select the dates above, in order to<br>Begin analysing UFO sighting data.<br><br>";
 
         jlLog.setText(loadingText + ripley.getAcknowledgementString() + "</div></html>");
+    }
+
+    public void nextCenterPanel() {
+        CardLayout cards = (CardLayout) (jpCenter.getLayout());
+        cards.next(jpCenter);
+    }
+
+    public void previousCenterPanel() {
+        CardLayout cards = (CardLayout) (jpCenter.getLayout());
+        cards.previous(jpCenter);
     }
 
     @Override
