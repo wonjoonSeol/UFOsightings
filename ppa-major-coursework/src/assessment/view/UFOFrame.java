@@ -70,6 +70,7 @@ public class UFOFrame extends JFrame implements Observer{
         MapUS panel2Model = new MapUS(ripley.
         		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00")); 
         jpCenter.add(new MapPanel(panel2Model)); 
+        jpCenter.add(new StatPanel());
   
     }
 
