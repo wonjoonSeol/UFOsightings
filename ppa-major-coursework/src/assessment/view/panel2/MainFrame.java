@@ -1,11 +1,11 @@
-package panel2.view;
+package assessment.view.panel2;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import panel2.model.MapUS;
+import assessment.model.panel2.MapUS;
 
 public class MainFrame extends JFrame  {
 
