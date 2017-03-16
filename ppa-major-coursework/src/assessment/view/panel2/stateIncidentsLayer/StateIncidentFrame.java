@@ -86,7 +86,7 @@ public class StateIncidentFrame extends JFrame {
 					try {
 					JOptionPane.showMessageDialog(null, list.getSelectedValue().getSummary(), "Message",
 							JOptionPane.PLAIN_MESSAGE , new ImageIcon(
-									(ImageIO.read(new File("images\\ufo.png"))).getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
+									(ImageIO.read(new File("images/ufo.png"))).getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 					} catch (HeadlessException exception) {
 						System.out.println("Dialog headless");
 					} catch (IOException ioException) {
