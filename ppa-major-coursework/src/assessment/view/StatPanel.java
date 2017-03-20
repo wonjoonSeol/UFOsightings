@@ -1,31 +1,40 @@
 package assessment.view;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class StatPanel extends JPanel {
+import assessment.model.Model;
+
+public class StatPanel extends JPanel implements Observer{
 	
 	private SubStatPanel lTopPanel;
 	private SubStatPanel rTopPanel;
 	private SubStatPanel lBotPanel;
 	private SubStatPanel rBotPanel;
+	private Model model;
+	private boolean initStats;
 	
-	public StatPanel()
+	public StatPanel(Model m)
 	{
 		super();
+		model = m;
 		initWidgets();
 	}
 	
 	public void initWidgets()
 	{
-		lTopPanel = new SubStatPanel();
-		rTopPanel = new SubStatPanel();
-		lBotPanel = new SubStatPanel();
-		rBotPanel = new SubStatPanel();
+		lTopPanel = new SubStatPanel(model);
+		rTopPanel = new SubStatPanel(model);
+		lBotPanel = new SubStatPanel(model);
+		rBotPanel = new SubStatPanel(model);
+		
+	
 		
 		setLayout(new GridLayout(2,2,8,8));
 		
@@ -34,16 +43,20 @@ public class StatPanel extends JPanel {
 		add(rTopPanel);
 		add(lBotPanel);
 		add(rBotPanel);
+		
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 	
-	
-	
-	public static void main(String[] args)
+	public void initStats()
 	{
-		JFrame frame = new JFrame();
-		frame.setLayout(new BorderLayout());
-		frame.add(new StatPanel(), BorderLayout.CENTER);
-		frame.setVisible(true);
-		frame.pack();
+		lTopPanel.setStat(1);
+		rTopPanel.setStat(2);
+		lBotPanel.setStat(3);
+		rBotPanel.setStat(4);
 	}
 }
