@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
@@ -35,8 +39,12 @@ public class UFOFrame extends JFrame implements Observer{
     private StatPanel panel2;
     private String processingText;
     private Ripley ripley;
+    private BufferedWriter saveWriter;
+    private BufferedWriter deleteWriter;
+    private static String savePath;
+    private File saveFile;
 
-    public UFOFrame(Controller controller, Ripley ripley, Model model) {
+    public UFOFrame(Controller controller, Ripley ripley, Model model) throws IOException {
         super();
         this.controller = controller;
         this.ripley = ripley;
@@ -44,6 +52,9 @@ public class UFOFrame extends JFrame implements Observer{
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 805)); 
 		setResizable(false); 
+		savePath = "src/Save";
+		saveWriter = new BufferedWriter(new FileWriter(savePath,true));
+		
 
         initTop();
         initCenter();
