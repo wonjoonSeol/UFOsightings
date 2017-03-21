@@ -2,6 +2,8 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
@@ -39,7 +41,7 @@ public class UFOFrame extends JFrame implements Observer{
         this.controller = controller;
         this.ripley = ripley;
         this.model = model;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 805)); 
 		setResizable(false); 
 
@@ -48,6 +50,14 @@ public class UFOFrame extends JFrame implements Observer{
         initBottom();
         initFrame();
         pack();
+        
+        addComponentListener(new ComponentAdapter()
+        {
+        	public void componentHidden(ComponentEvent e)
+        	{
+        		
+        	}
+        });
     }
 
     private void initTop() {
