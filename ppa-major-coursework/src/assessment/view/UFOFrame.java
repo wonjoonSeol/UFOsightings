@@ -44,7 +44,7 @@ public class UFOFrame extends JFrame implements Observer{
     private static String savePath;
     private File saveFile;
 
-    public UFOFrame(Controller controller, Ripley ripley, Model model) throws IOException {
+    public UFOFrame(Controller controller, Ripley ripley, Model model) {
         super();
         this.controller = controller;
         this.ripley = ripley;
@@ -53,8 +53,12 @@ public class UFOFrame extends JFrame implements Observer{
         setPreferredSize(new Dimension(1000, 805)); 
 		setResizable(false); 
 		savePath = "src/Save";
-		saveWriter = new BufferedWriter(new FileWriter(savePath,true));
-		
+        try {
+            saveWriter = new BufferedWriter(new FileWriter(savePath,true));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         initTop();
         initCenter();

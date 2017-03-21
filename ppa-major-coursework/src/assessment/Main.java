@@ -1,12 +1,9 @@
 package assessment;
 
-import api.ripley.Incident;                      // TESTING
 import api.ripley.Ripley;
 import assessment.controller.Controller;
 import assessment.model.Model;
 import assessment.view.UFOFrame;
-
-import java.util.ArrayList;                     // TESTING
 
 /**
  * Created by wonjoonseol on 05/03/2017.

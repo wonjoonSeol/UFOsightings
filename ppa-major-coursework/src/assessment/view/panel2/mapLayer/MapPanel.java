@@ -30,10 +30,13 @@ public class MapPanel extends JPanel {
 		this.map = map; 	
 		
 		try {
-			imageMap = ImageIO.read(new File("images\\map.png"));
-			imageMarker = ImageIO.read(new File("images\\alien.png")); 
-		} catch (IOException e) {}
-		
+			imageMap = ImageIO.read(new File("images/map.png"));
+			imageMarker = ImageIO.read(new File("images/alien.png"));
+		} catch (IOException e) {
+			System.out.println("Image failed");
+			e.getStackTrace();
+		}
+
 		mouseAdapter = new LabelMouseAdapter(); 
 		
 		initStateMarkers(); 
