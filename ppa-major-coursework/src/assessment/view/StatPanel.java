@@ -54,9 +54,9 @@ public class StatPanel extends JPanel implements Observer{
 	
 	public void initStats()
 	{
-		lTopPanel.setStat(1);
-		rTopPanel.setStat(2);
-		lBotPanel.setStat(3);
-		rBotPanel.setStat(4);
+		lTopPanel.initializeStat(1);
+		rTopPanel.initializeStat(2);
+		lBotPanel.initializeStat(3);
+		rBotPanel.initializeStat(4);
 	}
 }
