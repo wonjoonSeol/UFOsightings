@@ -52,7 +52,7 @@ public class UFOFrame extends JFrame implements Observer{
         setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 805)); 
 		setResizable(false); 
-		savePath = "src/Save";
+		savePath = "Save";
         try {
             saveWriter = new BufferedWriter(new FileWriter(savePath,true));
         } catch (IOException e) {
@@ -97,8 +97,8 @@ public class UFOFrame extends JFrame implements Observer{
         jpCenter.setLayout(new CardLayout());
         jpCenter.add(jlLog);
         //MapUS panel2Model = new MapUS(ripley.
-        //		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00")); 
-        //jpCenter.add(new MapPanel(panel2Model)); 
+        //		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
+        //jpCenter.add(new MapPanel(panel2Model));
          panel2 = new StatPanel(model);
         jpCenter.add(panel2);
   
