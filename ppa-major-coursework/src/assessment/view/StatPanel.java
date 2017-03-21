@@ -59,4 +59,25 @@ public class StatPanel extends JPanel implements Observer{
 		lBotPanel.initializeStat(3);
 		rBotPanel.initializeStat(4);
 	}
+	
+	public SubStatPanel getltPanel()
+	{
+		return lTopPanel;
+	}
+	
+	public SubStatPanel getrtPanel()
+	{
+		return rTopPanel;
+	}
+	
+	public SubStatPanel getlbPanel()
+	{
+		return lBotPanel;
+	}
+	
+	public SubStatPanel getrbPanel()
+	{
+		return rBotPanel;
+	}
+	
 }
