@@ -2,9 +2,16 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
+import assessment.model.Model;
 import assessment.model.panel2.MapUS;
 import assessment.view.panel2.mapLayer.MapPanel;
 import api.ripley.Ripley;
@@ -28,22 +35,40 @@ public class UFOFrame extends JFrame implements Observer{
     private JComboBox<String> jcTo;
     private Controller controller;
     private String loadingText;
+    private Model model;
+    private StatPanel panel2;
     private String processingText;
     private Ripley ripley;
+    private BufferedWriter saveWriter;
+    private BufferedWriter deleteWriter;
+    private static String savePath;
+    private File saveFile;
 
-    public UFOFrame(Controller controller, Ripley ripley) {
+    public UFOFrame(Controller controller, Ripley ripley, Model model) throws IOException {
         super();
         this.controller = controller;
         this.ripley = ripley;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.model = model;
+        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         setPreferredSize(new Dimension(1000, 805)); 
 		setResizable(false); 
+		savePath = "src/Save";
+		saveWriter = new BufferedWriter(new FileWriter(savePath,true));
+		
 
         initTop();
         initCenter();
         initBottom();
         initFrame();
         pack();
+        
+        addComponentListener(new ComponentAdapter()
+        {
+        	public void componentHidden(ComponentEvent e)
+        	{
+        		
+        	}
+        });
     }
 
     private void initTop() {
@@ -67,10 +92,11 @@ public class UFOFrame extends JFrame implements Observer{
         jpCenter.setPreferredSize(new Dimension(800, 400));
         jpCenter.setLayout(new CardLayout());
         jpCenter.add(jlLog);
-        MapUS panel2Model = new MapUS(ripley.
-        		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00")); 
-        jpCenter.add(new MapPanel(panel2Model)); 
-        jpCenter.add(new StatPanel());
+        //MapUS panel2Model = new MapUS(ripley.
+        //		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00")); 
+        //jpCenter.add(new MapPanel(panel2Model)); 
+         panel2 = new StatPanel(model);
+        jpCenter.add(panel2);
   
     }
 
@@ -166,6 +192,7 @@ public class UFOFrame extends JFrame implements Observer{
             jlLog.setText(processingText + string + "<br><br><b>Please now interact with this data using<br>the buttons to the left and the right.</b></div></html>");
             jbLeft.setEnabled(true);
             jbRight.setEnabled(true);
+            panel2.initStats();
         }
     }
 }
