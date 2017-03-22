@@ -16,17 +16,25 @@ import api.ripley.Ripley;
 public class Model extends Observable {
 	private int currentStartYear;
 	private int currentEndYear;
-	private int minYear;
-	private int maxYear;
-	private ArrayList<Incident> incidents;
+	private int indexStartYear;
+	private int indexEndYear;
+	private int ripleyMinYear;
+	private int ripleyMaxYear;
+	private ArrayList<Incident>[] incidents;
 	private Ripley ripley;
-	private int methodNumber; // do we need this?
 
 	public Model(Ripley ripley) {
 		this.ripley = ripley;
-		incidents = new ArrayList<Incident>();
-		minYear = Integer.MAX_VALUE;
-		maxYear = Integer.MIN_VALUE;
+		ripleyMinYear = ripley.getStartYear();
+		ripleyMaxYear = ripley.getLatestYear();
+		indexEndYear = Integer.MIN_VALUE;
+		indexStartYear = Integer.MAX_VALUE;
+		incidents = new ArrayList[ripleyMaxYear - ripleyMinYear];
+		System.out.println("total length: " + incidents.length);
+
+		for (int i = 0; i < ripleyMaxYear - ripleyMinYear; i++) {
+			incidents[i] = new ArrayList<Incident>();
+		}
 	}
 
 	public void setStartYear(int year) {
@@ -40,13 +48,19 @@ public class Model extends Observable {
 	}
 
 	public List<Incident> getRequestedData() {
-		// Currently the data returned from Ripley is unsorted. So this doesn't
-		// work.
-		// Eugene can do this while implementing 'Sorting Sightings' in the
-		// brief?
-		int startIndex = currentStartYear - minYear;
-		int endIndex = incidents.size() - (maxYear - currentEndYear) - 1;
-		return incidents.subList(startIndex, endIndex);
+		int endIndex = currentEndYear - ripleyMinYear;
+		System.out.println("endIndex:" + endIndex);
+		int startIndex = currentStartYear - ripleyMinYear;
+		System.out.println("startIndex:" + startIndex);
+		ArrayList<Incident> incidents = new ArrayList<Incident>();
+		if (endIndex < this.incidents.length && 0 < startIndex) {
+			for (ArrayList<Incident> element : this.incidents) {
+				if (element != null) {
+					incidents.addAll(element);
+				}
+			}
+		}
+		return incidents;
 	}
 
 	/*
@@ -90,15 +104,10 @@ public class Model extends Observable {
 			returnString += entry.getKey() + ": " + ((entry.getValue())/(currentEndYear - currentStartYear) + " ");
 		}
 		*/
-		
-		
 			for(Entry<String, Integer> entry : map.entrySet())
 			{
 				returnString = returnString + "\n" + entry.getKey() + ": " + ((entry.getValue())/(currentEndYear - currentStartYear) + " " + "\n");
 			}
-			
-		
-		
 		return returnString;
 	}
 
@@ -141,34 +150,53 @@ public class Model extends Observable {
 				maximumEntry = entry;
 			}
 		}
-
 		return maximumEntry.getKey();
+	}
 
+	private int parseYear(String string) {
+	    int year = 0;
+		try {
+			year = Integer.parseInt(string.substring(0, 4));
+			System.out.println("ParseYear:" + year);
+			return year;
+		} catch (NumberFormatException e) {
+			System.err.println(e);
+		}
+		return year;
+	}
+	private void addIncidents(ArrayList<Incident> incidents){
+		int year = 0;
+		for (Incident element : incidents) {
+			System.out.println("add incident" + element);
+			year = parseYear(element.getDateAndTime());
+			this.incidents[year - ripleyMinYear].add(element);
+		}
 	}
 
 	private void initCaching() {
 		ArrayList<Incident> incidents = new ArrayList<Incident>();
 		long startTime = System.currentTimeMillis();
 
-		if (currentStartYear < minYear && maxYear < currentEndYear || this.incidents.size() == 0) {
-			this.incidents = grabData(currentStartYear, currentEndYear);
-			// System.out.println("1"); //Debugging, delete later
-			minYear = currentStartYear;
-			maxYear = currentEndYear;
-		} else if (currentStartYear < minYear) {
-			incidents = grabData(currentStartYear, minYear - 1);
-			this.incidents.addAll(0, incidents);
-			minYear = currentStartYear;
-			// System.out.println("2"); //Debugging, delete later
-		} else if (maxYear < currentEndYear) {
-			incidents = grabData(maxYear + 1, currentEndYear);
-			this.incidents.addAll(this.incidents.size() - 1, incidents);
-			maxYear = currentEndYear;
-			// System.out.println("3"); //Debugging, delete later
+		if (currentStartYear < indexStartYear && indexEndYear < currentEndYear) {
+			incidents = grabData(currentStartYear, currentEndYear);
+			 System.out.println("1"); //Debugging, delete later
+			addIncidents(incidents);
+			indexStartYear = currentStartYear;
+			indexEndYear = currentEndYear;
+		} else if (currentStartYear < indexStartYear) {
+			incidents = grabData(currentStartYear, indexStartYear - 1);
+			addIncidents(incidents);
+			indexStartYear = currentStartYear;
+			 System.out.println("2"); //Debugging, delete later
+		} else if (ripleyMaxYear < currentEndYear) {
+			incidents = grabData(indexEndYear + 1, currentEndYear);
+			addIncidents(incidents);
+			indexEndYear = currentEndYear;
+			 System.out.println("3"); //Debugging, delete later
 		}
 
 		long duration = System.currentTimeMillis() - startTime;
-		System.out.println(this.incidents);
+		System.out.println("init cache" + incidents.toString());
 		notifyDuration(duration);
 	}
 

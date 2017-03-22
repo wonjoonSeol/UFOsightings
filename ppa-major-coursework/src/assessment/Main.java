@@ -1,9 +1,12 @@
 package assessment;
 
+import api.ripley.Incident;
 import api.ripley.Ripley;
 import assessment.controller.Controller;
 import assessment.model.Model;
 import assessment.view.UFOFrame;
+
+import java.util.ArrayList;
 
 /**
  * Created by wonjoonseol on 05/03/2017.
@@ -19,7 +22,9 @@ public class Main {
         mainView.setVisible(true);
         model.addObserver(mainView);
 
-//        System.out.println(ripley.getIncidentsInRange("1561-01-01 00:00:00", "1620-01-01 00:00:00"));  //TESTING
+        ArrayList<Incident> incidents = ripley.getIncidentsInRange("1561-01-01 00:00:00", "1620-01-01 00:00:00");
+        System.out.println(incidents);  //TESTING
+        System.out.println(incidents.get(0).getDateAndTime());
 //        ArrayList<Incident> test = new ArrayList<>();                                                  //TESTING
 //        test = ripley.getIncidentsInRange("1561-01-01 00:00:00", "1620-01-01 00:00:00");
 //        model.getRequestedData();

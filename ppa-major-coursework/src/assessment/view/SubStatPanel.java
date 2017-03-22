@@ -102,7 +102,7 @@ public class SubStatPanel extends JPanel {
 		} else if (i == 3) {
 			statNumber = 3;
 			topLabel.setText("Likeliest State");
-			centLabel.setText(model.getLikeliestState());
+//			centLabel.setText(model.getLikeliestState());
 		} else if (i == 4) {
 			statNumber = 4;
 			topLabel.setText("Top 10 UFO Recent Sights Playlist");

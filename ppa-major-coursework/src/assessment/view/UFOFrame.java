@@ -139,7 +139,7 @@ public class UFOFrame extends JFrame implements Observer{
         jcTo.addItem("-");
         jcFrom.addItem("-");
 
-        int startYear = ripley.getStartYear();
+        int startYear = ripley.getStartYear();          //avoid calling api
         int lastYear = ripley.getLatestYear();
         for (int i = startYear; i < lastYear; i++) {
             jcFrom.addItem(i + "");
@@ -181,7 +181,7 @@ public class UFOFrame extends JFrame implements Observer{
                 processingText = loadingText + "Date range selected, " + startYear + " - " + endYear + "<br><br>Grabbing data...<br><br>";
                 jlLog.setText(processingText + "</div></html>");
             } catch (NumberFormatException e) {
-                System.err.print("notifyObserver has two parts that are not numbers");
+                System.err.println("notifyObserver has two parts that are not numbers");
                 e.printStackTrace();
             }
 
