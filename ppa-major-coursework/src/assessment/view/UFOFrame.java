@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
@@ -35,23 +36,21 @@ public class UFOFrame extends JFrame implements Observer {
 	private JPanel jpBottom;
 	private JPanel jpTopRight;
 	private JPanel jpCenter;
+	private StatPanel panel3;
 	private JComboBox<String> jcFrom;
 	private JComboBox<String> jcTo;
 	private Controller controller;
 	private String loadingText;
 	private Model model;
-	private StatPanel panel2;
 	private String processingText;
 	private Ripley ripley;
-	private BufferedWriter saveWriter;
-	private BufferedWriter deleteWriter;
-	private static String savePath;
-	private String[] prefArray = new String[4];
-	private File saveFile;
+    private BufferedWriter saveWriter;
+    private static String savePath;
+    private String[] prefArray = new String[4];
     private int ripleyMinYear;
     private int ripleyMaxYear;
 
-	public UFOFrame(Controller controller, Ripley ripley, Model model) throws IOException {
+	public UFOFrame(Controller controller, Ripley ripley, Model model) {
 		super();
 		this.controller = controller;
 		this.ripley = ripley;
@@ -59,14 +58,6 @@ public class UFOFrame extends JFrame implements Observer {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setPreferredSize(new Dimension(1000, 805));
 		setResizable(false);
-		savePath = "src/Save";
-		saveWriter = new BufferedWriter(new FileWriter(savePath, true));
-		System.out.println("Getting here");
-		prefArray = readFromFile(savePath);
-		System.out.println(prefArray);// private field pass to statpanel
-										// constructor
-		deleteWriter = new BufferedWriter(new FileWriter(savePath));
-		deleteWriter.close();
 
         ripleyMinYear = model.getRipleyMinYear();
         ripleyMaxYear = model.getRipleyMaxYear();
@@ -77,23 +68,8 @@ public class UFOFrame extends JFrame implements Observer {
 		initFrame();
 		pack();
 
-		addComponentListener(new ComponentAdapter() {
-			public void componentHidden(ComponentEvent e) {
-				String retString = "";
-				retString = retString + panel2.getltPanel().getStat() + " ";
-				retString = retString + panel2.getrtPanel().getStat() + " ";
-				retString = retString + panel2.getlbPanel().getStat() + " ";
-				retString = retString + panel2.getrbPanel().getStat() + " ";
-				try {
-					saveWriter.write(retString);
-					saveWriter.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-
-		});
+		addComponentListener(controller);
+		panelSavePreparation();
 	}
 
 	private void initTop() {
@@ -120,8 +96,8 @@ public class UFOFrame extends JFrame implements Observer {
 		// MapUS panel2Model = new MapUS(ripley.
 		// getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
 		// jpCenter.add(new MapPanel(panel2Model));
-		panel2 = new StatPanel(model);
-		jpCenter.add(panel2);
+		panel3 = new StatPanel(model);
+		jpCenter.add(panel3);
 
 	}
 
@@ -187,6 +163,41 @@ public class UFOFrame extends JFrame implements Observer {
 		cards.previous(jpCenter);
 	}
 
+	public String[] readFromFile(String fileName) throws FileNotFoundException, IOException {
+		String[] ret = new String[4];
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+			System.out.println("setting up reader");
+			String line = reader.readLine();
+			if (line == null) {
+				System.out.println("We are reaching this part");
+				ret[0] = "1";
+				ret[1] = "2";
+				ret[2] = "3";
+				ret[3] = "4";
+				System.out.println(ret);
+				return ret;
+			} else {
+				System.out.println("Input!");
+				ret = line.split(" ");
+				System.out.println(ret);
+			}
+			return ret;
+		}
+	}
+
+	    private void panelSavePreparation() {
+        savePath = "src/Save";
+        try {
+            saveWriter = new BufferedWriter(new FileWriter(savePath, true));
+            System.out.println("Getting here");
+            prefArray = readFromFile(savePath);
+            System.out.println(prefArray);// private field pass to statpanel
+			controller.addWriter(saveWriter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         System.out.println("Update invoked");
@@ -220,31 +231,8 @@ public class UFOFrame extends JFrame implements Observer {
 			jbLeft.setEnabled(true);
 			jbRight.setEnabled(true);
 			System.out.println("Initiating stats!");
-			panel2.initStats(prefArray);
+			panel3.initStats(prefArray);
 
 		}
-	}
-
-	public String[] readFromFile(String fileName) throws FileNotFoundException, IOException {
-		String[] ret = new String[4];
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-			System.out.println("setting up reader");
-			String line = reader.readLine();
-			if (line == null) {
-				System.out.println("We are reaching this part");
-				ret[0] = "1";
-				ret[1] = "2";
-				ret[2] = "3";
-				ret[3] = "4";
-				System.out.println(ret);
-				return ret;
-			} else {
-					System.out.println("Input!");
-					ret = line.split(" ");
-					System.out.println(ret);
-				}
-				return ret;
-			}
-
 	}
 }
