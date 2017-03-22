@@ -1,22 +1,32 @@
 package assessment.controller;
 
 import assessment.model.Model;
+import assessment.panel3.view.StatPanel;
 import assessment.view.UFOFrame;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.io.*;
 
 /**
  * Created by wonjoonseol on 05/03/2017.
  */
-public class Controller implements ActionListener{
+public class Controller implements ActionListener, ComponentListener{
+
 
     private Model model;
     private UFOFrame view;
+    private BufferedWriter saveWriter;
 
     public Controller(Model model) {
         this.model = model;
+    }
+
+    public void addWriter(BufferedWriter writer){
+        saveWriter = writer;
     }
 
     @Override
@@ -50,5 +60,36 @@ public class Controller implements ActionListener{
         // this should really be used for cardLayout only
         // for further info: https://keats.kcl.ac.uk/mod/forum/discuss.php?d=108103
         this.view = view;
+    }
+
+    @Override
+    public void componentResized(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentMoved(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentShown(ComponentEvent e) {
+
+    }
+
+    @Override
+    public void componentHidden(ComponentEvent e) {
+        StatPanel panel = (StatPanel) e.getSource();
+        String retString = "";
+        retString = retString + panel.getltPanel().getStat() + " ";
+        retString = retString + panel.getrtPanel().getStat() + " ";
+        retString = retString + panel.getlbPanel().getStat() + " ";
+        retString = retString + panel.getrbPanel().getStat() + " ";
+        try {
+            saveWriter.write(retString);
+            saveWriter.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
     }
 }

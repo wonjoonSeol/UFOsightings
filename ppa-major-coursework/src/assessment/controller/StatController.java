@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import assessment.view.SubStatPanel;
+import assessment.panel3.view.SubStatPanel;
 
 public class StatController implements ActionListener{
 
