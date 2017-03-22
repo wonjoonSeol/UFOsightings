@@ -47,6 +47,14 @@ public class Model extends Observable {
 		notifyYear();
 	}
 
+	public int getRipleyMinYear() {
+		return ripleyMinYear;
+	}
+
+	public int getRipleyMaxYear() {
+		return ripleyMaxYear;
+	}
+
 	public List<Incident> getRequestedData() {
 		int endIndex = currentEndYear - ripleyMinYear;
 		System.out.println("endIndex:" + endIndex);
