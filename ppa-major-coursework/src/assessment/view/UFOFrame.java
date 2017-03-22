@@ -16,6 +16,7 @@ import java.util.Observer;
 import assessment.controller.Controller;
 import assessment.model.Model;
 import assessment.model.panel2.MapUS;
+import assessment.panel3.view.StatPanel;
 import assessment.view.panel2.mapLayer.MapPanel;
 import api.ripley.Ripley;
 
