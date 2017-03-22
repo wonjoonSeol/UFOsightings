@@ -22,6 +22,7 @@ public class Model extends Observable {
 	private int ripleyMaxYear;
 	private ArrayList<Incident>[] incidents;
 	private Ripley ripley;
+	private int methodNumber; // do we need this?
 
 	public Model(Ripley ripley) {
 		this.ripley = ripley;
@@ -88,10 +89,7 @@ public class Model extends Observable {
 
 	}
 
-	public String averageSightPerYear() {
-		// Average sightings per year in each state.
-		// Create map same as below. For each one, get the key, get the
-		// value, divide value by currentEndYear - currentStartYear
+	public String fiveLargestStates() {
 		String returnString = "";
 
 		List<Incident> data = getRequestedData();
@@ -105,17 +103,17 @@ public class Model extends Observable {
 			} else
 				map.put(i.getState(), 1);
 		}
-		
-		/*
-		for(Entry<String, Integer> entry : map.entrySet())
-		{
-			returnString += entry.getKey() + ": " + ((entry.getValue())/(currentEndYear - currentStartYear) + " ");
-		}
-		*/
-			for(Entry<String, Integer> entry : map.entrySet())
-			{
-				returnString = returnString + "\n" + entry.getKey() + ": " + ((entry.getValue())/(currentEndYear - currentStartYear) + " " + "\n");
+		for (int i = 0; i < 5; i++) {
+			Entry<String, Integer> maximumEntry = null;
+			for (Entry<String, Integer> entry : map.entrySet()) {
+				if (maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0) {
+					maximumEntry = entry;
+				}
 			}
+			map.remove(maximumEntry.getKey());
+			returnString += maximumEntry.getKey() + ": " + maximumEntry.getValue() + ", ";
+		}
+
 		return returnString;
 	}
 
