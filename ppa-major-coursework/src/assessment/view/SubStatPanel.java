@@ -109,8 +109,8 @@ public class SubStatPanel extends JPanel {
 			centLabel.setText("");
 		} else if (i == 5) {
 			statNumber = 5;
-			topLabel.setText("Average Sightings per State");
-			centLabel.setText(model.averageSightPerYear());
+			topLabel.setText("5 States with Highest Sighting Concentrations");
+			centLabel.setText(model.fiveLargestStates());
 		}
 	}
 	// Add actionlistener to button. Set stat (currentStatnumber +1).

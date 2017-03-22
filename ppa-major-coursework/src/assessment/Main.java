@@ -6,6 +6,7 @@ import assessment.controller.Controller;
 import assessment.model.Model;
 import assessment.view.UFOFrame;
 
+import java.io.IOException;
 import java.util.ArrayList;                     // TESTING
 
 /**
@@ -13,7 +14,7 @@ import java.util.ArrayList;                     // TESTING
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Ripley ripley = new Ripley("90tLI3CSu9GyVD6ql2OMtA==", "lBgm4pRs/wHVqL46EnH7ew==");
         Model model = new Model(ripley);
         Controller controller = new Controller(model);
