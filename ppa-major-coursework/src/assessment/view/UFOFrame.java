@@ -2,6 +2,7 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
@@ -33,16 +34,20 @@ public class UFOFrame extends JFrame implements Observer{
     private StatPanel panel2;
     private String processingText;
     private Ripley ripley;
+    private int ripleyMinYear;
+    private int ripleyMaxYear;
 
     public UFOFrame(Controller controller, Ripley ripley, Model model) {
         super();
         this.controller = controller;
         this.ripley = ripley;
         this.model = model;
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(800, 680)); 
-		setResizable(false); 
+ 		ripleyMinYear = model.getRipleyMinYear();
+		ripleyMaxYear = model.getRipleyMaxYear();
 
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(800, 680));
+		setResizable(false);
         initTop();
         initCenter();
         initBottom();
@@ -71,12 +76,12 @@ public class UFOFrame extends JFrame implements Observer{
         jpCenter.setPreferredSize(new Dimension(800, 400));
         jpCenter.setLayout(new CardLayout());
         jpCenter.add(jlLog);
-        MapUS panel2Model = new MapUS(ripley.
-        		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00")); 
-        jpCenter.add(new MapPanel(panel2Model)); 
+//        MapUS panel2Model = new MapUS(ripley.
+//        		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
+//        jpCenter.add(new MapPanel(panel2Model));
         //panel2 = new StatPanel(model);
         //jpCenter.add(panel2);
-  
+
     }
 
     private void initBottom() {
@@ -114,9 +119,7 @@ public class UFOFrame extends JFrame implements Observer{
         jcTo.addItem("-");
         jcFrom.addItem("-");
 
-        int startYear = ripley.getStartYear();
-        int lastYear = ripley.getLatestYear();
-        for (int i = startYear; i < lastYear; i++) {
+        for (int i = ripleyMinYear; i < ripleyMaxYear; i++) {
             jcFrom.addItem(i + "");
             jcTo.addItem(i + "");
         }
@@ -145,8 +148,10 @@ public class UFOFrame extends JFrame implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
+        System.out.println("Update invoked");
         String command = (String) arg;
         String[] commandParts = command.split(" ");
+        System.out.println(Arrays.toString(commandParts));
 
         if (commandParts.length == 2) {
             try {
