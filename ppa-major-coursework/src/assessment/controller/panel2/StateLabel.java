@@ -25,7 +25,7 @@ public class StateLabel extends JLabel {
 		super(); 
 		
 		this.state = state;
-		this.scaledSize = (int)(25 + (2.5 * state.getIncidentsCount())); 
+		this.scaledSize = (int)(20 + (2.0 * state.getIncidentsCount())); 
 		this.x = x; 
 		this.y = y; 
 		this.imageMarker = imageMarker; 
