@@ -31,12 +31,12 @@ public class MapPanel extends JPanel {
 		
 		try {
 			imageMap = ImageIO.read(new File("images/map.png"));
-			imageMarker = ImageIO.read(new File("images/alien.png"));
+			imageMarker = ImageIO.read(new File("images/alien.png")); 
+			
 		} catch (IOException e) {
-			System.out.println("Image failed");
-			e.getStackTrace();
+			System.out.println("Image initialisation failed");
 		}
-
+		
 		mouseAdapter = new LabelMouseAdapter(); 
 		
 		initStateMarkers(); 
@@ -50,65 +50,65 @@ public class MapPanel extends JPanel {
 	public void initStateMarkers() {
 			
 		StateLabel[] labels = new StateLabel[] {
-				label("AL", 680, 450),
-				label("AK", 110, 580), 
-				label("AR", 580, 410),
-				label("AZ", 200, 410),
-				label("CA", 60, 270), 
+				label("AL", 544, 360),
+				label("AK", 88, 464), 
+				label("AR", 464, 328),
+				label("AZ", 160, 328),
+				label("CA", 48, 216), 
 				
-				label("CO", 330, 300),
-				label("CT", 910, 200), 
-				label("DE", 870, 270), 
-				label("FL", 780, 550), 
-				label("GA", 750, 460), 
+				label("CO", 248, 240),
+				label("CT", 728, 160), 
+				label("DE", 696, 216), 
+				label("FL", 624, 440), 
+				label("GA", 600, 368), 
 				
-				label("HI", 370, 660), 
-				label("IA", 540, 250), 
-				label("ID", 180, 170), 
-				label("IL", 620, 270),
-				label("IN", 680, 270),
+				label("HI", 296, 528), 
+				label("IA", 432, 200), 
+				label("ID", 144, 136), 
+				label("IL", 496, 216),
+				label("IN", 544, 216),
 				
-				label("KS", 450, 330), 
-				label("KY", 700, 350), 
-				label("LA", 570, 520), 
-				label("MA", 910, 175), 
-				label("MD", 845, 275), 
+				label("KS", 360, 264), 
+				label("KY", 560, 280), 
+				label("LA", 456, 416), 
+				label("MA", 728, 140), 
+				label("MD", 676, 220), 
 				
-				label("ME", 935, 90), 
-				label("MI", 690, 185), 
-				label("MN", 520, 130), 
-				label("MO", 560, 340), 
-				label("MS", 625, 480), 
+				label("ME", 748, 72), 
+				label("MI", 552, 148), 
+				label("MN", 416, 104), 
+				label("MO", 448, 272), 
+				label("MS", 500, 384), 
 				
-				label("MT", 280, 100), 
-				label("NC", 800, 380), 
-				label("ND", 420, 100), 
-				label("NE", 435, 250), 
-				label("NH", 915, 145), 
+				label("MT", 224, 80), 
+				label("NC", 640, 304), 
+				label("ND", 336, 80), 
+				label("NE", 348, 200), 
+				label("NH", 732, 116), 
 				
-				label("NJ", 880, 250), 
-				label("NM", 310, 420), 
-				label("NV", 130, 270), 
-				label("NY", 850, 170), 
-				label("OH", 730, 270),
+				label("NJ", 704, 200), 
+				label("NM", 248, 336), 
+				label("NV", 104, 216), 
+				label("NY", 680, 136), 
+				label("OH", 584, 216),
 				
-				label("OK", 470, 410),
-				label("OR", 90, 130),
-				label("PA", 820, 240),
-				label("RI", 925, 190),
-				label("SC", 795, 420),
+				label("OK", 376, 328),
+				label("OR", 72, 104),
+				label("PA", 656, 192),
+				label("RI", 740, 152),
+				label("SC", 636, 336),
 				
-				label("SD", 430, 180),
-				label("TN", 680, 390),
-				label("TX", 445, 510),
-				label("UT", 220, 285),
-				label("VA", 820, 335),
+				label("SD", 344, 144),
+				label("TN", 544, 312),
+				label("TX", 356, 408),
+				label("UT", 176, 228),
+				label("VA", 656, 268),
 				
-				label("VT", 892, 140),
-				label("WA", 110, 50),
-				label("WI", 600, 170),
-				label("WV", 775, 310),
-				label("WY", 300, 205)
+				label("VT", 714, 112),
+				label("WA", 88, 40),
+				label("WI", 480, 136),
+				label("WV", 620, 248),
+				label("WY", 240, 164)
 		}; 
 		
 		

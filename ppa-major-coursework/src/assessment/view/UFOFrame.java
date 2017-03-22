@@ -2,12 +2,6 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
@@ -39,40 +33,21 @@ public class UFOFrame extends JFrame implements Observer{
     private StatPanel panel2;
     private String processingText;
     private Ripley ripley;
-    private BufferedWriter saveWriter;
-    private BufferedWriter deleteWriter;
-    private static String savePath;
-    private File saveFile;
 
     public UFOFrame(Controller controller, Ripley ripley, Model model) {
         super();
         this.controller = controller;
         this.ripley = ripley;
         this.model = model;
-        setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-        setPreferredSize(new Dimension(1000, 805)); 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(800, 650)); 
 		setResizable(false); 
-		savePath = "Save";
-        try {
-            saveWriter = new BufferedWriter(new FileWriter(savePath,true));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         initTop();
         initCenter();
         initBottom();
         initFrame();
         pack();
-        
-        addComponentListener(new ComponentAdapter()
-        {
-        	public void componentHidden(ComponentEvent e)
-        	{
-        		
-        	}
-        });
     }
 
     private void initTop() {
@@ -96,11 +71,11 @@ public class UFOFrame extends JFrame implements Observer{
         jpCenter.setPreferredSize(new Dimension(800, 400));
         jpCenter.setLayout(new CardLayout());
         jpCenter.add(jlLog);
-        //MapUS panel2Model = new MapUS(ripley.
-        //		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
-        //jpCenter.add(new MapPanel(panel2Model));
-         panel2 = new StatPanel(model);
-        jpCenter.add(panel2);
+        MapUS panel2Model = new MapUS(ripley.
+        		getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00")); 
+        jpCenter.add(new MapPanel(panel2Model)); 
+        //panel2 = new StatPanel(model);
+        //jpCenter.add(panel2);
   
     }
 
@@ -139,7 +114,7 @@ public class UFOFrame extends JFrame implements Observer{
         jcTo.addItem("-");
         jcFrom.addItem("-");
 
-        int startYear = ripley.getStartYear();          //avoid calling api
+        int startYear = ripley.getStartYear();
         int lastYear = ripley.getLatestYear();
         for (int i = startYear; i < lastYear; i++) {
             jcFrom.addItem(i + "");
@@ -181,7 +156,7 @@ public class UFOFrame extends JFrame implements Observer{
                 processingText = loadingText + "Date range selected, " + startYear + " - " + endYear + "<br><br>Grabbing data...<br><br>";
                 jlLog.setText(processingText + "</div></html>");
             } catch (NumberFormatException e) {
-                System.err.println("notifyObserver has two parts that are not numbers");
+                System.err.print("notifyObserver has two parts that are not numbers");
                 e.printStackTrace();
             }
 
