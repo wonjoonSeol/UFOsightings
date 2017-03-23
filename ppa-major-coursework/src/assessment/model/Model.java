@@ -235,4 +235,8 @@ public class Model extends Observable {
 		}
 	}
 
+	public void notifySavePanel() {
+		setChanged();
+		notifyObservers("SAVE");
+	}
 }

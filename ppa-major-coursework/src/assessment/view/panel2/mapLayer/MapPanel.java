@@ -31,7 +31,7 @@ public class MapPanel extends JPanel {
 		
 		try {
 			imageMap = ImageIO.read(new File("images/map.png"));
-			imageMarker = ImageIO.read(new File("images/alien.png")); 
+			imageMarker = ImageIO.read(new File("images/alien.png"));
 			
 		} catch (IOException e) {
 			System.out.println("Image initialisation failed");
@@ -111,13 +111,10 @@ public class MapPanel extends JPanel {
 				label("WY", 240, 164)
 		}; 
 		
-		
-		
 		for (int i = 0; i < labels.length; i++) {
 			labels[i].addMouseListener(mouseAdapter);
 			add(labels[i]); 
 		}			
-
 	}
 	
 	/** 

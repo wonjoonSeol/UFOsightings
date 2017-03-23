@@ -11,10 +11,8 @@ public class MapUS {
 	
 	public MapUS(ArrayList<Incident> incidents) {
 		this.mapNameToState = new TreeMap<>(); 
-		
-		initStates(); 
-		
-		distributeIncidents(incidents); 
+		initStates();
+		distributeIncidents(incidents);
 	}
 	
 	/** 
@@ -103,7 +101,6 @@ public class MapUS {
 			}
 		}
 	}
-	
 	public StateUS getState(String name) {
 		return mapNameToState.get(name);  
 	}

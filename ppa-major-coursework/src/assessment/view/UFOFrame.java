@@ -93,9 +93,8 @@ public class UFOFrame extends JFrame implements Observer {
 		jpCenter.setPreferredSize(new Dimension(800, 400));
 		jpCenter.setLayout(new CardLayout());
 		jpCenter.add(jlLog);
-		// MapUS panel2Model = new MapUS(ripley.
-		// getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
-		// jpCenter.add(new MapPanel(panel2Model));
+		 MapUS panel2Model = new MapUS(ripley.getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
+		 jpCenter.add(new MapPanel(panel2Model));
 		panel3 = new StatPanel(model);
 		jpCenter.add(panel3);
 
@@ -233,6 +232,18 @@ public class UFOFrame extends JFrame implements Observer {
 			System.out.println("Initiating stats!");
 			panel3.initStats(prefArray);
 
+		} else if (commandParts[0].equals("SAVE")) {
+			String retString = "";
+			retString = retString + panel3.getltPanel().getStat() + " ";
+			retString = retString + panel3.getrtPanel().getStat() + " ";
+			retString = retString + panel3.getlbPanel().getStat() + " ";
+			retString = retString + panel3.getrbPanel().getStat() + " ";
+			try {
+				saveWriter.write(retString);
+				saveWriter.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 }

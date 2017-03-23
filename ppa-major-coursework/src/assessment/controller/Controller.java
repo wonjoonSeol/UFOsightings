@@ -79,17 +79,6 @@ public class Controller implements ActionListener, ComponentListener{
 
     @Override
     public void componentHidden(ComponentEvent e) {
-        StatPanel panel = (StatPanel) e.getSource();
-        String retString = "";
-        retString = retString + panel.getltPanel().getStat() + " ";
-        retString = retString + panel.getrtPanel().getStat() + " ";
-        retString = retString + panel.getlbPanel().getStat() + " ";
-        retString = retString + panel.getrbPanel().getStat() + " ";
-        try {
-            saveWriter.write(retString);
-            saveWriter.close();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
+        model.notifySavePanel();
     }
 }
