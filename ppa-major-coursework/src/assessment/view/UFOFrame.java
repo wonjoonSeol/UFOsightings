@@ -187,10 +187,10 @@ public class UFOFrame extends JFrame implements Observer {
 	    private void panelSavePreparation() {
         savePath = "Save";
         try {
-            saveWriter = new BufferedWriter(new FileWriter(savePath));
             System.out.println("Getting here");
             prefArray = readFromFile(savePath);
             System.out.println(prefArray);// private field pass to statpanel
+			saveWriter = new BufferedWriter(new FileWriter(savePath));
 			controller.addWriter(saveWriter);
         } catch (IOException e) {
             e.printStackTrace();
