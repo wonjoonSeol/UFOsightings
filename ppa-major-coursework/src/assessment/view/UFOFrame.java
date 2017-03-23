@@ -56,7 +56,7 @@ public class UFOFrame extends JFrame implements Observer {
 		this.ripley = ripley;
 		this.model = model;
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		setPreferredSize(new Dimension(1000, 805));
+		setPreferredSize(new Dimension(800, 660));
 		setResizable(false);
 
         ripleyMinYear = model.getRipleyMinYear();

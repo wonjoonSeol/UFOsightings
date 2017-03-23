@@ -155,6 +155,10 @@ public class Model extends Observable {
 				maximumEntry = entry;
 			}
 		}
+		if(maximumEntry == null)
+		{
+			return "No state specified";
+		}
 		return maximumEntry.getKey();
 	}
 
