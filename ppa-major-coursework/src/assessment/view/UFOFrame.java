@@ -45,7 +45,7 @@ public class UFOFrame extends JFrame implements Observer {
 	private String processingText;
 	private Ripley ripley;
     private BufferedWriter saveWriter;
-    private static String savePath;
+	private static String savePath;
     private String[] prefArray = new String[4];
     private int ripleyMinYear;
     private int ripleyMaxYear;
@@ -187,7 +187,7 @@ public class UFOFrame extends JFrame implements Observer {
 	    private void panelSavePreparation() {
         savePath = "Save";
         try {
-            saveWriter = new BufferedWriter(new FileWriter(savePath, true));
+            saveWriter = new BufferedWriter(new FileWriter(savePath));
             System.out.println("Getting here");
             prefArray = readFromFile(savePath);
             System.out.println(prefArray);// private field pass to statpanel

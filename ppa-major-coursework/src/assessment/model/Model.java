@@ -22,7 +22,6 @@ public class Model extends Observable {
 	private int ripleyMaxYear;
 	private ArrayList<Incident>[] incidents;
 	private Ripley ripley;
-	private int methodNumber; // do we need this?
 
 	public Model(Ripley ripley) {
 		this.ripley = ripley;
@@ -91,28 +90,28 @@ public class Model extends Observable {
 
 	public String fiveLargestStates() {
 		String returnString = "";
-
-		List<Incident> data = getRequestedData();
-
-		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-		for (Incident i : data) // Iterate through the incident list
-		{
-			if (map.containsKey(i.getState())) {
-				Integer temp = map.get(i.getState());
-				map.put(i.getState(), temp + 1);
-			} else
-				map.put(i.getState(), 1);
-		}
-		for (int i = 0; i < 5; i++) {
-			Entry<String, Integer> maximumEntry = null;
-			for (Entry<String, Integer> entry : map.entrySet()) {
-				if (maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0) {
-					maximumEntry = entry;
-				}
-			}
-			map.remove(maximumEntry.getKey());
-			returnString += maximumEntry.getKey() + ": " + maximumEntry.getValue() + ", ";
-		}
+//
+//		List<Incident> data = getRequestedData();
+//
+//		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
+//		for (Incident i : data) // Iterate through the incident list
+//		{
+//			if (map.containsKey(i.getState())) {
+//				Integer temp = map.get(i.getState());
+//				map.put(i.getState(), temp + 1);
+//			} else
+//				map.put(i.getState(), 1);
+//		}
+//		for (int i = 0; i < 5; i++) {
+//			Entry<String, Integer> maximumEntry = null;
+//			for (Entry<String, Integer> entry : map.entrySet()) {
+//				if (maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0) {
+//					maximumEntry = entry;
+//				}
+//			}
+//			map.remove(maximumEntry.getKey());
+//			returnString += maximumEntry.getKey() + ": " + maximumEntry.getValue() + ", ";
+//		}
 
 		return returnString;
 	}
