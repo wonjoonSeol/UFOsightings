@@ -1,11 +1,7 @@
 package assessment.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Observable;
-import java.util.TreeMap;
 
 import api.ripley.Incident;
 import api.ripley.Ripley;
@@ -56,18 +52,22 @@ public class Model extends Observable {
 	}
 
 	public List<Incident> getRequestedData() {
+		System.out.println("Get requested1:" + Arrays.toString( this.incidents));
 		int endIndex = currentEndYear - ripleyMinYear;
 		System.out.println("endIndex:" + endIndex);
 		int startIndex = currentStartYear - ripleyMinYear;
 		System.out.println("startIndex:" + startIndex);
 		ArrayList<Incident> incidents = new ArrayList<Incident>();
-		if (endIndex < this.incidents.length && 0 < startIndex) {
-			for (ArrayList<Incident> element : this.incidents) {
-				if (element != null) {
-					incidents.addAll(element);
+		if (endIndex <= this.incidents.length && 0 <= startIndex) {
+			for (ArrayList<Incident> list : this.incidents) {
+			    System.out.println("for loop:" + list);
+				if (!list.isEmpty()) {
+					System.out.println("list adding");
+					incidents.addAll(list);
 				}
 			}
 		}
+		System.out.println("requested data:" + incidents);
 		return incidents;
 	}
 
