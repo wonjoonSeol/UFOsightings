@@ -9,80 +9,49 @@ import javax.swing.JPanel;
 
 import assessment.model.Model;
 
-public class StatPanel extends JPanel implements Observer{
+public class StatPanel extends JPanel{
 	
-	private SubStatPanel lTopPanel;
-	private SubStatPanel rTopPanel;
-	private SubStatPanel lBotPanel;
-	private SubStatPanel rBotPanel;
+	private SubStatPanel[] subPanels;
 	private Model model;
-	private boolean initStats;
 	private BufferedWriter saveWriter;
 	private static String savePath;
 	private String[] stats;
 
-	public StatPanel(Model m)
-	{
+	public StatPanel(Model m) {
 		super();
 		model = m;
 		savePath = "Save";
+		subPanels = new SubStatPanel[4];
 		stats = new String[4];
 		readFromFile();
 		initWidgets();
 	}
 	
-	public void initWidgets()
-	{
-		lTopPanel = new SubStatPanel(model, this);
-		rTopPanel = new SubStatPanel(model, this);
-		lBotPanel = new SubStatPanel(model, this);
-		rBotPanel = new SubStatPanel(model, this);
-		setLayout(new GridLayout(2,2,8,8));
-		add(lTopPanel);
-		add(rTopPanel);
-		add(lBotPanel);
-		add(rBotPanel);
+	public void initWidgets() {
+		setLayout(new GridLayout(2, 2, 8, 8));
+		for (int i = 0; i < subPanels.length; i++) {
+			subPanels[i] = new SubStatPanel(model, this);
+			add(subPanels[i]);
+		}
 	}
 
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		// TODO Auto-generated method stub
-		
-	}
-	
 	public void initStats() {
-		lTopPanel.initializeStat(Integer.parseInt(stats[0]));
-		rTopPanel.initializeStat(Integer.parseInt(stats[1]));
-		lBotPanel.initializeStat(Integer.parseInt(stats[2]));
-		rBotPanel.initializeStat(Integer.parseInt(stats[3]));
-	}
-	
-	public SubStatPanel getltPanel()
-	{
-		return lTopPanel;
-	}
-	
-	public SubStatPanel getrtPanel()
-	{
-		return rTopPanel;
-	}
-	
-	public SubStatPanel getlbPanel()
-	{
-		return lBotPanel;
-	}
-	
-	public SubStatPanel getrbPanel()
-	{
-		return rBotPanel;
+			subPanels[0].resetDsiplayStats();
+	    for (int i = 0; i < subPanels.length; i++) {
+			subPanels[i].initializeStat(Integer.parseInt(stats[i]));
+		}
 	}
 
+	public String[] getDisplayConfiguration() {
+		return stats;
+	}
+	
 	public void panelSave() {
 		String retString = "";
-		retString = retString + this.getltPanel().getStat() + " ";
-		retString = retString + this.getrtPanel().getStat() + " ";
-		retString = retString + this.getlbPanel().getStat() + " ";
-		retString = retString + this.getrbPanel().getStat() + " ";
+		for (int i = 0; i < subPanels.length; i++) {
+			retString += subPanels[i].getStat() + " ";
+		}
+
 		try {
 			saveWriter = new BufferedWriter(new FileWriter(savePath));
 			saveWriter.write(retString);
@@ -110,9 +79,8 @@ public class StatPanel extends JPanel implements Observer{
 	}
 
 	private void setDefaultSubPanels() {
-		stats[0] = "1";
-		stats[1] = "2";
-		stats[2] = "3";
-		stats[3] = "4";
+		for (int i = 0; i < subPanels.length; i++) {
+		    stats[i] = i + "";
+		}
 	}
 }

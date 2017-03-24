@@ -83,13 +83,16 @@ public class SubStatPanel extends JPanel {
 		displayStats.add(statNumber);
 		System.out.println(displayStats);
 	}
-	
+
+	public void resetDsiplayStats() {
+		displayStats.clear();
+	}
+
 	public int getStat() {
 		return statNumber;
 	}
 
-	private void updateStatistic(int i)
-	{
+	private void updateStatistic(int i) {
 		if (i == 1) {
 			statNumber = 1;
 			topLabel.setText("Hoax Stats");
