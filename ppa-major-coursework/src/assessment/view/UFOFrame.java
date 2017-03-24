@@ -2,12 +2,8 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +13,7 @@ import java.util.Observer;
 import assessment.controller.Controller;
 import assessment.model.Model;
 import assessment.model.panel2.MapUS;
-import assessment.panel3.view.StatPanel;
+import assessment.view.panel3.StatPanel;
 import assessment.view.panel2.mapLayer.MapPanel;
 import api.ripley.Ripley;
 
@@ -44,9 +40,7 @@ public class UFOFrame extends JFrame implements Observer {
 	private Model model;
 	private String processingText;
 	private Ripley ripley;
-    private BufferedWriter saveWriter;
-	private static String savePath;
-    private String[] prefArray = new String[4];
+
     private int ripleyMinYear;
     private int ripleyMaxYear;
 
@@ -55,7 +49,7 @@ public class UFOFrame extends JFrame implements Observer {
 		this.controller = controller;
 		this.ripley = ripley;
 		this.model = model;
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 660));
 		setResizable(false);
 
@@ -67,9 +61,6 @@ public class UFOFrame extends JFrame implements Observer {
 		initBottom();
 		initFrame();
 		pack();
-
-		addComponentListener(controller);
-		panelSavePreparation();
 	}
 
 	private void initTop() {
@@ -162,38 +153,6 @@ public class UFOFrame extends JFrame implements Observer {
 		cards.previous(jpCenter);
 	}
 
-	public String[] readFromFile(String fileName) {
-		String[] ret = new String[4];
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
-			System.out.println("setting up reader");
-			String line = reader.readLine();
-			ret = line.split(" ");
-			System.out.println(ret);
-
-			} catch (IOException e) {
-				System.out.println("We are reaching this part");
-				ret[0] = "1";
-				ret[1] = "2";
-				ret[2] = "3";
-				ret[3] = "4";
-			}
-		return ret;
-	}
-
-	    private void panelSavePreparation() {
-        savePath = "Save";
-        try {
-            System.out.println("Getting here");
-            prefArray = readFromFile(savePath);
-            System.out.println(prefArray);// private field pass to statpanel
-			saveWriter = new BufferedWriter(new FileWriter(savePath));
-			controller.addWriter(saveWriter);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void update(Observable o, Object arg) {
         System.out.println("Update invoked");
@@ -227,20 +186,7 @@ public class UFOFrame extends JFrame implements Observer {
 			jbLeft.setEnabled(true);
 			jbRight.setEnabled(true);
 			System.out.println("Initiating stats!");
-			panel3.initStats(prefArray);
-
-		} else if (commandParts[0].equals("SAVE")) {
-			String retString = "";
-			retString = retString + panel3.getltPanel().getStat() + " ";
-			retString = retString + panel3.getrtPanel().getStat() + " ";
-			retString = retString + panel3.getlbPanel().getStat() + " ";
-			retString = retString + panel3.getrbPanel().getStat() + " ";
-			try {
-				saveWriter.write(retString);
-				saveWriter.close();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+			panel3.initStats();
 		}
 	}
 }
