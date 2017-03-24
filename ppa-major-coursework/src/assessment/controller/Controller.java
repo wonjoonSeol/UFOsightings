@@ -6,7 +6,6 @@ import assessment.view.UFOFrame;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 /**
  * Created by wonjoonseol on 05/03/2017.
