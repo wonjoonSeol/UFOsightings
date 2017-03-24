@@ -162,26 +162,23 @@ public class UFOFrame extends JFrame implements Observer {
 		cards.previous(jpCenter);
 	}
 
-	public String[] readFromFile(String fileName) throws FileNotFoundException, IOException {
+	public String[] readFromFile(String fileName) {
 		String[] ret = new String[4];
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 			System.out.println("setting up reader");
 			String line = reader.readLine();
-			if (line == null) {
+			ret = line.split(" ");
+			System.out.println(ret);
+
+			} catch (IOException e) {
 				System.out.println("We are reaching this part");
 				ret[0] = "1";
 				ret[1] = "2";
 				ret[2] = "3";
 				ret[3] = "4";
-				System.out.println(ret);
-				return ret;
-			} else {
-				System.out.println("Input!");
-				ret = line.split(" ");
-				System.out.println(ret);
 			}
-			return ret;
-		}
+		return ret;
 	}
 
 	    private void panelSavePreparation() {
