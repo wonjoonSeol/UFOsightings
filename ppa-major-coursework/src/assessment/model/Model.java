@@ -53,7 +53,6 @@ public class Model extends Observable {
 	}
 
 	public List<Incident> getRequestedData() {
-		System.out.println("Get requested1:" + Arrays.toString( this.incidents));
 		int endIndex = currentEndYear - ripleyMinYear;
 		System.out.println("endIndex:" + endIndex);
 		int startIndex = currentStartYear - ripleyMinYear;
@@ -61,9 +60,7 @@ public class Model extends Observable {
 		ArrayList<Incident> incidents = new ArrayList<Incident>();
 		if (endIndex <= this.incidents.length && 0 <= startIndex) {
 			for (ArrayList<Incident> list : this.incidents) {
-			    System.out.println("for loop:" + list);
 				if (!list.isEmpty()) {
-					System.out.println("list adding");
 					incidents.addAll(list);
 				}
 			}
@@ -78,9 +75,8 @@ public class Model extends Observable {
 	public int getNumHoaxes() {
 		List<Incident> data = getRequestedData();
 		int count = 0;
-		for (Incident i : data) // Iterate through the incident list, increase
+		for (Incident i : data) { // Iterate through the incident list, increase
 								// count if a HOAX match is found.
-		{
 			if (i.getSummary().contains("HOAX")) {
 				count++;
 			}
@@ -129,9 +125,8 @@ public class Model extends Observable {
 	public int getNonUSSight() {
 		List<Incident> data = getRequestedData();
 		int count = 0;
-		for (Incident i : data) // Iterate through the incident list, increase
+		for (Incident i : data) { // Iterate through the incident list, increase
 								// count if a Non-US match is found.
-		{
 			if (i.getState().equals("Not specified.")) {
 				count++;
 			}
@@ -147,8 +142,7 @@ public class Model extends Observable {
 		List<Incident> data = getRequestedData();
 
 		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-		for (Incident i : data) // Iterate through the incident list
-		{
+		for (Incident i : data) {// Iterate through the incident list
 			if (map.containsKey(i.getState())) {
 				Integer temp = map.get(i.getState());
 				map.put(i.getState(), temp + 1);
@@ -162,8 +156,7 @@ public class Model extends Observable {
 				maximumEntry = entry;
 			}
 		}
-		if(maximumEntry == null)
-		{
+		if(maximumEntry == null) {
 			return "No state specified";
 		}
 		return maximumEntry.getKey();
@@ -180,7 +173,7 @@ public class Model extends Observable {
 		}
 		return year;
 	}
-	private void addIncidents(ArrayList<Incident> incidents){
+	private void addIncidents(ArrayList<Incident> incidents) {
 		int year = 0;
 		for (Incident element : incidents) {
 			System.out.println("add incident" + element);
