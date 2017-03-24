@@ -237,9 +237,4 @@ public class Model extends Observable {
 			notifyObservers("wrongStart");
 		}
 	}
-
-	public void notifySavePanel() {
-		setChanged();
-		notifyObservers("SAVE");
-	}
 }
