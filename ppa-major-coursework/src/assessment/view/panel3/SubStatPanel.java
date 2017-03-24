@@ -108,8 +108,8 @@ public class SubStatPanel extends JPanel {
 			centLabel.setText("");
 		} else if (i == 5) {
 			statNumber = 5;
-			topLabel.setText("5 States with Highest Sighting Concentrations");
-			centLabel.setText(model.fiveLargestStates());
+			topLabel.setText("Domestic vs International Sighting Ratio");
+			centLabel.setText(model.countryDistributionPercentage());
 		}
 	}
 	// Add actionlistener to button. Set stat (currentStatnumber +1).

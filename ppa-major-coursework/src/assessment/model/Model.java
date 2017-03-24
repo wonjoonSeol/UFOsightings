@@ -1,5 +1,6 @@
 package assessment.model;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -88,32 +89,38 @@ public class Model extends Observable {
 
 	}
 
-	public String fiveLargestStates() {
+	/*
+	 * BRITTON FORSYTH Individual Statistic.
+	 * Formats for the user a ratio of international to USA stateside sightings recorded.
+	 */
+	public String countryDistributionPercentage() {
 		String returnString = "";
-//
-//		List<Incident> data = getRequestedData();
-//
-//		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-//		for (Incident i : data) // Iterate through the incident list
-//		{
-//			if (map.containsKey(i.getState())) {
-//				Integer temp = map.get(i.getState());
-//				map.put(i.getState(), temp + 1);
-//			} else
-//				map.put(i.getState(), 1);
-//		}
-//		for (int i = 0; i < 5; i++) {
-//			Entry<String, Integer> maximumEntry = null;
-//			for (Entry<String, Integer> entry : map.entrySet()) {
-//				if (maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0) {
-//					maximumEntry = entry;
-//				}
-//			}
-//			map.remove(maximumEntry.getKey());
-//			returnString += maximumEntry.getKey() + ": " + maximumEntry.getValue() + ", ";
-//		}
+		double stateSideCount = 0;
+		double internCount = 0;
+		List<Incident> data = getRequestedData();
 
+		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
+		for (Incident i : data) // Iterate through the incident list
+		{
+			if (i.getState().equals("Not specified.")) {
+				internCount++;
+			}
+			else
+				stateSideCount++;
+		}
+		if(data.size() > 0)
+		{
+		double statePercentage = (stateSideCount / data.size()) * 100;
+		double internPercentage = (internCount/data.size()) * 100;
+		String stateDM = new DecimalFormat("#.##").format(statePercentage);
+		String interDM = new DecimalFormat("#.##").format(internPercentage);
+		returnString = "State: " + stateDM + "%" + " and " + "International: " + interDM + "%";
 		return returnString;
+		}
+		else
+		{
+			return "No incidents found in time period!";
+		}
 	}
 
 	/*
@@ -125,7 +132,7 @@ public class Model extends Observable {
 		for (Incident i : data) // Iterate through the incident list, increase
 								// count if a Non-US match is found.
 		{
-			if (!i.getState().equals("Not specified.")) {
+			if (i.getState().equals("Not specified.")) {
 				count++;
 			}
 		}
