@@ -53,7 +53,6 @@ public class Model extends Observable {
 	}
 
 	public List<Incident> getRequestedData() {
-		System.out.println("Get requested1:" + Arrays.toString( this.incidents));
 		int endIndex = currentEndYear - ripleyMinYear;
 		System.out.println("endIndex:" + endIndex);
 		int startIndex = currentStartYear - ripleyMinYear;
@@ -62,7 +61,6 @@ public class Model extends Observable {
 		if (endIndex <= this.incidents.length && 0 <= startIndex) {
 			for (ArrayList<Incident> list : this.incidents) {
 				if (!list.isEmpty()) {
-					System.out.println("list adding");
 					incidents.addAll(list);
 				}
 			}
