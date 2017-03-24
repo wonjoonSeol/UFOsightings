@@ -5,5 +5,7 @@
 	<classpathentry kind="src" path="images"/>
 	<classpathentry exported="true" kind="lib" path="ripley.jar"/>
 	<classpathentry exported="true" kind="lib" path="ripley-docs.jar"/>
+	<classpathentry kind="lib" path="natty-0.14-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="slf4j-simple-1.7.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
