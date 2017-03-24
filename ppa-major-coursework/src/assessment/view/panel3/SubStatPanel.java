@@ -84,8 +84,6 @@ public class SubStatPanel extends JPanel {
 		System.out.println(displayStats);
 	}
 	
-	
-
 	public int getStat() {
 		return statNumber;
 	}

@@ -1,6 +1,7 @@
 package assessment.view.panel3;
 import java.awt.GridLayout;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,13 +19,14 @@ public class StatPanel extends JPanel implements Observer{
 	private boolean initStats;
 	private BufferedWriter saveWriter;
 	private static String savePath;
-	private String[] stats = new String[4];
+	private String[] stats;
 
 	public StatPanel(Model m)
 	{
 		super();
 		model = m;
 		savePath = "Save";
+		stats = new String[4];
 		readFromFile();
 		initWidgets();
 	}
@@ -35,17 +37,11 @@ public class StatPanel extends JPanel implements Observer{
 		rTopPanel = new SubStatPanel(model, this);
 		lBotPanel = new SubStatPanel(model, this);
 		rBotPanel = new SubStatPanel(model, this);
-		
-	
-		
 		setLayout(new GridLayout(2,2,8,8));
-		
-		
 		add(lTopPanel);
 		add(rTopPanel);
 		add(lBotPanel);
 		add(rBotPanel);
-		
 	}
 
 	@Override
@@ -54,8 +50,7 @@ public class StatPanel extends JPanel implements Observer{
 		
 	}
 	
-	public void initStats()
-	{
+	public void initStats() {
 		lTopPanel.initializeStat(Integer.parseInt(stats[0]));
 		rTopPanel.initializeStat(Integer.parseInt(stats[1]));
 		lBotPanel.initializeStat(Integer.parseInt(stats[2]));
@@ -97,29 +92,27 @@ public class StatPanel extends JPanel implements Observer{
 		}
 	}
 
-	private String[] readFromFile() {
-		String[] ret = new String[4];
+	private void readFromFile() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(savePath));
 			System.out.println("setting up reader");
 			String line = reader.readLine();
-			if (line != null) {
-				ret = line.split(" ");
-				System.out.println(ret);
+			if (!line.isEmpty()) {
+				stats = line.split(" ");
+				System.out.println(Arrays.toString(stats));
 			} else {
-				setDefaultSubPanels(ret);
+				setDefaultSubPanels();
 			}
 		} catch (IOException e) {
 			System.out.println("We are reaching this part");
-			setDefaultSubPanels(ret);
+			setDefaultSubPanels();
 		}
-		return ret;
 	}
 
-	private void setDefaultSubPanels(String[] ret) {
-		ret[0] = "1";
-		ret[1] = "2";
-		ret[2] = "3";
-		ret[3] = "4";
+	private void setDefaultSubPanels() {
+		stats[0] = "1";
+		stats[1] = "2";
+		stats[2] = "3";
+		stats[3] = "4";
 	}
 }
