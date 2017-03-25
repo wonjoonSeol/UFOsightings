@@ -11,6 +11,7 @@ import api.ripley.Incident;
 public class DurationComparator<Object> implements Comparator<Object> {
 
 	private static final Pattern DURATION_PATTERN = Pattern.compile("(\\d)+"); 
+	private static final Pattern FRACTION_PATTERN = Pattern.compile("(\\d)+/(\\d)+"); 
 	
 	@Override
 	public int compare(Object incident1, Object incident2) {
@@ -55,7 +56,23 @@ public class DurationComparator<Object> implements Comparator<Object> {
 			
 			// Using unit rescale to minute
 			if (durationString.toLowerCase().contains("hour")) {
-				duration *= 60; 
+				String[] hourSubStrings = durationString.split("hour"); 
+				
+				// If fraction of format as in "1/2" is contained, find the one right before the "hour" substring
+				Matcher fractionExtractor = FRACTION_PATTERN.matcher(hourSubStrings[0]); 
+				String fractionString = ""; 
+				while(fractionExtractor.find()) {
+					fractionString = fractionExtractor.group(); 
+				}
+				
+				// Calculate actual value of fraction in float
+				String[] numbers = fractionString.split("/"); 
+				double nominator = Integer.parseInt(numbers[0]); 
+				double denominator = Integer.parseInt(numbers[1]); 
+				double durationValue = (nominator / denominator); 
+				
+				
+				duration = (int)(durationValue * 60); 
 			} else if (durationString.toLowerCase().contains("se")
 					    && !durationString.toLowerCase().contains("min")) {
 				duration /= 60; 
