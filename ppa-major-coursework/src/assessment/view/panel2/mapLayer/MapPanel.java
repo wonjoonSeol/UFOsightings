@@ -1,18 +1,22 @@
 package assessment.view.panel2.mapLayer;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import assessment.controller.panel2.LabelMouseAdapter;
 import assessment.controller.panel2.StateLabel;
 import assessment.model.panel2.MapUS;
 
-public class MapPanel extends JPanel {
+public class MapPanel extends JPanel implements Observer {
 	
 	/**
 	 * Removes warning: Default Serial Version ID 
@@ -23,16 +27,18 @@ public class MapPanel extends JPanel {
 	private MapUS map; 						// Model for this map panel 
 	private LabelMouseAdapter mouseAdapter; // Mouse adapter for all statelabels
 	private BufferedImage imageMarker; 		// marker image for all state labels
+	private BufferedImage imageMarkerBW; 	// black and white version of marker image for unknown incidents
 	
 	public MapPanel(MapUS map) {
 		setLayout(null); // Enables free positioning labels
 		
-		this.map = map; 	
+		this.map = map;
+		map.addObserver(this);
 		
 		try {
 			imageMap = ImageIO.read(new File("images/map.png"));
 			imageMarker = ImageIO.read(new File("images/alien.png"));
-			
+			imageMarkerBW = ImageIO.read(new File("images/alienBW.png")); 
 		} catch (IOException e) {
 			System.out.println("Image initialisation failed");
 		}
@@ -108,9 +114,13 @@ public class MapPanel extends JPanel {
 				label("WA", 88, 40),
 				label("WI", 480, 136),
 				label("WV", 620, 248),
-				label("WY", 240, 164)
+				label("WY", 240, 164),
+				
+				new StateLabel(map.getState("Not specified."), 
+						imageMarkerBW, 740, 500)
 		}; 
 		
+	
 		for (int i = 0; i < labels.length; i++) {
 			labels[i].addMouseListener(mouseAdapter);
 			add(labels[i]); 
@@ -134,5 +144,11 @@ public class MapPanel extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(imageMap, 0, 0, getWidth(), getHeight(), null); 	
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

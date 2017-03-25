@@ -1,10 +1,11 @@
 package assessment.model.panel2;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 import api.ripley.Incident;
 
-public class StateUS {
+public class StateUS extends Observable {
 	
 	private String name; 					// state name
 	private String abbreviation;			// state abbreviation, eg. ARZ
@@ -24,6 +25,9 @@ public class StateUS {
 	public void addIncident(Incident incident) {
 		incidents.add(incident); 
 		incidentsCount++; 
+		
+		setChanged(); 
+		notifyObservers(); 
 	}
 	
 	public ArrayList<Incident> getIncidents() {
@@ -41,4 +45,7 @@ public class StateUS {
 		return abbreviation; 
 	}
 	
+	public void clearIncidents() {
+		incidents.clear();
+	}
 }

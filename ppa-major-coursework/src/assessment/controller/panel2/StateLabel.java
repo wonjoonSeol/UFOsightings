@@ -2,20 +2,25 @@ package assessment.controller.panel2;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.Observable;
+import java.util.Observer;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import assessment.model.panel2.StateUS;
 
-public class StateLabel extends JLabel {
+public class StateLabel extends JLabel implements Observer {
 	
 	/**
 	 * Removes warning 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private BufferedImage imageMarker; // label image 
+	private Image imageMarker; // label image 
+	private Image highResolutionMarker; // constant resolution, without this image resolution decreases after size is reset to larger
+	private ImageIcon icon; // label icon with the image
 	private StateUS state; 	// state the label is for 
 	private int x; 			// intended x position
 	private int y; 			// intended y position
@@ -25,10 +30,14 @@ public class StateLabel extends JLabel {
 		super(); 
 		
 		this.state = state;
-		this.scaledSize = (int)(20 + (2.0 * state.getIncidentsCount())); 
+		state.addObserver(this);
+		
+		this.scaledSize = (int)(10 + (2.0 * state.getIncidentsCount())); 
 		this.x = x; 
 		this.y = y; 
 		this.imageMarker = imageMarker; 
+		this.highResolutionMarker = imageMarker; 
+		this.icon = new ImageIcon(imageMarker); 
 		
 		changeSize(scaledSize); 
 	
@@ -39,9 +48,11 @@ public class StateLabel extends JLabel {
 	}
 	
 	public void pressed() {
-	
-		changeSize((int)(scaledSize * 0.8)); 
-		
+		if (scaledSize > 150) {
+			changeSize(120); 
+		} else {
+			changeSize((int)(scaledSize * 0.8)); 
+		}
 	}
 	
 	/** 
@@ -50,18 +61,31 @@ public class StateLabel extends JLabel {
 	 */
 	public void changeSize(int scaledSize) {
 		if (state.getIncidentsCount() > 0) {
-			
+			if (scaledSize > 150) scaledSize = 150; 
 			setBounds((int) ( x - (scaledSize/2)), (int) ( y - (scaledSize/2)), scaledSize, scaledSize);
 		
-			ImageIcon smallerIcon = new ImageIcon(
-					imageMarker.getScaledInstance(getWidth(), 
-							getHeight(), Image.SCALE_SMOOTH)); 
+			imageMarker = highResolutionMarker.getScaledInstance(getWidth(), 
+					getHeight(), Image.SCALE_SMOOTH);
+			
+			icon.setImage(imageMarker); 
 		
-			setIcon(smallerIcon); 
+			setIcon(icon); 
 		}
 	}
 
 	public int getScaledSize() {
 		return scaledSize; 
 	}
+	
+	public void setImageMarker(BufferedImage imageMarker) {
+		this.imageMarker = imageMarker; 
+		this.highResolutionMarker = imageMarker; 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		this.scaledSize = (int)(10 + (2.0 * state.getIncidentsCount())); 
+		changeSize(scaledSize); 
+	}
+	
 }

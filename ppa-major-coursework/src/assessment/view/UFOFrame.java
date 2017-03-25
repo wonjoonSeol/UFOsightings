@@ -15,6 +15,7 @@ import assessment.model.Model;
 import assessment.model.panel2.MapUS;
 import assessment.view.panel3.StatPanel;
 import assessment.view.panel2.mapLayer.MapPanel;
+import api.ripley.Incident;
 import api.ripley.Ripley;
 
 /**
@@ -37,9 +38,13 @@ public class UFOFrame extends JFrame implements Observer {
 	private JComboBox<String> jcTo;
 	private Controller controller;
 	private String loadingText;
+	
 	private Model model;
+	private MapUS panel2Model; 
+	
 	private String processingText;
 	private Ripley ripley;
+	
 
     private int ripleyMinYear;
     private int ripleyMaxYear;
@@ -84,8 +89,10 @@ public class UFOFrame extends JFrame implements Observer {
 		jpCenter.setPreferredSize(new Dimension(800, 400));
 		jpCenter.setLayout(new CardLayout());
 		jpCenter.add(jlLog);
-		 MapUS panel2Model = new MapUS(ripley.getIncidentsInRange("2000-01-01 00:00:00", "2000-02-01 00:00:00"));
-		 jpCenter.add(new MapPanel(panel2Model));
+		
+		this.panel2Model = new MapUS();
+		jpCenter.add(new MapPanel(panel2Model));
+		
 		panel3 = new StatPanel(model);
 		jpCenter.add(panel3);
 
@@ -188,5 +195,8 @@ public class UFOFrame extends JFrame implements Observer {
 			System.out.println("Initiating stats!");
 			panel3.initStats();
 		}
+		
+		//panel2Model.distributeIncidents(model.getRequestedData());
+	
 	}
 }
