@@ -49,6 +49,7 @@ public class DurationComparator<Object> implements Comparator<Object> {
 				while (lastIntExtractor.find()) {
 					lastIntString = lastIntExtractor.group(); 
 				}
+	
 				duration = Integer.parseInt(lastIntString); 
 			} else {
 				duration = Integer.parseInt(matcher.group()); 
@@ -60,19 +61,30 @@ public class DurationComparator<Object> implements Comparator<Object> {
 				
 				// If fraction of format as in "1/2" is contained, find the one right before the "hour" substring
 				Matcher fractionExtractor = FRACTION_PATTERN.matcher(hourSubStrings[0]); 
-				String fractionString = ""; 
-				while(fractionExtractor.find()) {
-					fractionString = fractionExtractor.group(); 
+				
+				if (fractionExtractor.find()) {
+					String fractionString = ""; 
+					
+					fractionString = fractionExtractor.group();
+									
+					// Calculate actual value of fraction in float
+					String[] numbers = fractionString.split("/"); 
+					double nominator; 
+					double denominator; 
+					double durationValue; 
+				
+					try {
+						nominator = Integer.parseInt(numbers[0]); 
+						denominator = Integer.parseInt(numbers[1]); 
+						durationValue = (nominator / denominator); 
+					} catch (NumberFormatException e) {
+						durationValue = duration; 
+					}
+					duration = (int)(durationValue * 60); 
+				} else {
+					duration *= 60; 
 				}
 				
-				// Calculate actual value of fraction in float
-				String[] numbers = fractionString.split("/"); 
-				double nominator = Integer.parseInt(numbers[0]); 
-				double denominator = Integer.parseInt(numbers[1]); 
-				double durationValue = (nominator / denominator); 
-				
-				
-				duration = (int)(durationValue * 60); 
 			} else if (durationString.toLowerCase().contains("se")
 					    && !durationString.toLowerCase().contains("min")) {
 				duration /= 60; 

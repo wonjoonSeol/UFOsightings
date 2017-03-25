@@ -1,18 +1,19 @@
 package assessment.model.panel2;
 
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.TreeMap;
 
 import api.ripley.Incident;
 
-public class MapUS {
+public class MapUS extends Observable {
 	
 	private TreeMap<String, StateUS> mapNameToState; // treemap of states and their names
 	
-	public MapUS(ArrayList<Incident> incidents) {
+	public MapUS() {
+		super(); 
 		this.mapNameToState = new TreeMap<>(); 
 		initStates();
-		distributeIncidents(incidents);
 	}
 	
 	/** 
@@ -78,6 +79,8 @@ public class MapUS {
 		map("WV", "West Virginia"); 
 		map("WI", "Wisconsin"); 
 		map("WY", "Wyoming"); 
+		
+		map("Not specified.", "No US State specified"); 
 	}
 	
 	/**
@@ -94,13 +97,21 @@ public class MapUS {
 	 */
 	public void distributeIncidents(ArrayList<Incident> incidents) {
 		
+		for (StateUS aState: mapNameToState.values()) {
+			aState.clearIncidents();
+		}
+		
 		for (Incident incident: incidents) {
 			if (mapNameToState.get(incident.getState()) != null) {
 				StateUS theState = mapNameToState.get(incident.getState()); 
 				theState.addIncident(incident);
 			}
 		}
+		
+		setChanged(); 
+		notifyObservers(); 
 	}
+	
 	public StateUS getState(String name) {
 		return mapNameToState.get(name);  
 	}
