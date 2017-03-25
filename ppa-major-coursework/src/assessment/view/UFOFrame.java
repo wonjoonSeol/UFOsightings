@@ -196,7 +196,7 @@ public class UFOFrame extends JFrame implements Observer {
 			panel3.initStats();
 		}
 		
-		//panel2Model.distributeIncidents(model.getRequestedData());
+		panel2Model.distributeIncidents(model.getRequestedData());
 	
 	}
 }
