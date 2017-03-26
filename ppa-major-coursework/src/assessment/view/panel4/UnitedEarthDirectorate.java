@@ -30,7 +30,7 @@ public class UnitedEarthDirectorate extends JPanel{
 
     public void playSound() {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("sound/tronlegacy.wav").getAbsoluteFile());
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("sound/tronlegacy.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.loop(Clip.LOOP_CONTINUOUSLY);

@@ -1,7 +1,6 @@
 package assessment.controller.panel4;
 
 import assessment.model.panel4.AlienDefend;
-import assessment.view.panel4.Panel4;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

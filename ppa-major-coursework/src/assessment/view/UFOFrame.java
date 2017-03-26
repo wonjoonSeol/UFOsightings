@@ -2,50 +2,40 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
+import assessment.controller.panel4.Panel4Controller;
 import assessment.model.Model;
 import assessment.model.panel2.MapUS;
+import assessment.model.panel4.AlienDefend;
 import assessment.view.panel3.StatPanel;
 import assessment.view.panel2.mapLayer.MapPanel;
-import api.ripley.Incident;
 import api.ripley.Ripley;
+import assessment.view.panel4.IntroVideo;
+import assessment.view.panel4.Login;
+import assessment.view.panel4.UnitedEarthDirectorate;
 
 /**
  * Created by wonjoonseol on 05/03/2017.
  */
 public class UFOFrame extends JFrame implements Observer {
 
-	private JButton jbLeft;
-	private JButton jbRight;
-	private JLabel jlFrom;
-	private JLabel jlTo;
-	private JLabel jlStatus;
+	private Model model;
+	private Ripley ripley;
+	private Controller controller;
 	private JLabel jlLog;
-	private JPanel jpTop;
-	private JPanel jpBottom;
-	private JPanel jpTopRight;
 	private JPanel jpCenter;
 	private StatPanel panel3;
+	private JPanel panel4;
+	private JButton jbLeft;
+	private JButton jbRight;
 	private JComboBox<String> jcFrom;
 	private JComboBox<String> jcTo;
-	private Controller controller;
 	private String loadingText;
-	
-	private Model model;
-	private MapUS panel2Model; 
-	
+	private MapUS panel2Model;
 	private String processingText;
-	private Ripley ripley;
-	
-
     private int ripleyMinYear;
     private int ripleyMaxYear;
 
@@ -61,29 +51,31 @@ public class UFOFrame extends JFrame implements Observer {
         ripleyMinYear = model.getRipleyMinYear();
         ripleyMaxYear = model.getRipleyMaxYear();
 
+		setLayout(new BorderLayout());
+
         initTop();
 		initCenter();
 		initBottom();
-		initFrame();
+		loadingScreen();
 		pack();
 	}
 
 	private void initTop() {
 		initJComboBox();
-		jlFrom = new JLabel("From: ");
-		jlTo = new JLabel("To: ");
-		jpTop = new JPanel(new BorderLayout());
-		jpTopRight = new JPanel(new FlowLayout());
+		JLabel jlFrom = new JLabel("From: ");
+		JLabel jlTo = new JLabel("To: ");
+		JPanel jpTop = new JPanel(new BorderLayout());
+		JPanel jpTopRight = new JPanel(new FlowLayout());
 		jpTopRight.add(jlFrom);
 		jpTopRight.add(jcFrom);
 		jpTopRight.add(jlTo);
 		jpTopRight.add(jcTo);
 		jpTop.add(jpTopRight, BorderLayout.LINE_END);
+		add(jpTop, BorderLayout.PAGE_START);
 	}
 
 	private void initCenter() {
 		jlLog = new JLabel("", SwingConstants.CENTER);
-
 		jpCenter = new JPanel();
 		jpCenter.setBorder(BorderFactory.createLineBorder(Color.black));
 		jpCenter.setPreferredSize(new Dimension(800, 400));
@@ -95,19 +87,21 @@ public class UFOFrame extends JFrame implements Observer {
 		
 		panel3 = new StatPanel(model);
 		jpCenter.add(panel3);
-
+		initPanel4();
+		jpCenter.add(panel4);
+		add(jpCenter, BorderLayout.CENTER);
 	}
 
 	private void initBottom() {
-		jpBottom = new JPanel(new BorderLayout());
-
+		JPanel jpBottom = new JPanel(new BorderLayout());
 		jbLeft = new JButton("<");
 		jbLeft.setName("jbLeft");
 		jbLeft.setEnabled(false);
 		jbRight = new JButton(">");
 		jbRight.setName("jbRight");
 		jbRight.setEnabled(false);
-		jlStatus = new JLabel(ripley.getLastUpdated(), SwingConstants.CENTER);
+
+		JLabel jlStatus = new JLabel(ripley.getLastUpdated(), SwingConstants.CENTER);
 
 		jpBottom.add(jbLeft, BorderLayout.LINE_START);
 		jpBottom.add(jbRight, BorderLayout.LINE_END);
@@ -115,14 +109,7 @@ public class UFOFrame extends JFrame implements Observer {
 
 		jbLeft.addActionListener(controller);
 		jbRight.addActionListener(controller);
-	}
-
-	private void initFrame() {
-		setLayout(new BorderLayout());
-		add(jpTop, BorderLayout.PAGE_START);
-		add(jpCenter, BorderLayout.CENTER);
 		add(jpBottom, BorderLayout.PAGE_END);
-		loadingScreen();
 	}
 
 	private void initJComboBox() {
@@ -137,10 +124,8 @@ public class UFOFrame extends JFrame implements Observer {
             jcFrom.addItem(i + "");
             jcTo.addItem(i + "");
         }
-
 		jcFrom.addActionListener(controller);
 		jcTo.addActionListener(controller);
-
 	}
 
 	private void loadingScreen() {
@@ -158,6 +143,24 @@ public class UFOFrame extends JFrame implements Observer {
 	public void previousCenterPanel() {
 		CardLayout cards = (CardLayout) (jpCenter.getLayout());
 		cards.previous(jpCenter);
+	}
+
+	private void initPanel4(){
+		panel4 = new JPanel(new CardLayout());
+		UnitedEarthDirectorate unitedEarthDirectorate = new UnitedEarthDirectorate();
+		AlienDefend alienDefend = new AlienDefend();
+		Panel4Controller panel4Controller = new Panel4Controller(alienDefend);
+		IntroVideo introVideo = new IntroVideo(this, unitedEarthDirectorate);
+		Login login = new Login(alienDefend, introVideo, panel4Controller, this);
+		alienDefend.addObserver(login);
+
+		panel4.add(login);
+		panel4.add(introVideo, "Intro Video");
+		panel4.add(unitedEarthDirectorate, "Main");
+	}
+
+	public JPanel getPanel4() {
+		return panel4;
 	}
 
     @Override
@@ -192,7 +195,6 @@ public class UFOFrame extends JFrame implements Observer {
 					+ "<br><br><b>Please now interact with this data using<br>the buttons to the left and the right.</b></div></html>");
 			jbLeft.setEnabled(true);
 			jbRight.setEnabled(true);
-			System.out.println("Initiating stats!");
 			panel3.initStats();
 		}
 		
