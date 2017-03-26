@@ -1,5 +1,7 @@
 package assessment.view.panel4;
 
+import assessment.view.UFOFrame;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -13,12 +15,12 @@ import java.io.File;
 public class IntroVideo extends JPanel {
     private String imageLocation;
     private JLabel jlWelcome;
-    private Panel4 panel4;
+    private UFOFrame ufoFrame;
     private UnitedEarthDirectorate unitedEarthDirectorate;
 
-    public IntroVideo(Panel4 panel4, UnitedEarthDirectorate unitedEarthDirectorate) {
+    public IntroVideo(UFOFrame ufoFrame, UnitedEarthDirectorate unitedEarthDirectorate) {
         this.unitedEarthDirectorate = unitedEarthDirectorate;
-        this.panel4 = panel4;
+        this.ufoFrame = ufoFrame;
         setLayout(new BorderLayout());
         imageLocation = "images/Welcome Back Commander.gif";
         jlWelcome = new JLabel();
@@ -52,8 +54,8 @@ public class IntroVideo extends JPanel {
                 playSound();
 
                 Thread.sleep(58000);
-                CardLayout cardLayout = (CardLayout) panel4.getLayout();
-                cardLayout.show(panel4, "Main");
+                CardLayout cardLayout = (CardLayout) ufoFrame.getPanel4().getLayout();
+                cardLayout.show(ufoFrame.getPanel4(), "Main");
                 unitedEarthDirectorate.playSound();
                 unitedEarthDirectorate.playAnimation();
                 return null;

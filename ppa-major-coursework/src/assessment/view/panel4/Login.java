@@ -2,6 +2,7 @@ package assessment.view.panel4;
 
 import assessment.controller.panel4.Panel4Controller;
 import assessment.model.panel4.AlienDefend;
+import assessment.view.UFOFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,19 +18,19 @@ import java.util.Observer;
  */
 public class Login extends JPanel implements Observer{
     private AlienDefend alienDefend;
+    private UFOFrame ufoFrame;
     private IntroVideo introvideo;
     private Panel4Controller panel4Controller;
     private JTextField jtfName;
-    private Panel4 panel4;
 
     private BufferedImage bgImage;
     Dimension dimension = new Dimension(800, 660);
 
-    public Login(AlienDefend alienDefend, IntroVideo introVideo, Panel4Controller panel4Controller, Panel4 panel4) {
+    public Login(AlienDefend alienDefend, IntroVideo introVideo, Panel4Controller panel4Controller, UFOFrame ufoframe) {
         super();
         this.alienDefend = alienDefend;
         this.introvideo = introVideo;
-        this.panel4 = panel4;
+        this.ufoFrame = ufoframe;
         this.panel4Controller = panel4Controller;
         initImages();
         setLayout(new BorderLayout());
@@ -93,8 +94,8 @@ public class Login extends JPanel implements Observer{
 
         if (command.equals("Request Message")) {
             alienDefend.setCommanderName(jtfName.getText());
-            CardLayout cardLayout = (CardLayout) panel4.getLayout();
-            cardLayout.show(panel4, "IntroVideo");
+            CardLayout cardLayout = (CardLayout) ufoFrame.getPanel4().getLayout();
+            cardLayout.show(ufoFrame.getPanel4(), "Intro Video");
             introvideo.playVideoSeparateThread();
         }
     }
