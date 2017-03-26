@@ -16,8 +16,7 @@ public class StatController implements ActionListener{
 	private StatPanel panel3;
 	private StatsModel statsModel;
 
-	public StatController(SubStatPanel v, StatPanel panel3,StatsModel keyEvent)
-	{
+	public StatController(SubStatPanel v, StatPanel panel3,StatsModel keyEvent) {
 		view = v;
 		this.panel3 = panel3;
 		this.statsModel = keyEvent;
