@@ -48,6 +48,7 @@ public class WonjoonStats extends JPanel implements Observer{
         String information = (String)arg;
         String[] informationParts = information.split(";");
         jlInformation.setText(setString(Integer.parseInt(informationParts[0]), informationParts[1]));
+        System.out.println("text update should happen");
     }
 }
 

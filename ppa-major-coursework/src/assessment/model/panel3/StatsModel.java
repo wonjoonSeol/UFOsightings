@@ -30,11 +30,11 @@ public class StatsModel extends Observable {
     }
 
     public void sendRandomInformation() {
-        int index = (int) Math.random() * information.size();
+        int index = (int) (Math.random() * information.size());
+        System.out.println("random num:" + index);
         setChanged();
         notifyObservers(information.get(index));
     }
-
 
 	/*
 	 * Return the number of hoaxes within the current dataset.
@@ -49,7 +49,6 @@ public class StatsModel extends Observable {
 			}
 		}
 		return count; // Return counter variable.
-
 	}
 
 	/*

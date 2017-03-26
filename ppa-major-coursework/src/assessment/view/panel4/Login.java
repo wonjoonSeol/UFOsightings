@@ -3,7 +3,6 @@ package assessment.view.panel4;
 import assessment.controller.panel4.Panel4Controller;
 import assessment.model.panel4.AlienDefend;
 import assessment.view.UFOFrame;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +54,9 @@ public class Login extends JPanel implements Observer{
         JPanel loginPanel = new JPanel(new FlowLayout());
 
         String string = "<html><div Style='text-align: center;'><b><br><br><br><br><br><br>" +
-                "<br><br><br><br><br><br><br><br><br><br><br><br><br><font color=\"white\">Please authenticate your name, Commmander</font><br><font color=\"Gray\", size = \"3\">※ Make sure you have suitable audio system set up for the military communication</font><br><br></div></html>";
+                "<br><br><br><br><br><br><br><br><br><br><br><br><br><font color=\"white\">" +
+                "Please authenticate your name, Commmander</font><br><font color=\"Gray\", size = \"3\">i" +
+                "※ Make sure you have suitable audio system set up for the military communication</font><br><br></div></html>";
         JLabel label = new JLabel(string, SwingConstants.CENTER);
 
         jtfName = new JTextField();
@@ -72,7 +73,8 @@ public class Login extends JPanel implements Observer{
 
     private void acknowledgements() {
         JLabel jlacknowlegement = new JLabel();
-        String string = "<html>Intro video : C&C Tiberian Sun<br>Images : XCOM: Enemy Within<br>Ost : Daft punk - The game has changed<br>Logo icon : Star Trek: StarFleet command";
+        String string = "<html>Intro video : C&C Tiberian Sun<br>Images : XCOM: Enemy Within<br>" +
+                "Ost : Daft punk - The game has changed<br>Logo icon : Star Trek: StarFleet command";
         jlacknowlegement.setText(string);
         jlacknowlegement.setForeground(Color.DARK_GRAY);
         add(jlacknowlegement, BorderLayout.PAGE_END);
