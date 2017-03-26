@@ -18,6 +18,7 @@ public class Model extends Observable {
 	private int ripleyMinYear;
 	private int ripleyMaxYear;
 	private ArrayList<Incident>[] incidents;
+	private ArrayList<Incident> currentList;
 	private Ripley ripley;
 
 	public Model(Ripley ripley) {
@@ -27,7 +28,7 @@ public class Model extends Observable {
 		indexEndYear = Integer.MIN_VALUE;
 		indexStartYear = Integer.MAX_VALUE;
 		incidents = new ArrayList[ripleyMaxYear - ripleyMinYear];
-		System.out.println("total length: " + incidents.length);
+		currentList = new ArrayList<Incident>();
 
 		for (int i = 0; i < ripleyMaxYear - ripleyMinYear; i++) {
 			incidents[i] = new ArrayList<Incident>();
@@ -53,6 +54,10 @@ public class Model extends Observable {
 	}
 
 	public ArrayList<Incident> getRequestedData() {
+		return currentList;
+	}
+
+	public ArrayList<Incident> createCurrentList() {
 		int endIndex = currentEndYear - ripleyMinYear;
 		System.out.println("endIndex:" + endIndex);
 		int startIndex = currentStartYear - ripleyMinYear;
@@ -197,15 +202,15 @@ public class Model extends Observable {
 			addIncidents(incidents);
 			indexStartYear = currentStartYear;
 			 System.out.println("2"); //Debugging, delete later
-		} else if (ripleyMaxYear < currentEndYear) {
+		} else if (indexEndYear < currentEndYear) {
 			incidents = grabData(indexEndYear + 1, currentEndYear);
 			addIncidents(incidents);
 			indexEndYear = currentEndYear;
 			 System.out.println("3"); //Debugging, delete later
 		}
-
+		currentList.clear();
+		currentList = createCurrentList();
 		long duration = System.currentTimeMillis() - startTime;
-		System.out.println("init cache" + incidents.toString());
 		notifyDuration(duration);
 	}
 

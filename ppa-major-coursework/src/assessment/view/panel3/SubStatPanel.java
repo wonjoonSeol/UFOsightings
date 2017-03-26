@@ -1,7 +1,6 @@
 package assessment.view.panel3;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -9,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-import assessment.controller.StatController;
+import assessment.controller.panel3.StatController;
 import assessment.model.Model;
 
 public class SubStatPanel extends JPanel {
