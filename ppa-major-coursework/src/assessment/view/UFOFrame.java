@@ -9,6 +9,7 @@ import assessment.controller.Controller;
 import assessment.controller.panel4.Panel4Controller;
 import assessment.model.Model;
 import assessment.model.panel2.MapUS;
+import assessment.model.panel3.StatsModel;
 import assessment.model.panel4.AlienDefend;
 import assessment.view.panel3.StatPanel;
 import assessment.view.panel2.mapLayer.MapPanel;
@@ -84,8 +85,9 @@ public class UFOFrame extends JFrame implements Observer {
 		
 		this.panel2Model = new MapUS();
 		jpCenter.add(new MapPanel(panel2Model));
-		
-		panel3 = new StatPanel(model);
+
+		StatsModel statsModel = new StatsModel(model);
+		panel3 = new StatPanel(statsModel);
 		jpCenter.add(panel3);
 		initPanel4();
 		jpCenter.add(panel4);
@@ -165,7 +167,6 @@ public class UFOFrame extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        System.out.println("Update invoked");
         String command = (String) arg;
         String[] commandParts = command.split(" ");
         System.out.println(Arrays.toString(commandParts));
