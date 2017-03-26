@@ -74,97 +74,14 @@ public class Model extends Observable {
 		return incidents;
 	}
 
-	/*
-	 * Return the number of hoaxes within the current dataset.
-	 */
-	public int getNumHoaxes() {
-		List<Incident> data = getRequestedData();
-		int count = 0;
-		for (Incident i : data) { // Iterate through the incident list, increase
-								// count if a HOAX match is found.
-			if (i.getSummary().contains("HOAX")) {
-				count++;
-			}
-		}
-		return count; // Return counter variable.
 
-	}
-
-	/*
-	 * BRITTON FORSYTH Individual Statistic.
-	 * Formats for the user a ratio of international to USA stateside sightings recorded.
-	 */
-	public String countryDistributionPercentage() {
-		String returnString = "";
-		double stateSideCount = 0;
-		double internCount = 0;
-		List<Incident> data = getRequestedData();
-
-		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-		for (Incident i : data) // Iterate through the incident list
-		{
-			if (i.getState().equals("Not specified.")) {
-				internCount++;
-			}
-			else
-				stateSideCount++;
+	private void addIncidents(ArrayList<Incident> incidents) {
+		int year = 0;
+		for (Incident element : incidents) {
+			System.out.println("add incident" + element);
+			year = parseYear(element.getDateAndTime());
+			this.incidents[year - ripleyMinYear].add(element);
 		}
-		if(data.size() > 0)
-		{
-		double statePercentage = (stateSideCount / data.size()) * 100;
-		double internPercentage = (internCount/data.size()) * 100;
-		String stateDM = new DecimalFormat("#.##").format(statePercentage);
-		String interDM = new DecimalFormat("#.##").format(internPercentage);
-		returnString = "State: " + stateDM + "%" + " and " + "International: " + interDM + "%";
-		return returnString;
-		}
-		else
-		{
-			return "No incidents found in time period!";
-		}
-	}
-
-	/*
-	 * Return the number of non-US sightings within the current dataset.
-	 */
-	public int getNonUSSight() {
-		List<Incident> data = getRequestedData();
-		int count = 0;
-		for (Incident i : data) { // Iterate through the incident list, increase
-								// count if a Non-US match is found.
-			if (i.getState().equals("Not specified.")) {
-				count++;
-			}
-		}
-		return count; // Return counter variable.
-	}
-
-	/*
-	 * Returns the likeliest state to receive a sighting within the current
-	 * dataset.
-	 */
-	public String getLikeliestState() {
-		List<Incident> data = getRequestedData();
-
-		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-		for (Incident i : data) {// Iterate through the incident list
-			if (map.containsKey(i.getState())) {
-				Integer temp = map.get(i.getState());
-				map.put(i.getState(), temp + 1);
-			} else
-				map.put(i.getState(), 1);
-		}
-
-		Entry<String, Integer> maximumEntry = null;
-		for (Entry<String, Integer> entry : map.entrySet()) {
-			if (maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0) {
-				maximumEntry = entry;
-			}
-		}
-		if(maximumEntry == null) {
-			return "No state specified";
-		}
-		return maximumEntry.getKey();
 	}
 
 	private int parseYear(String string) {
@@ -177,14 +94,6 @@ public class Model extends Observable {
 			System.err.println(e);
 		}
 		return year;
-	}
-	private void addIncidents(ArrayList<Incident> incidents) {
-		int year = 0;
-		for (Incident element : incidents) {
-			System.out.println("add incident" + element);
-			year = parseYear(element.getDateAndTime());
-			this.incidents[year - ripleyMinYear].add(element);
-		}
 	}
 
 	private void initCaching() {

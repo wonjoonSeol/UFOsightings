@@ -2,25 +2,21 @@ package assessment.view.panel3;
 import java.awt.GridLayout;
 import java.io.*;
 import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
-
 import javax.swing.JPanel;
-
-import assessment.model.Model;
+import assessment.model.panel3.StatsModel;
 
 public class StatPanel extends JPanel{
-	
+
+	private StatsModel statsModel;
 	private SubStatPanel[] subPanels;
-	private Model model;
 	private BufferedWriter saveWriter;
 	private static String savePath;
 	private String[] stats;
 
-	public StatPanel(Model m) {
+	public StatPanel(StatsModel statsModel) {
 		super();
-		model = m;
 		savePath = "Save";
+		this.statsModel = statsModel;
 		subPanels = new SubStatPanel[4];
 		stats = new String[4];
 		readFromFile();
@@ -30,7 +26,7 @@ public class StatPanel extends JPanel{
 	public void initWidgets() {
 		setLayout(new GridLayout(2, 2, 8, 8));
 		for (int i = 0; i < subPanels.length; i++) {
-			subPanels[i] = new SubStatPanel(model, this);
+			subPanels[i] = new SubStatPanel(statsModel, this);
 			add(subPanels[i]);
 		}
 	}
@@ -42,10 +38,6 @@ public class StatPanel extends JPanel{
 		}
 	}
 
-	public String[] getDisplayConfiguration() {
-		return stats;
-	}
-	
 	public void panelSave() {
 		String retString = "";
 		for (int i = 0; i < subPanels.length; i++) {
