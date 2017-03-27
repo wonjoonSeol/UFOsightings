@@ -53,7 +53,7 @@ public class SubStatPanel extends JPanel {
 		statsModel.addObserver(wonjoonStats);
 		
 		YoutubeModel ytModel = new YoutubeModel();
-		 ytView = new YoutubePanel(); //remove later
+		ytView = new YoutubePanel();
 		
 		ytModel.addObserver(ytView);
 		ytModel.handleVideos();

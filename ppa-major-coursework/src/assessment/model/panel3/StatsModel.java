@@ -138,14 +138,14 @@ public class StatsModel extends Observable {
 	 * EUGENE: Method to return youtube sightings figures.
 	 */
 public String getRequest() throws Exception {
-		
+
 		LocalDateTime dateCurrent = LocalDateTime.now();
 		LocalDateTime oneWeekAgo = dateCurrent.minusWeeks(1);
 		
 		String myAPIKey = "AIzaSyBCKhRHvfbPRUHoxdJBfExiSjg9mFWYiFY";
 		String source = "https://www.googleapis.com/youtube/v3/search";
 
-		URL url = new URL(source+"?part=snippet&publishedAfter="+ oneWeekAgo +"Z&type=video&q=UFO&key="+myAPIKey);
+		URL url = new URL(source + "?part=snippet&publishedAfter="+ oneWeekAgo +"Z&type=video&q=UFO&key="+ myAPIKey);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
 
