@@ -31,7 +31,7 @@ public class StatPanel extends JPanel{
 		}
 	}
 
-	public void initStats() {
+	public void initStats() throws NumberFormatException, Exception {
 			subPanels[0].resetDsiplayStats();
 	    for (int i = 0; i < subPanels.length; i++) {
 			subPanels[i].initializeStat(Integer.parseInt(stats[i]));

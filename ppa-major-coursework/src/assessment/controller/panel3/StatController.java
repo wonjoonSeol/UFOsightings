@@ -27,10 +27,20 @@ public class StatController implements ActionListener{
 		// Check button source.
 		JButton sourceButton = (JButton)arg0.getSource();
 		if(sourceButton.getText().equals("<")) {
-			view.setStat(view.getStat() - 1);
+			try {
+				view.setStat(view.getStat() - 1);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			panel3.panelSave();
 		} else if(sourceButton.getText().equals(">")) {
-			view.setStat(view.getStat() + 1);
+			try {
+				view.setStat(view.getStat() + 1);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			panel3.panelSave();
 		} else if(sourceButton.getName().equals("wjButton")) {
 			statsModel.sendRandomInformation();

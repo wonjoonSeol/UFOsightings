@@ -1,6 +1,7 @@
 package assessment.view.panel3;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -10,7 +11,9 @@ import javax.swing.SwingConstants;
 
 import assessment.controller.panel3.StatController;
 import assessment.model.panel3.StatsModel;
+import assessment.model.panel3.YoutubeModel;
 import assessment.view.panel3.additionalStats.WonjoonStats;
+import assessment.view.panel3.eugeneStats.YoutubePanel;
 
 public class SubStatPanel extends JPanel {
 
@@ -24,6 +27,7 @@ public class SubStatPanel extends JPanel {
 	private WonjoonStats wonjoonStats;
 	private StatsModel statsModel;
 	private int statNumber;
+	private YoutubePanel ytView;
 	private static ArrayList<Integer> displayStats;
 
 	// TODO: Only display one version of each stat. Save user statistic
@@ -47,6 +51,12 @@ public class SubStatPanel extends JPanel {
 		wonjoonStats = new WonjoonStats(statsController, statsModel);
 		wonjoonStats.requestText();
 		statsModel.addObserver(wonjoonStats);
+		
+		YoutubeModel ytModel = new YoutubeModel();
+		 ytView = new YoutubePanel(); //remove later
+		
+		ytModel.addObserver(ytView);
+		ytModel.handleVideos();
 
 		rButton = new JButton(">");
 		rButton.addActionListener(statsController);
@@ -60,6 +70,7 @@ public class SubStatPanel extends JPanel {
 
 		jpCenter.add(centLabel, "default");
 		jpCenter.add(wonjoonStats, "wonjoon");
+		jpCenter.add(ytView, "eugene");
 
 		add(lPanel, BorderLayout.WEST);
 		add(rPanel, BorderLayout.EAST);
@@ -67,12 +78,12 @@ public class SubStatPanel extends JPanel {
 		add(topLabel, BorderLayout.NORTH);
 	}
 
-	public void initializeStat(int i) {
+	public void initializeStat(int i) throws Exception {
 		updateStatistic(i);
 		displayStats.add(i);
 	}
 
-	public void setStat(int i) {
+	public void setStat(int i) throws Exception {
 		int statsNumber = 6;
 		if (i > statsNumber) {
 			i = 1;
@@ -102,7 +113,7 @@ public class SubStatPanel extends JPanel {
 		return statNumber;
 	}
 
-	private void updateStatistic(int i) {
+	private void updateStatistic(int i) throws Exception {
 		CardLayout cards = (CardLayout) (jpCenter.getLayout());
 		cards.show(jpCenter, "default");
 		if (i == 1) {
@@ -120,15 +131,22 @@ public class SubStatPanel extends JPanel {
 		} else if (i == 4) {
 			statNumber = 4;
 			topLabel.setText("Top 10 UFO Recent Sights Playlist");
-			centLabel.setText("");
+			cards.show(jpCenter, "eugene");
+			
 		} else if (i == 5) {
 			statNumber = 5;
 			topLabel.setText("Domestic vs International Sighting Ratio");
 			centLabel.setText(statsModel.countryDistributionPercentage());
 		} else if (i == 6) {
-			topLabel.setText("Key events in the history");
+			topLabel.setText("Key events in history");
 			cards.show(jpCenter, "wonjoon");
 			statNumber = 6;
+		}
+		else if(i == 7)
+		{
+			topLabel.setText("Youtube Videos published within past week");
+			centLabel.setText(statsModel.getRequest());
+			statNumber = 7;
 		}
 		repaint();
 	}

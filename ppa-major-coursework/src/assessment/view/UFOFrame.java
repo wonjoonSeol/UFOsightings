@@ -196,7 +196,15 @@ public class UFOFrame extends JFrame implements Observer {
 					+ "<br><br><b>Please now interact with this data using<br>the buttons to the left and the right.</b></div></html>");
 			jbLeft.setEnabled(true);
 			jbRight.setEnabled(true);
-			panel3.initStats();
+			try {
+				panel3.initStats();
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		panel2Model.distributeIncidents(model.getRequestedData());
