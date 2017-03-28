@@ -12,8 +12,8 @@ import javax.swing.SwingConstants;
 import assessment.controller.panel3.StatController;
 import assessment.model.panel3.StatsModel;
 import assessment.model.panel3.YoutubeModel;
-import assessment.view.panel3.additionalStats.WonjoonStats;
-import assessment.view.panel3.eugeneStats.YoutubePanel;
+import assessment.view.panel3.additionalStats.KeyEventsPanel;
+import assessment.view.panel3.additionalStats.YoutubePanel;
 
 public class SubStatPanel extends JPanel {
 
@@ -24,16 +24,14 @@ public class SubStatPanel extends JPanel {
 	private JPanel lPanel;
 	private JPanel rPanel;
 	private JPanel jpCenter;
-	private WonjoonStats wonjoonStats;
 	private StatsModel statsModel;
 	private int statNumber;
-	private YoutubePanel ytView;
 	private static ArrayList<Integer> displayStats;
 
 	// TODO: Only display one version of each stat. Save user statistic
 	// preferences upon close.
 
-	public SubStatPanel(StatsModel statsModel, StatPanel statPanel) {
+	public SubStatPanel(StatsModel statsModel, StatPanel statPanel){
 		super();
 		setLayout(new BorderLayout());
 		this.statsModel = statsModel;
@@ -42,35 +40,21 @@ public class SubStatPanel extends JPanel {
 		initWidgets(statPanel);
 	}
 
-	private void initWidgets(StatPanel statPanel) {
+	private void initWidgets(StatPanel statPanel){
 		lPanel = new JPanel(new BorderLayout());
 		rPanel = new JPanel(new BorderLayout());
 		jpCenter = new JPanel(new CardLayout());
 
-		StatController statsController = new StatController(this, statPanel, statsModel);
-		wonjoonStats = new WonjoonStats(statsController, statsModel);
-		wonjoonStats.requestText();
-		statsModel.addObserver(wonjoonStats);
-		
-		YoutubeModel ytModel = new YoutubeModel();
-		ytView = new YoutubePanel();
-		
-		ytModel.addObserver(ytView);
-		ytModel.handleVideos();
-
 		rButton = new JButton(">");
-		rButton.addActionListener(statsController);
 		lButton = new JButton("<");
-		lButton.addActionListener(statsController);
 		lPanel.add(lButton, BorderLayout.CENTER);
 		rPanel.add(rButton, BorderLayout.CENTER);
 
+		initAdditionalPanels(statPanel);
 		topLabel = new JLabel("Top", SwingConstants.CENTER);
 		centLabel = new JLabel("Cent", SwingConstants.CENTER);
 
 		jpCenter.add(centLabel, "default");
-		jpCenter.add(wonjoonStats, "wonjoon");
-		jpCenter.add(ytView, "eugene");
 
 		add(lPanel, BorderLayout.WEST);
 		add(rPanel, BorderLayout.EAST);
@@ -78,24 +62,25 @@ public class SubStatPanel extends JPanel {
 		add(topLabel, BorderLayout.NORTH);
 	}
 
+
 	public void initializeStat(int i) throws Exception {
 		updateStatistic(i);
 		displayStats.add(i);
 	}
 
 	public void setStat(int i) throws Exception {
-		int statsNumber = 6;
+		int statsNumber = 7;
 		if (i > statsNumber) {
 			i = 1;
 		} else if (i < 1) {
-			i = 6;
+			i = statsNumber;
 		}
 		while (displayStats.contains(i)) {
 			System.out.println(i);
 			if (i > statsNumber) {
 				i = 1;
 			} else if (i < 1) {
-				i = 6;
+				i = statsNumber;
 			} else
 				i++;
 		}
@@ -105,7 +90,24 @@ public class SubStatPanel extends JPanel {
 		System.out.println(displayStats);
 	}
 
-	public void resetDsiplayStats() {
+	private void initAdditionalPanels(StatPanel statPanel) {
+		YoutubeModel ytModel = new YoutubeModel();
+		StatController statController = new StatController(this, statPanel, statsModel, ytModel);
+		KeyEventsPanel keyEventsPanel = new KeyEventsPanel(statController, statsModel);
+		statsModel.addObserver(keyEventsPanel);
+		keyEventsPanel.requestText();
+		YoutubePanel youtubePanel = new YoutubePanel(statController);
+		ytModel.addObserver(youtubePanel);
+		ytModel.runSearch();
+
+		rButton.addActionListener(statController);
+		lButton.addActionListener(statController);
+
+		jpCenter.add(keyEventsPanel, "wonjoon");
+		jpCenter.add(youtubePanel, "eugene");
+	}
+
+	public void resetDisplayStats() {
 		displayStats.clear();
 	}
 
@@ -132,7 +134,6 @@ public class SubStatPanel extends JPanel {
 			statNumber = 4;
 			topLabel.setText("Top 10 UFO Recent Sights Playlist");
 			cards.show(jpCenter, "eugene");
-			
 		} else if (i == 5) {
 			statNumber = 5;
 			topLabel.setText("Domestic vs International Sighting Ratio");
@@ -141,9 +142,7 @@ public class SubStatPanel extends JPanel {
 			topLabel.setText("Key events in history");
 			cards.show(jpCenter, "wonjoon");
 			statNumber = 6;
-		}
-		else if(i == 7)
-		{
+		} else if(i == 7) {
 			topLabel.setText("Youtube Videos published within past week");
 			centLabel.setText(statsModel.getRequest());
 			statNumber = 7;

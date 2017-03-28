@@ -1,6 +1,7 @@
 package assessment.model.panel3;
 
 import api.ripley.Incident;
+import api.ripley.Ripley;
 import assessment.model.Model;
 
 import java.io.BufferedReader;
@@ -17,26 +18,51 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.swing.JLabel;
-
 /**
  * Created by wonjoonseol on 26/03/2017.
  */
 public class StatsModel extends Observable {
     private ArrayList<String> information;
     private Model model;
+    private Ripley ripley;
+    private double percentage;
+    private int difference;
 
-    public StatsModel(Model model) {
+    public StatsModel(Model model, Ripley ripley) {
         super();
+        this.ripley = ripley;
         this.model = model;
         information = new ArrayList<String>();
         setInformation();
     }
 
     private void setInformation() {
-        information.add("1947;is when 'Rosewell UFO incident happend");
-        information.add("2008;is when 'Turkey UFO sightings happened");
+        calculateChange(1947);
+        information.add("1947;Rosewell UFO Crash happened;US Airforce allegedly captured a crashed UFO and the aline. This was widely covered by the media and has "+ percentage + "% increase in the number of reports from the previous year");
+		calculateChange(2008);
+        information.add("2008;Turkey UFO sightings happened;This resulted in " + difference + " more incidents from its previous years. This year also has the highest number of hoax reported");
+		calculateChange(1995);
+		information.add("1995;South Africa UFO Flap happened;A UFO flap swept South Africa from late March to mid April, widely covered by the media. Number of incident reports increased by " + percentage + "%");
+		calculateChange(1952);
+		information.add("1952;Washington, D.C. UFO incident happened;There were radar contacts at three separate airports in the Washington area. This lead to formation of the Robertson Panel by the CIA. Number of incident reports increased by " + percentage + "%");
+		calculateChange(1954);
+		information.add("1954;European UFO wave happened;First large-scale European UFO wave, Most occurred near France followed by Italy. Reported increased by " + percentage + "%");
+		calculateChange(1957);
+		information.add("1957;Antonio Vilas Boas Abduction happened;Vilas Boas' claims were among the first alien abduction stories to receive wide attention. Reported incidents increased by " + percentage + "%");
+		calculateChange(1966);
+		information.add("1966;Star Trek franchise started;Unfortunately, there are insufficient data to prove that this lead to higher reported incidents");
+		calculateChange(1985);
+		information.add("1985;Carl Sagan's Contact published;Unfortunately, there are insufficient data to prove that this lead to higher reported incidents. Reported sightings were increased by " + difference);
+		calculateChange(1966);
+		information.add("1966;Star War franchise started;This year, the number of reportings were " + difference + " less than the previous year");
     }
+
+    private void calculateChange(int year) {
+		ArrayList<Incident> previousIncidents = ripley.getIncidentsInRange(Model.appendStartYear(year), model.appendEndYear(year));
+		ArrayList<Incident> incidents = ripley.getIncidentsInRange(Model.appendStartYear(year), model.appendEndYear(year));
+		percentage = (incidents.size() - previousIncidents.size()) / previousIncidents.size() * 100;
+		difference = incidents.size() - previousIncidents.size();
+	}
 
     public void sendRandomInformation() {
         int index = (int) (Math.random() * information.size());

@@ -86,7 +86,7 @@ public class UFOFrame extends JFrame implements Observer {
 		this.panel2Model = new MapUS();
 		jpCenter.add(new MapPanel(panel2Model));
 
-		StatsModel statsModel = new StatsModel(model);
+		StatsModel statsModel = new StatsModel(model, ripley);
 		panel3 = new StatPanel(statsModel);
 		jpCenter.add(panel3);
 		initPanel4();
@@ -205,9 +205,7 @@ public class UFOFrame extends JFrame implements Observer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			panel2Model.distributeIncidents(model.getRequestedData());
 		}
-		
-		panel2Model.distributeIncidents(model.getRequestedData());
-	
 	}
 }
