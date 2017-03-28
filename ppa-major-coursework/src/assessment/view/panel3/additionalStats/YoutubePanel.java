@@ -77,6 +77,4 @@ public class YoutubePanel extends JPanel implements Observer{
 		revalidate();
 		repaint();
     }
-}		
-
-
+}
