@@ -3,6 +3,7 @@ import java.awt.GridLayout;
 import java.io.*;
 import java.util.Arrays;
 import javax.swing.JPanel;
+
 import assessment.model.panel3.StatsModel;
 
 public class StatPanel extends JPanel{
@@ -31,10 +32,14 @@ public class StatPanel extends JPanel{
 		}
 	}
 
-	public void initStats() throws NumberFormatException, Exception {
-			subPanels[0].resetDsiplayStats();
+	public void initStats() {
+			subPanels[0].resetDisplayStats();
 	    for (int i = 0; i < subPanels.length; i++) {
-			subPanels[i].initializeStat(Integer.parseInt(stats[i]));
+			try {
+				subPanels[i].initializeStat(Integer.parseInt(stats[i]));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

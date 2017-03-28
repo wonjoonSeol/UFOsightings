@@ -11,13 +11,13 @@ import java.util.Observer;
 /**
  * Created by wonjoonseol on 26/03/2017.
  */
-public class WonjoonStats extends JPanel implements Observer{
+public class KeyEventsPanel extends JPanel implements Observer{
 
     private StatsModel statsModel;
     private JButton jbNext;
     private JLabel jlInformation;
 
-    public WonjoonStats(StatController statController, StatsModel statsModel) {
+    public KeyEventsPanel(StatController statController, StatsModel statsModel) {
         super();
         this.statsModel = statsModel;
         setLayout(new BorderLayout());
@@ -31,11 +31,11 @@ public class WonjoonStats extends JPanel implements Observer{
         add(jbNext, BorderLayout.PAGE_END);
     }
 
-    public String setString(int year, String information) {
+    public String setString(int year, String title, String description) {
         String htmlString;
         htmlString = "<html><div Style='text-align: center;'> <font color=\"Gray\", size = \"6\">Did </font>you know that in " +
-                "<b>" + year + "</b><br>" +
-                "<i>" + information + " ?</i></div></html>";
+                "<b>" + year + "</b>,<br>" +
+                "<i>" + title + "?</i><br><br>" + description + ".</font></div></html>";
         return htmlString;
     }
 
@@ -47,8 +47,7 @@ public class WonjoonStats extends JPanel implements Observer{
     public void update(Observable o, Object arg) {
         String information = (String)arg;
         String[] informationParts = information.split(";");
-        jlInformation.setText(setString(Integer.parseInt(informationParts[0]), informationParts[1]));
-        System.out.println("text update should happen");
+        jlInformation.setText(setString(Integer.parseInt(informationParts[0]), informationParts[1], informationParts[2]));
     }
 }
 

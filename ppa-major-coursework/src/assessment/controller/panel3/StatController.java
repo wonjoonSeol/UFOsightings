@@ -1,23 +1,32 @@
 package assessment.controller.panel3;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
-import javax.swing.JButton;
+import javax.swing.*;
 
 import assessment.model.panel3.StatsModel;
+import assessment.model.panel3.YoutubeModel;
 import assessment.view.panel3.StatPanel;
 import assessment.view.panel3.SubStatPanel;
 
-public class StatController implements ActionListener{
+public class StatController implements ActionListener, MouseListener {
 
 
 	private SubStatPanel view;
 	private StatPanel panel3;
 	private StatsModel statsModel;
+	private YoutubeModel youtubeModel;
 
-	public StatController(SubStatPanel v, StatPanel panel3,StatsModel keyEvent) {
-		view = v;
+	public StatController(SubStatPanel view, StatPanel panel3, StatsModel keyEvent, YoutubeModel youtubeModel) {
+		this.view = view;
+		this.youtubeModel = youtubeModel;
 		this.panel3 = panel3;
 		this.statsModel = keyEvent;
 	}
@@ -47,4 +56,41 @@ public class StatController implements ActionListener{
 		}
 	}
 
+	@Override
+	public void mouseClicked(MouseEvent e) {
+        JLabel jLabel = (JLabel) e.getSource();
+		if (e.getClickCount() == 1) {
+			if (Desktop.isDesktopSupported()) {
+				Desktop desktop = Desktop.getDesktop();
+				try {
+					URI uri = new URI("https://www.youtube.com/watch?v=" + jLabel.getName());
+					desktop.browse(uri);
+				} catch (IOException ex) {
+					ex.printStackTrace();
+				} catch (URISyntaxException ex) {
+					ex.printStackTrace();
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
 }
