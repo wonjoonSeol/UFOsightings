@@ -169,4 +169,21 @@ public class Model extends Observable {
 			notifyObservers("wrongStart");
 		}
 	}
+	
+	/** 
+	 * Returns the start of the selected date range
+	 * @return int start year of selected range
+	 */
+	public int getCurrentStartYear() {
+		return currentStartYear; 
+	}
+	
+	/** 
+	 * Returns the end of the selected date range
+	 * @return int end year of selected range
+	 */
+	public int getCurrentEndYear() {
+		return currentEndYear; 
+	}
+	
 }

@@ -4,20 +4,23 @@ import java.io.*;
 import java.util.Arrays;
 import javax.swing.JPanel;
 
+import assessment.model.panel2.MapUS;
 import assessment.model.panel3.StatsModel;
 
 public class StatPanel extends JPanel{
 
 	private StatsModel statsModel;
+	private MapUS mapModel; 
 	private SubStatPanel[] subPanels;
 	private BufferedWriter saveWriter;
 	private static String savePath;
 	private String[] stats;
 
-	public StatPanel(StatsModel statsModel) {
+	public StatPanel(StatsModel statsModel, MapUS mapModel) {
 		super();
 		savePath = "Save";
 		this.statsModel = statsModel;
+		this.mapModel = mapModel; 
 		subPanels = new SubStatPanel[4];
 		stats = new String[4];
 		readFromFile();
@@ -27,7 +30,7 @@ public class StatPanel extends JPanel{
 	public void initWidgets() {
 		setLayout(new GridLayout(2, 2, 8, 8));
 		for (int i = 0; i < subPanels.length; i++) {
-			subPanels[i] = new SubStatPanel(statsModel, this);
+			subPanels[i] = new SubStatPanel(statsModel, mapModel, this);
 			add(subPanels[i]);
 		}
 	}
