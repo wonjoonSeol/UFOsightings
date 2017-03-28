@@ -2,7 +2,10 @@ package assessment.view.panel3;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -10,12 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import assessment.controller.panel3.StatController;
+import assessment.model.panel2.MapUS;
 import assessment.model.panel3.StatsModel;
 import assessment.model.panel3.YoutubeModel;
+import assessment.view.panel3.additionalStats.TimeIncidentStatPanel;
 import assessment.view.panel3.additionalStats.KeyEventsPanel;
 import assessment.view.panel3.additionalStats.YoutubePanel;
 
-public class SubStatPanel extends JPanel {
+public class SubStatPanel extends JPanel implements Observer {
 
 	private JButton rButton;
 	private JButton lButton;
@@ -25,16 +30,24 @@ public class SubStatPanel extends JPanel {
 	private JPanel rPanel;
 	private JPanel jpCenter;
 	private StatsModel statsModel;
+	
+	private MapUS mapModel; 
+	private TimeIncidentStatPanel timePanel;  
+	
 	private int statNumber;
 	private static ArrayList<Integer> displayStats;
+	
+	
 
 	// TODO: Only display one version of each stat. Save user statistic
 	// preferences upon close.
 
-	public SubStatPanel(StatsModel statsModel, StatPanel statPanel){
+	public SubStatPanel(StatsModel statsModel, MapUS mapModel,  StatPanel statPanel){
 		super();
 		setLayout(new BorderLayout());
 		this.statsModel = statsModel;
+		this.mapModel = mapModel; 
+		mapModel.addObserver(this);
 		statNumber = 0;
 		displayStats = new ArrayList<Integer>(4);
 		initWidgets(statPanel);
@@ -53,6 +66,7 @@ public class SubStatPanel extends JPanel {
 		initAdditionalPanels(statPanel);
 		topLabel = new JLabel("Top", SwingConstants.CENTER);
 		centLabel = new JLabel("Cent", SwingConstants.CENTER);
+		centLabel.setPreferredSize(new Dimension (140, 140));
 
 		jpCenter.add(centLabel, "default");
 
@@ -102,9 +116,14 @@ public class SubStatPanel extends JPanel {
 
 		rButton.addActionListener(statController);
 		lButton.addActionListener(statController);
+		
+		this.timePanel = new TimeIncidentStatPanel(mapModel.getLikeliestState(), statsModel.getCurrentStartYear(), statsModel.getCurrentEndYear()); 
 
+		jpCenter.add(timePanel, "Munkhtulga");
 		jpCenter.add(keyEventsPanel, "wonjoon");
 		jpCenter.add(youtubePanel, "eugene");
+	
+		
 	}
 
 	public void resetDisplayStats() {
@@ -129,7 +148,13 @@ public class SubStatPanel extends JPanel {
 		} else if (i == 3) {
 			statNumber = 3;
 			topLabel.setText("Likeliest State");
-			centLabel.setText(statsModel.getLikeliestState());
+			if (mapModel.getLikeliestState().getAbbreviation().equals("Not specified.")) {
+				centLabel.setText("<html><div style='text-align: center;'>" + 
+							"No US state specified. All states equally likely. (Graph is for one random state)"
+									+ "</div></html>"); 
+			} else {
+				centLabel.setText(mapModel.getLikeliestState().toString());
+			}
 		} else if (i == 4) {
 			statNumber = 4;
 			topLabel.setText("Top 10 UFO Recent Sights Playlist");
@@ -146,6 +171,10 @@ public class SubStatPanel extends JPanel {
 			topLabel.setText("Youtube Videos published within past week");
 			centLabel.setText(statsModel.getRequest());
 			statNumber = 7;
+		} else if(i == 8) {
+			topLabel.setText("Relative incident count in likeliest state through years");
+			cards.show(jpCenter, "Munkhtulga");
+			statNumber = 8;
 		}
 		repaint();
 	}
@@ -153,4 +182,11 @@ public class SubStatPanel extends JPanel {
 	// Within setstat, compare to the values inside a static arraylist. if it is
 	// contained, increase. etc,etc. Then pass to current setstat method when
 	// found available stat.
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		timePanel.setLikeliestState(mapModel.getLikeliestState());
+		timePanel.setCurrentStartYear(statsModel.getCurrentStartYear());
+		timePanel.setCurrentEndYear(statsModel.getCurrentEndYear());
+	}
 }

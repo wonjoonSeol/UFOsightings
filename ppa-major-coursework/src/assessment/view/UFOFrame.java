@@ -87,7 +87,7 @@ public class UFOFrame extends JFrame implements Observer {
 		jpCenter.add(new MapPanel(panel2Model));
 
 		StatsModel statsModel = new StatsModel(model, ripley);
-		panel3 = new StatPanel(statsModel);
+		panel3 = new StatPanel(statsModel, panel2Model);
 		jpCenter.add(panel3);
 		initPanel4();
 		jpCenter.add(panel4);
