@@ -33,7 +33,6 @@ public class YoutubeModel extends Observable {
      * @return List of search results.
      */
     public void runSearch() {
-        System.out.println("run search");
         // Read the developer key from the properties file.
         readAPI();
         // Request a search for recent UFO sighting 2017.

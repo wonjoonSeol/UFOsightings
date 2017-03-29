@@ -36,7 +36,6 @@ public class Model extends Observable {
 	}
 
 	public void setStartYear(int year) {
-		System.out.println("SHOULD BE WORKING");
 		currentStartYear = year;
 		notifyYear();
 	}
@@ -65,50 +64,19 @@ public class Model extends Observable {
 		return -1;
 	}
 
-	public void updateCurrentList() {
-		
+	private void updateCurrentList() {
 		currentList.clear();
-		
 		int endIndex = currentEndYear - ripleyMinYear;
-		System.out.println("endIndex:" + endIndex);
 		int startIndex = currentStartYear - ripleyMinYear;
-		System.out.println("startIndex:" + startIndex);
-		
-		if (endIndex <= this.incidents.length && 0 <= startIndex && startIndex < endIndex ) {
-			for (int i = startIndex; i < endIndex; i++) {
-				currentList.addAll(incidents[i]); 
-			}
+		for (int i = startIndex; i <= endIndex; i++) {
+			currentList.addAll(incidents[i]);
 		}
-		System.out.println("After update current list: " + currentList);
-		System.out.println("requested data:" + incidents);
+//		System.out.println("After update current list: " + currentList);
+//		System.out.println("requested data:" + incidents);
 	}
 
-//	private void addIncidents(ArrayList<Incident> incidents) {
-//		int year = 0;
-//		for (Incident element : incidents) {
-//			System.out.println("add incident" + element);
-//			year = parseYear(element.getDateAndTime());
-//			this.incidents[year - ripleyMinYear].add(element);
-//		}
-//	}
-
-//	private int parseYear(String string) {
-//	    int year = 0;
-//		try {
-//			year = Integer.parseInt(string.substring(0, 4));
-//			System.out.println("ParseYear:" + year);
-//			return year;
-//		} catch (NumberFormatException e) {
-//			System.err.println(e);
-//		}
-//		return year;
-//	}
-
 	private void initCaching() {
-		ArrayList<Incident> incidents = new ArrayList<Incident>();
 		long startTime = System.currentTimeMillis();
-		System.out.println("INIT CACHING CALLED");
-		
 		if (currentStartYear < indexStartYear && indexEndYear < currentEndYear) {
 			grabData(currentStartYear, currentEndYear);
 			 System.out.println("1"); //Debugging, delete later
@@ -123,9 +91,7 @@ public class Model extends Observable {
 			indexEndYear = currentEndYear;
 			 System.out.println("3"); //Debugging, delete later
 		}
-		
-		updateCurrentList(); 
-		
+		updateCurrentList();
 		long duration = System.currentTimeMillis() - startTime;
 		notifyDuration(duration);
 	}
@@ -138,16 +104,11 @@ public class Model extends Observable {
 	 */
 	private void grabData(int currentStartYear, int currentEndYear) {
 		if (currentStartYear == currentEndYear) {
-	
 			incidents[currentStartYear - ripleyMinYear] = ripley.getIncidentsInRange(appendStartYear(currentStartYear),
 														appendEndYear(currentEndYear));
 		} else {
-			for (int i = currentStartYear; i < currentEndYear; i++) {
-				
+			for (int i = currentStartYear; i <= currentEndYear; i++) {
 				incidents[i - ripleyMinYear] = ripley.getIncidentsInRange(appendStartYear(i), appendEndYear(i));
-				
-				setChanged(); 
-				notifyObservers("Has grabbed data for: " + i);
 			}
 		}
 	}
