@@ -24,6 +24,7 @@ public class TimeComparator<Object> implements Comparator<Object> {
 	
 	private Parser parser; 
 	
+	
 	public TimeComparator() {
 		this.parser = new Parser(); 
 	}

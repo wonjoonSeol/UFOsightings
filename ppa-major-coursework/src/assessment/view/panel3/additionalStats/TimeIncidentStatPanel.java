@@ -156,6 +156,7 @@ public class TimeIncidentStatPanel extends JPanel {
 			g.drawString("Time", (int)(getWidth() * 0.9), (int)(getHeight() * 0.9));
 			g.drawString("Incident count", (int)(getWidth() * 0.05), (int)(getHeight() * 0.1));
 			g.drawString("Max", 15, 45);
+			g.drawString(likeliestState.getIncidentsCount() + "", 17, 58);
 			g.drawString("0", 28, getHeight() - 35);
 			
 			drawMarkers(g); 

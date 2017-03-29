@@ -49,6 +49,9 @@ public class StateUS extends Observable {
 	public void clearIncidents() {
 		incidents.clear();
 		incidentsCount = 0; 
+
+		setChanged(); 
+		notifyObservers(); 
 	}
 	
 	public String toString() {
