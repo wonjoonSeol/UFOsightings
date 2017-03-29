@@ -37,7 +37,7 @@ public class StatController implements ActionListener, MouseListener {
 		JButton sourceButton = (JButton)arg0.getSource();
 		if(sourceButton.getText().equals("<")) {
 			try {
-				view.setStat(view.getStat() - 1);
+				view.setStat(view.getStat() - 1, SubStatPanel.DECREMENT);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -45,7 +45,7 @@ public class StatController implements ActionListener, MouseListener {
 			panel3.panelSave();
 		} else if(sourceButton.getText().equals(">")) {
 			try {
-				view.setStat(view.getStat() + 1);
+				view.setStat(view.getStat() + 1, SubStatPanel.INCREMENT);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

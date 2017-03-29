@@ -27,6 +27,8 @@ public class SubStatPanel extends JPanel {
 	private StatsModel statsModel;
 	private int statNumber;
 	private static ArrayList<Integer> displayStats;
+	public final static int INCREMENT = 1;
+	public final static int DECREMENT = 0;
 
 	// TODO: Only display one version of each stat. Save user statistic
 	// preferences upon close.
@@ -68,25 +70,30 @@ public class SubStatPanel extends JPanel {
 		displayStats.add(i);
 	}
 
-	public void setStat(int i) throws Exception {
-		int statsNumber = 7;
-		if (i > statsNumber) {
+	public void setStat(int i, int constant) throws Exception {
+		int panelNumbers = 7;
+		if (i > panelNumbers) {
 			i = 1;
-		} else if (i < 1) {
-			i = statsNumber;
+		} else if (i <= 0) {
+			i = panelNumbers;
 		}
-		while (displayStats.contains(i)) {
+        while (displayStats.contains(i)) {
 			System.out.println(i);
-			if (i > statsNumber) {
-				i = 1;
-			} else if (i < 1) {
-				i = statsNumber;
-			} else
+			if (i > 0 && i <= panelNumbers && constant == INCREMENT) {
 				i++;
+            } else if (i > 0 && i <= panelNumbers && constant == DECREMENT) {
+				i--;
+			}
+
+			if (i > panelNumbers) {
+				i = 1;
+			} else if (i <= 0) {
+				i = panelNumbers;
+			}
 		}
-		displayStats.remove((Integer) statNumber);
+		displayStats.remove(displayStats.indexOf(statNumber));
 		updateStatistic(i);
-		displayStats.add(statNumber);
+		displayStats.add(i);
 		System.out.println(displayStats);
 	}
 
@@ -118,34 +125,28 @@ public class SubStatPanel extends JPanel {
 	private void updateStatistic(int i) throws Exception {
 		CardLayout cards = (CardLayout) (jpCenter.getLayout());
 		cards.show(jpCenter, "default");
+		statNumber = i;
 		if (i == 1) {
-			statNumber = 1;
 			topLabel.setText("Hoax Stats");
 			centLabel.setText(Integer.toString(statsModel.getNumHoaxes()));
 		} else if (i == 2) {
-			statNumber = 2;
 			topLabel.setText("Non-US Stats");
 			centLabel.setText(Integer.toString(statsModel.getNonUSSight()));
 		} else if (i == 3) {
-			statNumber = 3;
 			topLabel.setText("Likeliest State");
 			centLabel.setText(statsModel.getLikeliestState());
 		} else if (i == 4) {
-			statNumber = 4;
 			topLabel.setText("Top 10 UFO Recent Sights Playlist");
 			cards.show(jpCenter, "eugene");
 		} else if (i == 5) {
-			statNumber = 5;
 			topLabel.setText("Domestic vs International Sighting Ratio");
 			centLabel.setText(statsModel.countryDistributionPercentage());
 		} else if (i == 6) {
 			topLabel.setText("Key events in history");
 			cards.show(jpCenter, "wonjoon");
-			statNumber = 6;
 		} else if(i == 7) {
 			topLabel.setText("Youtube Videos published within past week");
 			centLabel.setText(statsModel.getRequest());
-			statNumber = 7;
 		}
 		repaint();
 	}
