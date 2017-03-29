@@ -63,18 +63,7 @@ public class YoutubePanel extends JPanel implements Observer{
 			videoLabel.setName(link);
             videoPanels.add(videoLabel);
             videoLabel.addMouseListener(statController);
-			/**
-			 * 1.Stores the retrieved results and stores them in an array.
-			 * 2.Iterates through the list of videos and stores the info needed.
-			 */
-			/**
-			 * Temporary variables to store video details need for the video list.
-			 * 1. The youtubeID for the link for the video.
-			 * 2. The title for the description of the video.
-			 * 3. The icon for the thumb-nail of the video.
-			 */
+
 		}
-		revalidate();
-		repaint();
     }
 }

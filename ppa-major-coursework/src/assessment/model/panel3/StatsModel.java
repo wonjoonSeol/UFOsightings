@@ -70,7 +70,6 @@ public class StatsModel extends Observable {
         setChanged();
         notifyObservers(information.get(index));
     }
-
 	/*
 	 * Return the number of hoaxes within the current dataset.
 	 */
@@ -85,9 +84,6 @@ public class StatsModel extends Observable {
 		}
 		return count; // Return counter variable.
 	}
-	
-	
-
 	/*
 	 * BRITTON FORSYTH Individual Statistic.
 	 * Formats for the user a ratio of international to USA stateside sightings recorded.
@@ -105,7 +101,6 @@ public class StatsModel extends Observable {
 			} else {
 				stateSideCount++;
 		}
-
 		if(data.size() > 0) {
 		double statePercentage = (stateSideCount / data.size()) * 100;
 		double internPercentage = (internCount/data.size()) * 100;
@@ -118,7 +113,6 @@ public class StatsModel extends Observable {
 			return "No incidents found in time period!";
 		}
 	}
-
 	/*
 	 * Return the number of non-US sightings within the current dataset.
 	 */
@@ -132,45 +126,39 @@ public class StatsModel extends Observable {
 			}
 		}
 		return count; // Return counter variable.
-	}
-	
+	}	
 	/*
 	 * EUGENE: Method to return youtube sightings figures.
 	 */
 public String getRequest() throws Exception {
-
 		LocalDateTime dateCurrent = LocalDateTime.now();
 		LocalDateTime oneWeekAgo = dateCurrent.minusWeeks(1);
-		
 		String myAPIKey = "AIzaSyBCKhRHvfbPRUHoxdJBfExiSjg9mFWYiFY";
 		String source = "https://www.googleapis.com/youtube/v3/search";
 
 		URL url = new URL(source + "?part=snippet&publishedAfter="+ oneWeekAgo +"Z&type=video&q=UFO&key="+ myAPIKey);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setRequestMethod("GET");
-
 		BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 		String line;
-
 		while ((line = rd.readLine()) != null) {
 			Pattern pattern = Pattern.compile("totalResults");
 			Matcher matcher = pattern.matcher(line);
-
 			if (matcher.find()) {
 				Pattern pattern1 = Pattern.compile("[0-9]+");
 				Matcher matcher1 = pattern1.matcher(line);
 				if (matcher1.find()) {
 					String totalResults = matcher1.group();
-					System.out.println(totalResults);
-					
-					return totalResults;
+				    String htmlString;
+				    htmlString = "<html><div Style='text-align: center;'> <font color=\"Gray\", size = \"6\">YouTube Videos </font>uploaded in the past week: " +
+				                "<i></i><br><br>" + totalResults + ".</font></div></html>";
+				    return htmlString;
 				}		  		
 			}
 		}
 		rd.close();
 		return "";
 	}
-
 	/** 
 	 * Returns the start of the selected date range
 	 * @return int start year of selected range
@@ -178,7 +166,6 @@ public String getRequest() throws Exception {
 	public int getCurrentStartYear() {
 		return model.getCurrentStartYear(); 
 	}
-
 	/** 
 	 * Returns the end of the selected date range
 	 * @return int end year of selected range
