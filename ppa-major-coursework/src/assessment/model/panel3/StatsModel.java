@@ -131,35 +131,7 @@ public class StatsModel extends Observable {
 		}
 		return count; // Return counter variable.
 	}
-
-	/*
-	 * Returns the likeliest state to receive a sighting within the current
-	 * dataset.
-	 */
-	public String getLikeliestState() {
-		List<Incident> data = model.getRequestedData();
-
-		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
-		for (Incident i : data) {// Iterate through the incident list
-			if (map.containsKey(i.getState())) {
-				Integer temp = map.get(i.getState());
-				map.put(i.getState(), temp + 1);
-			} else {
-				map.put(i.getState(), 1);
-			}
-		}
-
-		Entry<String, Integer> maximumEntry = null;
-		for (Entry<String, Integer> entry : map.entrySet()) {
-			if (maximumEntry == null || entry.getValue().compareTo(maximumEntry.getValue()) > 0) {
-				maximumEntry = entry;
-			}
-		}
-		if(maximumEntry == null) {
-			return "No state specified";
-		}
-		return maximumEntry.getKey();
-	}
+	
 	/*
 	 * EUGENE: Method to return youtube sightings figures.
 	 */
@@ -195,5 +167,21 @@ public String getRequest() throws Exception {
 		}
 		rd.close();
 		return "";
+	}
+
+	/** 
+	 * Returns the start of the selected date range
+	 * @return int start year of selected range
+	 */
+	public int getCurrentStartYear() {
+		return model.getCurrentStartYear(); 
+	}
+
+	/** 
+	 * Returns the end of the selected date range
+	 * @return int end year of selected range
+	 */
+	public int getCurrentEndYear() {
+		return model.getCurrentEndYear(); 
 	}
 }

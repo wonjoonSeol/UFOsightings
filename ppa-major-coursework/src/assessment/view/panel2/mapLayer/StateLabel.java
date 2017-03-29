@@ -1,20 +1,23 @@
-package assessment.controller.panel2;
+package assessment.view.panel2.mapLayer;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import assessment.model.panel2.StateUS;
 
+/** 
+ * Label to mark states as having incidents. 
+ * @author Munkhtulga Battogtokh
+ */
 public class StateLabel extends JLabel implements Observer {
 	
 	/**
-	 * Removes warning 
+	 * Serial version 
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -26,6 +29,14 @@ public class StateLabel extends JLabel implements Observer {
 	private int y; 			// intended y position
 	private int scaledSize;	// size of the marker, scaled by the incidents' count
 	
+	/** 
+	 * Constructs a state marker label based on given US state, image marker, and 
+	 * position in frame as specified by coordinates. 
+	 * @param state StateUS the US state this marker is for
+	 * @param imageMarker BufferedImage the image this marker appears as 
+	 * @param x int horizontal positioning of the marker
+	 * @param y int vertical positioning of the marker
+	 */
 	public StateLabel(StateUS state, BufferedImage imageMarker, int x, int y) {
 		super(); 
 		
@@ -43,10 +54,9 @@ public class StateLabel extends JLabel implements Observer {
 	
 	}
 	
-	public StateUS getState() {
-		return state; 
-	}
-	
+	/** 
+	 * Indicates that this label object is pressed by reducing its visible size 	
+	 */
 	public void pressed() {
 		if (scaledSize > 150) {
 			changeSize(120); 
@@ -56,7 +66,7 @@ public class StateLabel extends JLabel implements Observer {
 	}
 	
 	/** 
-	 * Changes the size of the label, fitting the image to it. 
+	 * Changes the size of the label, while ensuring the image fits as appropriate
 	 * @param scaledSize int the desired size of the label
 	 */
 	public void changeSize(int scaledSize) {
@@ -73,17 +83,22 @@ public class StateLabel extends JLabel implements Observer {
 		}
 	}
 
+		
 	public int getScaledSize() {
 		return scaledSize; 
 	}
 	
-	public void setImageMarker(BufferedImage imageMarker) {
-		this.imageMarker = imageMarker; 
-		this.highResolutionMarker = imageMarker; 
+	public StateUS getState() {
+		return state; 
 	}
-
+	
 	@Override
 	public void update(Observable o, Object arg) {
+		if (state.getIncidentsCount() == 0) {
+			setVisible(false); 
+		} else {
+			setVisible(true); 
+		}
 		this.scaledSize = (int)(10 + (2.0 * state.getIncidentsCount())); 
 		changeSize(scaledSize); 
 	}

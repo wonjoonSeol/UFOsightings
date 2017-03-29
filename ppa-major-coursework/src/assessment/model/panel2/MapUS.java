@@ -112,7 +112,34 @@ public class MapUS extends Observable {
 		notifyObservers(); 
 	}
 	
+	/** 
+	 * Gets a state in the map using its name
+	 * @param String name
+	 * @return StateUS the state
+	 */
 	public StateUS getState(String name) {
 		return mapNameToState.get(name);  
+	}
+	
+	/** 
+	 * Gets the state with the highest count of incidents currently 
+	 */
+	public StateUS getLikeliestState() {
+		
+		StateUS currentLikeliestState = null; 
+		boolean allEqual = true; 
+		
+		for (StateUS state : mapNameToState.values()) {
+			if (state == mapNameToState.get("Not specified.")) continue; 
+			if (currentLikeliestState == null) currentLikeliestState = state;
+			if (currentLikeliestState.getIncidentsCount() != state.getIncidentsCount()) allEqual = false; 
+			if (currentLikeliestState.getIncidentsCount() < state.getIncidentsCount()) currentLikeliestState = state;
+		}
+		
+		// If all states have the same incident count, return not specified
+		if (allEqual) return mapNameToState.get("Not specified."); 
+		
+		
+		return currentLikeliestState; 
 	}
 }
