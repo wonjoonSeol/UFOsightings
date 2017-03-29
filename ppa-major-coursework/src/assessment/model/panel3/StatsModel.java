@@ -27,6 +27,7 @@ public class StatsModel extends Observable {
     private Ripley ripley;
     private double percentage;
     private int difference;
+    private int previousRandomNumber;
 
     public StatsModel(Model model, Ripley ripley) {
         super();
@@ -34,39 +35,43 @@ public class StatsModel extends Observable {
         this.model = model;
         information = new ArrayList<String>();
         setInformation();
+        previousRandomNumber = -1;
     }
 
     private void setInformation() {
         calculateChange(1947);
-        information.add("1947;Rosewell UFO Crash happened;US Airforce allegedly captured a crashed UFO and the aline. This was widely covered by the media and has "+ percentage + "% increase in the number of reports from the previous year");
+        information.add("1947;Rosewell UFO Crash happened;US Airforce allegedly captured a crashed UFO and the aline. This was widely covered by the media and has "+ (int)percentage + "% increase in the number of reports from the previous year");
 		calculateChange(2008);
         information.add("2008;Turkey UFO sightings happened;This resulted in " + difference + " more incidents from its previous years. This year also has the highest number of hoax reported");
 		calculateChange(1995);
-		information.add("1995;South Africa UFO Flap happened;A UFO flap swept South Africa from late March to mid April, widely covered by the media. Number of incident reports increased by " + percentage + "%");
+		information.add("1995;South Africa UFO Flap happened;A UFO flap swept South Africa from late March to mid April, widely covered by the media. Number of incident reports increased by " + (int)percentage + "%");
 		calculateChange(1952);
-		information.add("1952;Washington, D.C. UFO incident happened;There were radar contacts at three separate airports in the Washington area. This lead to formation of the Robertson Panel by the CIA. Number of incident reports increased by " + percentage + "%");
+		information.add("1952;Washington, D.C. UFO incident happened;There were radar contacts at three separate airports in the Washington area. This lead to formation of the Robertson Panel by the CIA. Number of incident reports increased by " + (int)percentage + "%");
 		calculateChange(1954);
-		information.add("1954;European UFO wave happened;First large-scale European UFO wave, Most occurred near France followed by Italy. Reported increased by " + percentage + "%");
+		information.add("1954;European UFO wave happened;First large-scale European UFO wave, Most occurred near France followed by Italy. Reported increased by " + (int)percentage + "%");
 		calculateChange(1957);
-		information.add("1957;Antonio Vilas Boas Abduction happened;Vilas Boas' claims were among the first alien abduction stories to receive wide attention. Reported incidents increased by " + percentage + "%");
+		information.add("1957;Antonio Vilas Boas Abduction happened;Vilas Boas' claims were among the first alien abduction stories to receive wide attention. Reported incidents increased by " + (int)percentage + "%");
 		calculateChange(1966);
 		information.add("1966;Star Trek franchise started;Unfortunately, there are insufficient data to prove that this lead to higher reported incidents");
 		calculateChange(1985);
 		information.add("1985;Carl Sagan's Contact published;Unfortunately, there are insufficient data to prove that this lead to higher reported incidents. Reported sightings were increased by " + difference);
-		calculateChange(1966);
-		information.add("1966;Star War franchise started;This year, the number of reportings were " + difference + " less than the previous year");
+		calculateChange(1977);
+		information.add("1977;Star War franchise started;This year, the number of reportings were " + (-difference) + " less than the previous year");
     }
-
+///54 57
     private void calculateChange(int year) {
-		ArrayList<Incident> previousIncidents = ripley.getIncidentsInRange(Model.appendStartYear(year), model.appendEndYear(year));
+		ArrayList<Incident> previousIncidents = ripley.getIncidentsInRange(Model.appendStartYear(year-1), model.appendEndYear(year-1));
 		ArrayList<Incident> incidents = ripley.getIncidentsInRange(Model.appendStartYear(year), model.appendEndYear(year));
-		percentage = (incidents.size() - previousIncidents.size()) / previousIncidents.size() * 100;
+		percentage = (double) (incidents.size() - previousIncidents.size()) / previousIncidents.size() * 100;
 		difference = incidents.size() - previousIncidents.size();
 	}
 
     public void sendRandomInformation() {
-        int index = (int) (Math.random() * information.size());
-        System.out.println("random num:" + index);
+        int index;
+    	do {
+			index = (int) (Math.random() * information.size());
+		} while (previousRandomNumber == index);
+    	previousRandomNumber = index;
         setChanged();
         notifyObservers(information.get(index));
     }
@@ -78,7 +83,7 @@ public class StatsModel extends Observable {
 		int count = 0;
 		for (Incident i : data) { // Iterate through the incident list, increase
 								// count if a HOAX match is found.
-			if (i.getSummary().contains("HOAX")) {
+			if (i.getSummary().toLowerCase().contains("hoax")) {
 				count++;
 			}
 		}
@@ -94,7 +99,6 @@ public class StatsModel extends Observable {
 		double internCount = 0;
 		List<Incident> data = model.getRequestedData();
 
-		TreeMap<String, Integer> map = new TreeMap<String, Integer>();
 		for (Incident i : data) // Iterate through the incident list {
 			if (i.getState().equals("Not specified.")) {
 				internCount++;
@@ -106,7 +110,7 @@ public class StatsModel extends Observable {
 		double internPercentage = (internCount/data.size()) * 100;
 		String stateDM = new DecimalFormat("#.##").format(statePercentage);
 		String interDM = new DecimalFormat("#.##").format(internPercentage);
-		returnString = "State: " + stateDM + "%" + " and " + "International: " + interDM + "%";
+		returnString = "State: " + stateDM + "%" + "<br>" + "International: " + interDM + "%";
 		return returnString;
 
 		} else {

@@ -151,7 +151,7 @@ public class SubStatPanel extends JPanel implements Observer {
 			topLabel.setText("Likeliest State");
 			if (mapModel.getLikeliestState().getAbbreviation().equals("Not specified.")) {
 				centLabel.setText("<html><div style='text-align: center;'>" +
-							"No US state specified. All states equally likely. (Graph is for one random state)"
+							"No US state specified. All states equally likely.<br>(Graph is for one random state)"
 									+ "</div></html>");
 			} else {
 				centLabel.setText(mapModel.getLikeliestState().toString());
@@ -161,7 +161,7 @@ public class SubStatPanel extends JPanel implements Observer {
 			cards.show(jpCenter, "eugene");
 		} else if (i == 5) {
 			topLabel.setText("Domestic vs International Sighting Ratio");
-			centLabel.setText(statsModel.countryDistributionPercentage());
+			centLabel.setText("<html><div style='text-align: center;'>" + statsModel.countryDistributionPercentage() + "</div></html>");
 		} else if (i == 6) {
 			topLabel.setText("Key events in history");
 			cards.show(jpCenter, "wonjoon");
