@@ -83,7 +83,7 @@ public class SubStatPanel extends JPanel implements Observer {
 	}
 
 	public void setStat(int i, int constant) throws Exception {
-		int panelNumbers = 7;
+		int panelNumbers = 8;
 		if (i > panelNumbers) {
 			i = 1;
 		} else if (i <= 0) {
@@ -127,8 +127,6 @@ public class SubStatPanel extends JPanel implements Observer {
 		jpCenter.add(timePanel, "Munkhtulga");
 		jpCenter.add(keyEventsPanel, "wonjoon");
 		jpCenter.add(youtubePanel, "eugene");
-
-
 	}
 
 	public void resetDisplayStats() {
@@ -170,11 +168,9 @@ public class SubStatPanel extends JPanel implements Observer {
 		} else if(i == 7) {
 			topLabel.setText("Youtube Videos published within past week");
 			centLabel.setText(statsModel.getRequest());
-			statNumber = 7;
 		} else if(i == 8) {
 			topLabel.setText("Relative incident count in likeliest state through years");
 			cards.show(jpCenter, "Munkhtulga");
-			statNumber = 8;
 		}
 		repaint();
 	}
