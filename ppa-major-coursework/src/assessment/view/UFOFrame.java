@@ -171,7 +171,7 @@ public class UFOFrame extends JFrame implements Observer {
     public void update(Observable o, Object arg) {
         String command = (String) arg;
         String[] commandParts = command.split(" ");
-        System.out.println(Arrays.toString(commandParts));
+        //System.out.println(Arrays.toString(commandParts));
 
         if (command.contains("grabbed")) {
         	setTitle(command); 
@@ -215,6 +215,6 @@ public class UFOFrame extends JFrame implements Observer {
 			panel2Model.distributeIncidents(model.getRequestedData());
 		}
 		
-		System.out.println("REQUESTED DATA SIZE: " + model.getRequestedData().size());
+		//System.out.println("REQUESTED DATA SIZE: " + model.getRequestedData().size());
 	}
 }

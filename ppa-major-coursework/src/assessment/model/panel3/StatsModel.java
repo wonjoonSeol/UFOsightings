@@ -85,6 +85,8 @@ public class StatsModel extends Observable {
 		}
 		return count; // Return counter variable.
 	}
+	
+	
 
 	/*
 	 * BRITTON FORSYTH Individual Statistic.
