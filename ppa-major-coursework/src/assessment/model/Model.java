@@ -36,6 +36,7 @@ public class Model extends Observable {
 	}
 
 	public void setStartYear(int year) {
+		System.out.println("SHOULD BE WORKING");
 		currentStartYear = year;
 		notifyYear();
 	}
@@ -64,21 +65,22 @@ public class Model extends Observable {
 		return -1;
 	}
 
-	public ArrayList<Incident> createCurrentList() {
+	public void updateCurrentList() {
+		
+		currentList.clear();
+		
 		int endIndex = currentEndYear - ripleyMinYear;
 		System.out.println("endIndex:" + endIndex);
 		int startIndex = currentStartYear - ripleyMinYear;
 		System.out.println("startIndex:" + startIndex);
-		ArrayList<Incident> incidents = new ArrayList<Incident>();
-		if (endIndex <= this.incidents.length && 0 <= startIndex) {
-			for (ArrayList<Incident> list : this.incidents) {
-				if (!list.isEmpty()) {
-					incidents.addAll(list);
-				}
+		
+		if (endIndex <= this.incidents.length && 0 <= startIndex && startIndex < endIndex ) {
+			for (int i = startIndex; i < endIndex; i++) {
+				currentList.addAll(incidents[i]); 
 			}
 		}
+		System.out.println("After update current list: " + currentList);
 		System.out.println("requested data:" + incidents);
-		return incidents;
 	}
 
 //	private void addIncidents(ArrayList<Incident> incidents) {
@@ -105,7 +107,8 @@ public class Model extends Observable {
 	private void initCaching() {
 		ArrayList<Incident> incidents = new ArrayList<Incident>();
 		long startTime = System.currentTimeMillis();
-
+		System.out.println("INIT CACHING CALLED");
+		
 		if (currentStartYear < indexStartYear && indexEndYear < currentEndYear) {
 			grabData(currentStartYear, currentEndYear);
 			 System.out.println("1"); //Debugging, delete later
@@ -120,19 +123,31 @@ public class Model extends Observable {
 			indexEndYear = currentEndYear;
 			 System.out.println("3"); //Debugging, delete later
 		}
-		currentList.clear();
-		currentList = createCurrentList();
+		
+		updateCurrentList(); 
+		
 		long duration = System.currentTimeMillis() - startTime;
 		notifyDuration(duration);
 	}
 
+	/** 
+	 * Adds to the arraylist of incidents for each year, 
+	 * data from the specified time range
+	 * @param currentStartYear
+	 * @param currentEndYear
+	 */
 	private void grabData(int currentStartYear, int currentEndYear) {
 		if (currentStartYear == currentEndYear) {
+	
 			incidents[currentStartYear - ripleyMinYear] = ripley.getIncidentsInRange(appendStartYear(currentStartYear),
 														appendEndYear(currentEndYear));
 		} else {
 			for (int i = currentStartYear; i < currentEndYear; i++) {
+				
 				incidents[i - ripleyMinYear] = ripley.getIncidentsInRange(appendStartYear(i), appendEndYear(i));
+				
+				setChanged(); 
+				notifyObservers("Has grabbed data for: " + i);
 			}
 		}
 	}
@@ -160,6 +175,7 @@ public class Model extends Observable {
 	}
 
 	private void notifyYear() {
+		
 		setChanged();
 		if (currentStartYear != 0 && currentStartYear <= currentEndYear) {
 			notifyObservers(currentStartYear + " " + currentEndYear);

@@ -39,7 +39,7 @@ import assessment.model.panel2.comparators.PostedComparator;
 import assessment.model.panel2.comparators.ShapeComparator;
 import assessment.model.panel2.comparators.TimeComparator;
 import assessment.model.panel2.StateUS; 
-import assessment.controller.panel2.StateLabel;
+import assessment.view.panel2.mapLayer.StateLabel;
 
 public class StateIncidentFrame extends JFrame {
 	

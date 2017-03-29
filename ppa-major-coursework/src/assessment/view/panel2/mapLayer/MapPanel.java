@@ -1,7 +1,6 @@
 package assessment.view.panel2.mapLayer;
 
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,11 +8,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 import assessment.controller.panel2.LabelMouseAdapter;
-import assessment.controller.panel2.StateLabel;
 import assessment.model.panel2.MapUS;
 
 public class MapPanel extends JPanel implements Observer {

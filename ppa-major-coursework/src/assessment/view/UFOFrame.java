@@ -45,6 +45,7 @@ public class UFOFrame extends JFrame implements Observer {
 		this.controller = controller;
 		this.ripley = ripley;
 		this.model = model;
+		model.addObserver(this); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 660));
 		setResizable(false);
@@ -85,6 +86,7 @@ public class UFOFrame extends JFrame implements Observer {
 		
 		this.panel2Model = new MapUS();
 		jpCenter.add(new MapPanel(panel2Model));
+		
 
 		StatsModel statsModel = new StatsModel(model, ripley);
 		panel3 = new StatPanel(statsModel, panel2Model);
@@ -171,6 +173,10 @@ public class UFOFrame extends JFrame implements Observer {
         String[] commandParts = command.split(" ");
         System.out.println(Arrays.toString(commandParts));
 
+        if (command.contains("grabbed")) {
+        	setTitle(command); 
+        }
+        
 		if (commandParts.length == 2) {
 			try {
 				int startYear = Integer.parseInt(commandParts[0]);
@@ -205,7 +211,10 @@ public class UFOFrame extends JFrame implements Observer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 			panel2Model.distributeIncidents(model.getRequestedData());
 		}
+		
+		System.out.println("REQUESTED DATA SIZE: " + model.getRequestedData().size());
 	}
 }
