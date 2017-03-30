@@ -58,8 +58,8 @@ public class StateLabel extends JLabel implements Observer {
 	 * Indicates that this label object is pressed by reducing its visible size 	
 	 */
 	public void pressed() {
-		if (scaledSize > 150) {
-			changeSize(120); 
+		if (scaledSize > 100) {
+			changeSize(80); 
 		} else {
 			changeSize((int)(scaledSize * 0.8)); 
 		}
@@ -71,7 +71,7 @@ public class StateLabel extends JLabel implements Observer {
 	 */
 	public void changeSize(int scaledSize) {
 		if (state.getIncidentsCount() > 0) {
-			if (scaledSize > 150) scaledSize = 150; 
+			if (scaledSize > 100) scaledSize = 100; 
 			setBounds((int) ( x - (scaledSize/2)), (int) ( y - (scaledSize/2)), scaledSize, scaledSize);
 		
 			imageMarker = highResolutionMarker.getScaledInstance(getWidth(), 
