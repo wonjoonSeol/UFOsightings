@@ -93,12 +93,12 @@ public class TimeIncidentStatPanel extends JPanel {
 	 * @param g Graphics
 	 */
 	private void drawMarkers(Graphics g) {
-		g.drawString(markers[0] + "", 20, 240);
-		g.drawString(markers[1] + "", 65, 240);
-		g.drawString(markers[2] + "", 110, 240);
-		g.drawString(markers[3] + "", 150, 240);
-		g.drawString(markers[4] + "", 195, 240);
-		g.drawString(markers[5] + "", 235, 240);
+		g.drawString(markers[0] + "", (int)(getWidth() * 0.1), (int)(getHeight() * 0.92));
+		g.drawString(markers[1] + "", (int)(getWidth() * 0.23), (int)(getHeight() * 0.92));
+		g.drawString(markers[2] + "", (int)(getWidth() * 0.36), (int)(getHeight() * 0.92));
+		g.drawString(markers[3] + "", (int)(getWidth() * 0.49), (int)(getHeight() * 0.92));
+		g.drawString(markers[4] + "", (int)(getWidth() * 0.62), (int)(getHeight() * 0.92));
+		g.drawString(markers[5] + "", (int)(getWidth() * 0.75), (int)(getHeight() * 0.92));
 	}
 	
 	/** 
@@ -108,13 +108,20 @@ public class TimeIncidentStatPanel extends JPanel {
 		// if likeliest state noUSstate then tell showing non us sightings
 		int horisontalRange = currentEndYear - currentStartYear; 
 		
-		// need to track horisontal positions equal to the number of years that have count mapped to them
+		// set up array "years" to have parallel arrays with it 
 		TreeMap<Integer, Integer> yearToCount = likeliestState.getIncidentPerYear(); 
-		int countYears = likeliestState.countYears(); 
-		Integer[] years = likeliestState.years(); 
+		
+		int countYears = yearToCount.keySet().size();  
+		
+		Integer[] years = new Integer[countYears];
+		int index = 0; 
+		for (int i : yearToCount.keySet()) {
+			years[index++] = i; 
+		}
+
+		// store the scaled horisontal position of each datapoint in a parallel array. 
 		Integer[] horisontalPositions = new Integer[countYears]; 
 		
-		// store the scaled horisontal position of each datapoint in an array. 
 		for (int i = 0; i < countYears; i++) {
 			 horisontalPositions[i] = (int)((getWidth()*0.125) + ((float)(years[i] - currentStartYear)/horisontalRange) * getWidth()* 0.655); 
 		}
@@ -122,9 +129,14 @@ public class TimeIncidentStatPanel extends JPanel {
 		
 		// store scaled vertical position of each datapoint in a parallel-array
 		int[] verticalPositions = new int[countYears]; 
-		int verticalRange = likeliestState.maxIncidentCountAnyYear(); 
-
-		g.drawString(likeliestState.maxIncidentCountAnyYear() + "", (int)(getWidth() * 0.07), (int)(getHeight() * 0.22));
+		
+		int maxCount = 0; 
+		for (int i : yearToCount.values()) {
+			if (i > maxCount) {
+				maxCount = i; 
+			}
+		}
+		int verticalRange = maxCount; 
 		
 		// Store the vertical positions in an parallel array
 		for (int i = 0; i < countYears; i++) {
@@ -132,12 +144,13 @@ public class TimeIncidentStatPanel extends JPanel {
 			
 		}
 		
-	
+		// Finally draw all point images using the horizontal, and vertical positions	
 		for (int i = 0; i < countYears; i++) {
 			g.drawImage(pointImage, horisontalPositions[i], verticalPositions[i],
 							(int)(getWidth() * 0.05), (int)(getHeight() * 0.05), null);
 		}	
-	
+		
+		g.drawString(verticalRange + "", (int)(getWidth() * 0.07), (int)(getHeight() * 0.24));	
 	}
 	
 	@Override
