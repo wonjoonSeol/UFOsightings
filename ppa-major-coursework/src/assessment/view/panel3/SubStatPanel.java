@@ -78,6 +78,12 @@ public class SubStatPanel extends JPanel implements Observer {
 
 
 	public void initializeStat(int i) throws Exception {
+		int panelNumbers = 8;
+		if (i > panelNumbers) {
+			i = 1;
+		} else if (i <= 0) {
+			i = panelNumbers;
+		}
 		updateStatistic(i);
 		displayStats.add(i);
 	}
