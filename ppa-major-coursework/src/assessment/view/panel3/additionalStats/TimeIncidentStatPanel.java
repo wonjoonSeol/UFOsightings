@@ -1,7 +1,9 @@
 package assessment.view.panel3.additionalStats;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -45,7 +47,7 @@ public class TimeIncidentStatPanel extends JPanel {
 	 */
 	public TimeIncidentStatPanel(StateUS likeliestState, int currentStartYear, 
 									int currentEndYear) {
-		setLayout(null); // Allows absolute positioning
+		setLayout(new BorderLayout()); 
 	
 		this.currentEndYear = currentEndYear; 
 		this.currentStartYear = currentStartYear; 
@@ -53,8 +55,8 @@ public class TimeIncidentStatPanel extends JPanel {
 		
 		// Initialise label to appear if range not valid
 		this.centerLabel = new JLabel(); 
-		add(centerLabel); 
-		centerLabel.setBounds(100, 80, 120, 130);
+		add(centerLabel, BorderLayout.CENTER); 
+		
 		
 		try {
 			this.pointImage = ImageIO.read(new File("images/point.gif")).getScaledInstance(40, 20, Image.SCALE_SMOOTH); 
@@ -107,36 +109,33 @@ public class TimeIncidentStatPanel extends JPanel {
 		int horisontalRange = currentEndYear - currentStartYear; 
 		
 		// need to track horisontal positions equal to the number of years that have count mapped to them
-		TreeMap<Integer, Integer> yearToCount = likeliestState.countIncidentPerYear(); 
-		int countYears = yearToCount.keySet().size(); 
+		TreeMap<Integer, Integer> yearToCount = likeliestState.getIncidentPerYear(); 
+		int countYears = likeliestState.countYears(); 
+		Integer[] years = likeliestState.years(); 
 		Integer[] horisontalPositions = new Integer[countYears]; 
-		Integer[] years = new Integer[countYears];
-		int index = 0; 
-		for (int i : yearToCount.keySet()) {
-			years[index++] = i; 
-		}
 		
 		// store the scaled horisontal position of each datapoint in an array. 
 		for (int i = 0; i < countYears; i++) {
-			 horisontalPositions[i] = (int)((37 + ((float)(years[i] - currentStartYear)/horisontalRange) * 204)); 
+			 horisontalPositions[i] = (int)((getWidth()*0.125) + ((float)(years[i] - currentStartYear)/horisontalRange) * getWidth()* 0.655); 
 		}
+		
 		
 		// store scaled vertical position of each datapoint in a parallel-array
 		int[] verticalPositions = new int[countYears]; 
-		int verticalRange = 0; 
-		for (int i : yearToCount.values()) {
-			if (i > verticalRange) {
-				verticalRange = i; 
-			}
-		}
+		int verticalRange = likeliestState.maxIncidentCountAnyYear(); 
+
+		g.drawString(likeliestState.maxIncidentCountAnyYear() + "", (int)(getWidth() * 0.07), (int)(getHeight() * 0.22));
 		
 		// Store the vertical positions in an parallel array
 		for (int i = 0; i < countYears; i++) {
-			verticalPositions[i] = (getHeight() - (int)((45 + (((double)yearToCount.get(years[i]))/verticalRange) * 175))); 
+			verticalPositions[i] = (getHeight() - (int)(getHeight() * 0.18 + ((double)yearToCount.get(years[i])/verticalRange)   * getHeight() * 0.67));
+			
 		}
-
+		
+	
 		for (int i = 0; i < countYears; i++) {
-			g.drawImage(pointImage, horisontalPositions[i], verticalPositions[i], 15, 15, null);
+			g.drawImage(pointImage, horisontalPositions[i], verticalPositions[i],
+							(int)(getWidth() * 0.05), (int)(getHeight() * 0.05), null);
 		}	
 	
 	}
@@ -155,9 +154,9 @@ public class TimeIncidentStatPanel extends JPanel {
 			g.drawImage(gridImage, 0, 0, getWidth(), getHeight(), null); 	
 			g.drawString("Time", (int)(getWidth() * 0.9), (int)(getHeight() * 0.9));
 			g.drawString("Incident count", (int)(getWidth() * 0.05), (int)(getHeight() * 0.1));
-			g.drawString("Max", 15, 45);
-			g.drawString(likeliestState.getIncidentsCount() + "", 17, 58);
-			g.drawString("0", 28, getHeight() - 35);
+			g.drawString("Max", (int)(getWidth() * 0.05), (int)(getHeight() * 0.18));
+			
+			g.drawString("0", (int)(getWidth() * 0.1), (int)(getHeight() * 0.85));
 			
 			drawMarkers(g); 
 			drawPoints(g); 
@@ -166,11 +165,11 @@ public class TimeIncidentStatPanel extends JPanel {
 			repaint(); 
 			if ("Not specified.".equals(likeliestState.getAbbreviation())) {
 				centerLabel.setText("<html><div style='text-align: center;'>" + "No likeliest state specified.  " 
-						+ "\u00a9Munkhtulga Battogtokh" + "</div></html>");
+						+ "</div></html>");
 			} else {
 				centerLabel.setText("<html><div style='text-align: center;'>" + "Total incident count in likeliest state: " 
 					+ likeliestState.getIncidentsCount() + " Please choose time range of at least 5 years to \n see graph" 
-						 + "           \u00a9Munkhtulga Battogtokh" + "</div></html>");
+					 + "</div></html>");
 			}
 			centerLabel.setVisible(true);
 		}
