@@ -13,11 +13,7 @@ public class ShapeComparator<Object> implements Comparator<Object> {
 			String shape1 = ((api.ripley.Incident) incident1).getShape(); 
 			String shape2 = ((api.ripley.Incident) incident2).getShape();
 		
-			if (shape1.compareTo(shape2) <= 0) {
-				return -1; 
-			} else if (shape2.compareTo(shape2) > 0) {
-				return 1; 
-			}
+			return shape1.compareTo(shape2); 
 		}
 		return 0;
 	}

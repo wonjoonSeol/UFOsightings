@@ -41,11 +41,7 @@ private Parser parser;
 			List<Date> posted2DateListWithOneDate = parser.parse(posted2String).get(0).getDates(); 
 			Date posted2 = posted2DateListWithOneDate.get(0); 
 		
-			if (posted1.compareTo(posted2) <= 0) {
-				return -1; 
-			} else if (posted1.compareTo(posted2) > 0) {
-				return 1; 
-			}
+			return posted1.compareTo(posted2); 
 		}
 		return 0;
 	}

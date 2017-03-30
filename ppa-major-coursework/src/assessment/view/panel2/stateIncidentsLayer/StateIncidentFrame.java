@@ -125,7 +125,6 @@ public class StateIncidentFrame extends JFrame {
 						JEditorPane jepMessage = new JEditorPane();
 						
 						String summary = list.getSelectedValue().getSummary(); 
-						System.out.println(summary);
 						jepMessage.setContentType("text/html");
 						jepMessage.setEditable(false);
 						jepMessage.setText("<html><body style='width:180px; height:100px'>" + summary); 

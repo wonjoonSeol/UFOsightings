@@ -47,11 +47,7 @@ public class TimeComparator<Object> implements Comparator<Object> {
 			List<Date> time2DateListWithOneDate = parser.parse(time2String).get(0).getDates(); 
 			Date date2 = time2DateListWithOneDate.get(0); 
 		
-			if (date1.compareTo(date2) <= 0) {
-				return -1; 
-			} else if (date1.compareTo(date2) > 0) {
-				return 1; 
-			}
+			return date1.compareTo(date2); 
 		}
 		return 0;
 	}

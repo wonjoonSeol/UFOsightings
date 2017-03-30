@@ -27,11 +27,7 @@ public class DurationComparator<Object> implements Comparator<Object> {
 			duration1 = toMinutes(intExtractor1, duration1String); 
 			duration2 = toMinutes(intExtractor2, duration2String); 
 			
-			if (duration1.compareTo(duration2) <= 0) {
-				return -1; 
-			} else if (duration1.compareTo(duration2) > 0) {
-				return 1; 
-			}
+			return duration1.compareTo(duration2); 
 		}
 		return 0; 
 	}
