@@ -38,7 +38,7 @@ public class DurationComparator<Object> implements Comparator<Object> {
 	
 	// Add method to take duration format string and return an int to tell how many minutes that is supposed to mean
 	public static int toMinutes(Matcher matcher, String durationString) {
-		int duration = 111111; 
+		int duration = Integer.MAX_VALUE; 
 		if (matcher.find()) {
 			// Find the number right before the "min" substring
 			if (durationString.contains("min")) {

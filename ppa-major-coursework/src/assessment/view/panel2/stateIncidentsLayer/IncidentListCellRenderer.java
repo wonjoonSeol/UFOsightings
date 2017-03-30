@@ -48,7 +48,7 @@ public class IncidentListCellRenderer extends JLabel implements ListCellRenderer
 		formattedString += (" Shape: " + incident.getShape()); 
 		
 		int durationInt = DurationComparator.toMinutes(matcher, durationString); 
-		if (durationInt == 111111) {
+		if (durationInt == Integer.MAX_VALUE) {
 			formattedString += (" Duration: " + (-1)); 
 		} else {
 			formattedString += (" Duration: " + durationInt); 

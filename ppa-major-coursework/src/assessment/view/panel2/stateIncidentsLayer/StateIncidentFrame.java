@@ -1,6 +1,7 @@
 package assessment.view.panel2.stateIncidentsLayer;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.ArrayList;
@@ -21,11 +23,16 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
 
@@ -115,8 +122,22 @@ public class StateIncidentFrame extends JFrame {
 				JList<Incident> list = (JList<Incident>) e.getSource(); 
 				if (e.getClickCount() == 1) {
 					try {
-						JOptionPane.showMessageDialog(null, list.getSelectedValue().getSummary(), "Message",
-						JOptionPane.PLAIN_MESSAGE , new ImageIcon(
+						JEditorPane jepMessage = new JEditorPane();
+						
+						String summary = list.getSelectedValue().getSummary(); 
+						System.out.println(summary);
+						jepMessage.setContentType("text/html");
+						jepMessage.setEditable(false);
+						jepMessage.setText("<html><body style='width:180px; height:100px'>" + summary); 
+						
+						jepMessage.setBackground(getBackground());
+						
+						JScrollPane jspMessage = new JScrollPane(jepMessage); 
+						jspMessage.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+						jspMessage.setBorder(null);
+						jspMessage.setPreferredSize(new Dimension(250, 120));
+						JOptionPane.showMessageDialog(null, jspMessage, "Incident Details",
+								JOptionPane.PLAIN_MESSAGE , new ImageIcon(
 									(ImageIO.read(new File("images/ufo.png"))).getScaledInstance(40, 40, Image.SCALE_SMOOTH)));
 					} catch (HeadlessException exception) {
 						System.out.println("Dialog headless");
