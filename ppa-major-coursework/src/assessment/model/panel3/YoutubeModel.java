@@ -42,8 +42,7 @@ public class YoutubeModel extends Observable {
                 public void initialize(HttpRequest request) throws IOException {
                 }
             }).setApplicationName("UFO search").build();
-            String searchQuery = "ufo sighting 2017";
-            
+            String searchQuery = "ufo sighting 2017";     
             // Define the API request for retrieving search results.
             // Set your developer key from the for: non-authenticated requests
             // Restrict the search results to only include videos. 
