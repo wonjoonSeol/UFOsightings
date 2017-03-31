@@ -48,6 +48,7 @@ public class SubStatPanel extends JPanel implements Observer {
 		this.statsModel = statsModel;
 		this.mapModel = mapModel;
 		mapModel.addObserver(this);
+		statsModel.addObserver(this);
 		statNumber = 0;
 		displayStats = new ArrayList<Integer>(4);
 		initWidgets(statPanel);
@@ -149,10 +150,10 @@ public class SubStatPanel extends JPanel implements Observer {
 		statNumber = i;
 		if (i == 1) {
 			topLabel.setText("Hoax Stats");
-			centLabel.setText(Integer.toString(statsModel.getNumHoaxes()));
+			centLabel.setText(Integer.toString(statsModel.getNumberOfHoax()));
 		} else if (i == 2) {
 			topLabel.setText("Non-US Stats");
-			centLabel.setText(Integer.toString(statsModel.getNonUSSight()));
+			centLabel.setText(Integer.toString(statsModel.getNonUSsight()));
 		} else if (i == 3) {
 			topLabel.setText("Likeliest State");
 			if (mapModel.getLikeliestState().getAbbreviation().equals("Not specified.")) {
@@ -167,7 +168,7 @@ public class SubStatPanel extends JPanel implements Observer {
 			cards.show(jpCenter, "eugene");
 		} else if (i == 5) {
 			topLabel.setText("Domestic vs International Sighting Ratio");
-			centLabel.setText("<html><div style='text-align: center;'>" + statsModel.countryDistributionPercentage() + "</div></html>");
+			centLabel.setText("<html><div style='text-align: center;'>" + statsModel.getDistributionPercentage() + "</div></html>");
 		} else if (i == 6) {
 			topLabel.setText("Key events in history");
 			cards.show(jpCenter, "wonjoon");
@@ -178,7 +179,6 @@ public class SubStatPanel extends JPanel implements Observer {
 			topLabel.setText("Relative incident count in likeliest state through years");
 			cards.show(jpCenter, "Munkhtulga");
 		}
-		repaint();
 	}
 	// Add actionlistener to button. Set stat (currentStatnumber +1).
 	// Within setstat, compare to the values inside a static arraylist. if it is
@@ -187,8 +187,22 @@ public class SubStatPanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		timePanel.setLikeliestState(mapModel.getLikeliestState());
-		timePanel.setCurrentStartYear(statsModel.getCurrentStartYear());
-		timePanel.setCurrentEndYear(statsModel.getCurrentEndYear());
+	    if (arg1 instanceof MapUS) {
+			timePanel.setLikeliestState(mapModel.getLikeliestState());
+			timePanel.setCurrentStartYear(statsModel.getCurrentStartYear());
+			timePanel.setCurrentEndYear(statsModel.getCurrentEndYear());
+		} else if (arg1 instanceof String) {
+			String command = (String) arg1;
+			String[] commandPart = command.split(";");
+
+			if (commandPart[0].equalsIgnoreCase("Data")) {
+				try {
+					updateStatistic(statNumber);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 }

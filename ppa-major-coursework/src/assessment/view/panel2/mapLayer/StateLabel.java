@@ -28,7 +28,7 @@ public class StateLabel extends JLabel implements Observer {
 	private int x; 			// intended x position
 	private int y; 			// intended y position
 	private int scaledSize;	// size of the marker, scaled by the incidents' count
-	
+
 	/** 
 	 * Constructs a state marker label based on given US state, image marker, and 
 	 * position in frame as specified by coordinates. 
@@ -74,16 +74,14 @@ public class StateLabel extends JLabel implements Observer {
 			if (scaledSize > 100) scaledSize = 100; 
 			setBounds((int) ( x - (scaledSize/2)), (int) ( y - (scaledSize/2)), scaledSize, scaledSize);
 		
-			imageMarker = highResolutionMarker.getScaledInstance(getWidth(), 
+			imageMarker = highResolutionMarker.getScaledInstance(getWidth(),
 					getHeight(), Image.SCALE_SMOOTH);
 			
 			icon.setImage(imageMarker); 
-		
-			setIcon(icon); 
+			setIcon(icon);
 		}
 	}
 
-		
 	public int getScaledSize() {
 		return scaledSize; 
 	}
@@ -95,12 +93,12 @@ public class StateLabel extends JLabel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		if (state.getIncidentsCount() == 0) {
-			setVisible(false); 
+		    setVisible(false);
 		} else {
-			setVisible(true); 
+			setVisible(true);
 		}
-		this.scaledSize = (int)(10 + (2.0 * state.getIncidentsCount())); 
-		changeSize(scaledSize); 
+		this.scaledSize = (int)(10 + (2.0 * state.getIncidentsCount()));
+		changeSize(scaledSize);
 	}
 	
 }
