@@ -91,7 +91,6 @@ public class StatPanel extends JPanel{
 			String line = reader.readLine();
 			if (!line.isEmpty()) {
 				stats = line.split(" ");
-				System.out.println(Arrays.toString(stats));
 			} else {
 				setDefaultSubPanels();
 			}

@@ -8,18 +8,30 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by wonjoonseol on 05/03/2017.
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This class represents the main viewer frame
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
  */
 public class Controller implements ActionListener{
 
 
     private Model model;
     private UFOFrame view;
-
+    /**
+     * Constructor to instantiate new Controller object and set fields.
+     * @param model
+     */
     public Controller(Model model) {
         this.model = model;
     }
 
+    /**
+     * Method to handle year selection and update model.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
@@ -46,6 +58,10 @@ public class Controller implements ActionListener{
         }
     }
 
+    /**
+     * Method to set the view private instance variable.
+     * @param view
+     */
     public void setView(UFOFrame view) {
         // don't abuse having instance of view in this class,
         // this should really be used for cardLayout only
