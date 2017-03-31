@@ -66,6 +66,7 @@ public class YoutubePanel extends JPanel implements Observer{
 	}
 	/**
 	 * Update method for MVC structure.
+	 * Adding mouse listener to label and set name as the Video ID. 
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
