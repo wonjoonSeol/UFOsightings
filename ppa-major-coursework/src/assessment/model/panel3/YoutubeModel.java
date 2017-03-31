@@ -15,8 +15,13 @@ import com.google.api.services.youtube.model.SearchResult;
 import authentication.Auth;
 
 /**
- * Gets a list of videos of the most recent UFO sightings.
- * @author EugeneFong
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This model class manages and maintains Youtube data.
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
  */
 public class YoutubeModel extends Observable {
     /**
@@ -72,6 +77,9 @@ public class YoutubeModel extends Observable {
             sendInformation();
     	}
 
+    /**
+     * Method to notify observers for MVC structure of finalized youtube details.
+     */
     	private void sendInformation() {
             setChanged();
             notifyObservers("clear");
@@ -84,6 +92,9 @@ public class YoutubeModel extends Observable {
             }
         }
 
+    	/**
+    	 * Method to read developer key from properties file.
+    	 */
     	private void readAPI() {
             // Read the developer key from the properties file.
             properties = new Properties();
