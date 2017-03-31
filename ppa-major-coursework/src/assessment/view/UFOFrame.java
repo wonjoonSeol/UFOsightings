@@ -24,7 +24,7 @@ import assessment.view.panel4.UnitedEarthDirectorate;
  * <p>
  * This class represents the main viewer frame
  *
- * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Munkhtulga Battogtokh(k1631010), Wonjoon Seol(k1631098)
  */
 public class UFOFrame extends JFrame implements Observer {
 
