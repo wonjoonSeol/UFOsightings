@@ -24,7 +24,7 @@ public class YoutubePanel extends JPanel implements Observer{
 
 	/**
 	 * Constructor to instantiate new YoutubePanel and set fields.
-	 * Call method to initiated widgets.
+	 * Set layout of main panel and call method to initiated widgets.
 	 * @param statController for Mouse Listener.
 	 */
 	public YoutubePanel(StatController statController) {
