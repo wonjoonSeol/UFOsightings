@@ -178,14 +178,16 @@ public class TimeIncidentStatPanel extends JPanel {
 			
 		} else {
 			repaint(); 
-			if ("Not specified.".equals(likeliestState.getAbbreviation())) {
-				centerLabel.setText("<html><div style='text-align: center;'>" + "No likeliest state specified.  " 
-						+ "</div></html>");
-			} else {
+			
+			if (!rangeValid() && !"Not specified.".equals(likeliestState.getAbbreviation())){
 				centerLabel.setText("<html><div style='text-align: center;'>" + "Total incident count in likeliest state: " 
 					+ likeliestState.getIncidentsCount() + " Please choose time range of at least 5 years to \n see graph" 
 					 + "</div></html>");
-			}
+			} else {
+				centerLabel.setText("<html><div style='text-align: center;'>" + "No likeliest state specified. Please choose another date range" 
+						+ "</div></html>");
+			} 
+		
 			centerLabel.setVisible(true);
 		}
 	
