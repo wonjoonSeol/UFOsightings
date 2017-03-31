@@ -24,9 +24,6 @@ import authentication.Auth;
  * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
  */
 public class YoutubeModel extends Observable {
-    /**
-     * Define a global variable that identifies the name of a file that contains the developer's API key.
-     */
     private static final String PROPERTIES_FILENAME = "authentication/youtube.properties";
     private static final long NUMBER_OF_VIDEOS_RETURNED = 10;
     private static YouTube youtube;
@@ -38,7 +35,6 @@ public class YoutubeModel extends Observable {
      * @return List of search results.
      */
     public void runSearch() {
-        // Read the developer key from the properties file.
         readAPI();
         // Request a search for recent UFO sighting 2017.
         try {
@@ -46,22 +42,18 @@ public class YoutubeModel extends Observable {
                 public void initialize(HttpRequest request) throws IOException {
                 }
             }).setApplicationName("UFO search").build();
-            // Setting the a field to hold the search term.
             String searchQuery = "ufo sighting 2017";
+            
             // Define the API request for retrieving search results.
-            YouTube.Search.List search = youtube.search().list("id,snippet");
-
-            // Set your developer key from the for
-            // non-authenticated requests:
+            // Set your developer key from the for: non-authenticated requests
             // Restrict the search results to only include videos. 
+            YouTube.Search.List search = youtube.search().list("id,snippet");
             String apiKey = properties.getProperty("youtube.apikey");
             search.setKey(apiKey);
             search.setQ(searchQuery);
             search.setType("video");
             search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
-            
-            // Call the API and print results.
             SearchListResponse searchResponse = search.execute();
             searchResultList = searchResponse.getItems();                   
             
@@ -96,7 +88,6 @@ public class YoutubeModel extends Observable {
     	 * Method to read developer key from properties file.
     	 */
     	private void readAPI() {
-            // Read the developer key from the properties file.
             properties = new Properties();
             try {
                 InputStream in = YoutubeModel.class.getResourceAsStream("/" + PROPERTIES_FILENAME);
