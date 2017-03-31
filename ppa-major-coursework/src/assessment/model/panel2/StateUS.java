@@ -25,10 +25,7 @@ public class StateUS extends Observable {
 	 */
 	public void addIncident(Incident incident) {
 		incidents.add(incident); 
-		incidentsCount++; 
-		
-		setChanged(); 
-		notifyObservers(); 
+		incidentsCount++;
 	}
 	
 	public ArrayList<Incident> getIncidents() {
@@ -48,12 +45,14 @@ public class StateUS extends Observable {
 	
 	public void clearIncidents() {
 		incidents.clear();
-		incidentsCount = 0; 
-
-		setChanged(); 
-		notifyObservers(); 
+		incidentsCount = 0;
 	}
-	
+
+	public void requestImageUpdate() {
+		setChanged();
+		notifyObservers(incidentsCount);
+	}
+
 	public String toString() {
 		return name; 
 	}
@@ -63,9 +62,8 @@ public class StateUS extends Observable {
 	 * @return TreeMap<Integer, Integer> map of incident years to incident count that year
 	 */
 	public TreeMap<Integer, Integer> getIncidentPerYear() {
-		
-		TreeMap<Integer, Integer> mapYearToCount = new TreeMap<>(); 
-		
+		TreeMap<Integer, Integer> mapYearToCount = new TreeMap<>();
+
 		for (Incident incident : incidents) {
 			int incidentYear = Integer.parseInt(incident.getDateAndTime().substring(0, 4)); 
 		
@@ -75,8 +73,7 @@ public class StateUS extends Observable {
 				mapYearToCount.put(incidentYear, 1); 
 			}	
 		}
-		
-		return mapYearToCount; 
+		return mapYearToCount;
 	}
 	
 }

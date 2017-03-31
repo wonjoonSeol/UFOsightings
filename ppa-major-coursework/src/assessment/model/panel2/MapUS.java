@@ -93,7 +93,7 @@ public class MapUS extends Observable {
 	/** 
 	 * Given an array list of incidents, distributes them to the 
 	 * corresponding state where they happened 
-	 * @param ArrayList<Incident> list of incidents 
+	 * @param incidents list of incidents
 	 */
 	public void distributeIncidents(ArrayList<Incident> incidents) {
 		
@@ -107,15 +107,19 @@ public class MapUS extends Observable {
 				theState.addIncident(incident);
 			}
 		}
-		
+
+		for (StateUS stateUS : mapNameToState.values()) {
+		    stateUS.requestImageUpdate();
+		}
+
 		setChanged(); 
-		notifyObservers(); 
+		notifyObservers();
 	}
-	
-	/** 
+
+	/**
 	 * Gets a state in the map using its name
-	 * @param String name
-	 * @return StateUS the state
+	 * @param  name
+	 * @return StateUS
 	 */
 	public StateUS getState(String name) {
 		return mapNameToState.get(name);  
@@ -125,8 +129,8 @@ public class MapUS extends Observable {
 	 * Gets the state with the highest count of incidents currently 
 	 */
 	public StateUS getLikeliestState() {
-		
-		StateUS currentLikeliestState = null; 
+
+		StateUS currentLikeliestState = null;
 		boolean allEqual = true; 
 		
 		for (StateUS state : mapNameToState.values()) {
@@ -139,7 +143,6 @@ public class MapUS extends Observable {
 		// If all states have the same incident count, return not specified
 		if (allEqual) return mapNameToState.get("Not specified."); 
 		
-		
-		return currentLikeliestState; 
+		return currentLikeliestState;
 	}
 }

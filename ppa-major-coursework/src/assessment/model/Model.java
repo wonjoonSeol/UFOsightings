@@ -1,11 +1,10 @@
 package assessment.model;
 
-import java.text.DecimalFormat;
 import java.util.*;
-import java.util.Map.Entry;
-
 import api.ripley.Incident;
 import api.ripley.Ripley;
+
+import javax.swing.*;
 
 /**
  * Created by wonjoonseol on 09/03/2017.
@@ -20,6 +19,7 @@ public class Model extends Observable {
 	private ArrayList<Incident>[] incidents;
 	private ArrayList<Incident> currentList;
 	private Ripley ripley;
+	private long startTime;
 
 	public Model(Ripley ripley) {
 		this.ripley = ripley;
@@ -27,10 +27,10 @@ public class Model extends Observable {
 		ripleyMaxYear = ripley.getLatestYear();
 		indexEndYear = Integer.MIN_VALUE;
 		indexStartYear = Integer.MAX_VALUE;
-		incidents = new ArrayList[ripleyMaxYear - ripleyMinYear];
+		incidents = new ArrayList[ripleyMaxYear - ripleyMinYear + 1];
 		currentList = new ArrayList<Incident>();
 
-		for (int i = 0; i < ripleyMaxYear - ripleyMinYear; i++) {
+		for (int i = 0; i < ripleyMaxYear - ripleyMinYear + 1; i++) {
 			incidents[i] = new ArrayList<Incident>();
 		}
 	}
@@ -57,61 +57,80 @@ public class Model extends Observable {
 		return currentList;
 	}
 
-	public int getIncidentNumbers(int year) {
-		if (year > indexStartYear && year < indexEndYear) {
-			return incidents[year - getRipleyMinYear()].size();
-		}
-		return -1;
+	public long timeTakenToLoad(long endTime) {
+		return endTime - startTime;
 	}
 
-	private void updateCurrentList() {
+	public void initCaching() {
+		new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() throws Exception {
+				setChanged();
+				notifyObservers("loadingStart");
+
+				ArrayList<Incident> incidents = new ArrayList<Incident>();
+				startTime = System.currentTimeMillis();
+				if (currentStartYear < indexStartYear && indexEndYear < currentEndYear) {
+					incidents = grabData(currentStartYear, currentEndYear);
+					addIncidents(incidents);
+					indexStartYear = currentStartYear;
+					indexEndYear = currentEndYear;
+				} else if (currentStartYear < indexStartYear) {
+					incidents = grabData(currentStartYear, indexStartYear - 1);
+					addIncidents(incidents);
+					indexStartYear = currentStartYear;
+				} else if (indexEndYear < currentEndYear) {
+					incidents = grabData(indexEndYear + 1, currentEndYear);
+					addIncidents(incidents);
+					indexEndYear = currentEndYear;
+				}
+				currentList = createCurrentList();
+				setChanged();
+				notifyObservers("Data");
+				return null;
+			}
+		}.execute();
+	}
+
+	private ArrayList<Incident> createCurrentList() {
 		currentList.clear();
 		int endIndex = currentEndYear - ripleyMinYear;
 		int startIndex = currentStartYear - ripleyMinYear;
 		for (int i = startIndex; i <= endIndex; i++) {
 			currentList.addAll(incidents[i]);
 		}
-//		System.out.println("After update current list: " + currentList);
-//		System.out.println("requested data:" + incidents);
+		return currentList;
 	}
 
-	private void initCaching() {
-		long startTime = System.currentTimeMillis();
-		if (currentStartYear < indexStartYear && indexEndYear < currentEndYear) {
-			grabData(currentStartYear, currentEndYear);
-			 System.out.println("1"); //Debugging, delete later
-			indexStartYear = currentStartYear;
-			indexEndYear = currentEndYear;
-		} else if (currentStartYear < indexStartYear) {
-			grabData(currentStartYear, indexStartYear - 1);
-			indexStartYear = currentStartYear;
-			 System.out.println("2"); //Debugging, delete later
-		} else if (indexEndYear < currentEndYear) {
-			grabData(indexEndYear + 1, currentEndYear);
-			indexEndYear = currentEndYear;
-			 System.out.println("3"); //Debugging, delete later
+	private void addIncidents(ArrayList<Incident> incidents) {
+		int year = 0;
+		for (Incident element : incidents) {
+			year = parseYear(element.getDateAndTime());
+			this.incidents[year - ripleyMinYear].add(element);
 		}
-		updateCurrentList();
-		long duration = System.currentTimeMillis() - startTime;
-		notifyDuration(duration);
 	}
 
-	/** 
-	 * Adds to the arraylist of incidents for each year, 
+	private int parseYear(String string) {
+	    int year = 0;
+		try {
+			year = Integer.parseInt(string.substring(0, 4));
+			return year;
+		} catch (NumberFormatException e) {
+			System.err.println(e);
+		}
+		return year;
+	}
+
+	/**
+	 * Adds to the arraylist of incidents for each year,
 	 * data from the specified time range
 	 * @param currentStartYear
 	 * @param currentEndYear
 	 */
-	private void grabData(int currentStartYear, int currentEndYear) {
-		if (currentStartYear == currentEndYear) {
-			incidents[currentStartYear - ripleyMinYear] = ripley.getIncidentsInRange(appendStartYear(currentStartYear),
-														appendEndYear(currentEndYear));
-		} else {
-			for (int i = currentStartYear; i <= currentEndYear; i++) {
-				incidents[i - ripleyMinYear] = ripley.getIncidentsInRange(appendStartYear(i), appendEndYear(i));
-			}
-		}
+	private ArrayList<Incident> grabData(int currentStartYear, int currentEndYear) {
+		return ripley.getIncidentsInRange(appendStartYear(currentStartYear), appendEndYear(currentEndYear));
 	}
+
 
 	public static String appendStartYear(int year) {
 		String start = year + "-01-01 00:00:00";
@@ -123,20 +142,19 @@ public class Model extends Observable {
 		return end;
 	}
 
-	private void notifyDuration(long duration) {
+	public static String calculateDuration(long duration) {
 		int h = (int) ((duration / 1000) / 3600);
 		int m = (int) (((duration / 1000) / 60) % 60);
 		int s = (int) ((duration / 1000) % 60);
-		setChanged();
+
 		if (h == 0) {
-			notifyObservers("DATA" + " " + m + " minutes, " + s + " seconds");
+			return m + " minutes, " + s + " seconds";
 		} else {
-			notifyObservers("DATA" + " " + h + " hours, " + m + " minutes, " + s + " seconds");
+			return h + " hours, " + m + " minutes, " + s + " seconds";
 		}
 	}
 
 	private void notifyYear() {
-		
 		setChanged();
 		if (currentStartYear != 0 && currentStartYear <= currentEndYear) {
 			notifyObservers(currentStartYear + " " + currentEndYear);

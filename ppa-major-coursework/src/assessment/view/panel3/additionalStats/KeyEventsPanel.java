@@ -45,9 +45,11 @@ public class KeyEventsPanel extends JPanel implements Observer{
 
     @Override
     public void update(Observable o, Object arg) {
-        String information = (String)arg;
+        String information = (String) arg;
         String[] informationParts = information.split(";");
-        jlInformation.setText(setString(Integer.parseInt(informationParts[0]), informationParts[1], informationParts[2]));
+        if (informationParts[0].equals("Information")) {
+            jlInformation.setText(setString(Integer.parseInt(informationParts[1]), informationParts[2], informationParts[3]));
+        }
     }
 }
 
