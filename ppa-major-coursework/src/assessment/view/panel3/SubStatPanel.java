@@ -19,7 +19,15 @@ import assessment.model.panel3.YoutubeModel;
 import assessment.view.panel3.additionalStats.TimeIncidentStatPanel;
 import assessment.view.panel3.additionalStats.KeyEventsPanel;
 import assessment.view.panel3.additionalStats.YoutubePanel;
-
+/**
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This view class creates and manages a SubStatPanel to be displayed within the main statistics panel.
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
+ */
 public class SubStatPanel extends JPanel implements Observer {
 
 	private JButton rButton;
@@ -42,6 +50,12 @@ public class SubStatPanel extends JPanel implements Observer {
 	// TODO: Only display one version of each stat. Save user statistic
 	// preferences upon close.
 
+	/**
+	 * Constructor to create new instance of SubStatPanel and set fields.
+	 * @param statsModel
+	 * @param mapModel
+	 * @param statPanel
+	 */
 	public SubStatPanel(StatsModel statsModel, MapUS mapModel,  StatPanel statPanel){
 		super();
 		setLayout(new BorderLayout());
@@ -54,6 +68,10 @@ public class SubStatPanel extends JPanel implements Observer {
 		initWidgets(statPanel);
 	}
 
+	/**
+	 * Method to initiate widgets and construct layout.
+	 * @param statPanel
+	 */
 	private void initWidgets(StatPanel statPanel){
 		lPanel = new JPanel(new BorderLayout());
 		rPanel = new JPanel(new BorderLayout());
@@ -78,6 +96,11 @@ public class SubStatPanel extends JPanel implements Observer {
 	}
 
 
+	/**
+	 * Method to initialize the statistic to be displayed.
+	 * @param i
+	 * @throws Exception
+	 */
 	public void initializeStat(int i) throws Exception {
 		int panelNumbers = 8;
 		if (i > panelNumbers) {
@@ -89,6 +112,12 @@ public class SubStatPanel extends JPanel implements Observer {
 		displayStats.add(i);
 	}
 
+	/**
+	 * Method to set the current stat to be displayed and update the displayStats ArrayList field accordingly.
+	 * @param i
+	 * @param constant
+	 * @throws Exception
+	 */
 	public void setStat(int i, int constant) throws Exception {
 		int panelNumbers = 8;
 		if (i > panelNumbers) {
@@ -116,6 +145,10 @@ public class SubStatPanel extends JPanel implements Observer {
 		System.out.println(displayStats);
 	}
 
+	/**
+	 * Method to initiate the values to be displayed in the 3 additional statistics panels.
+	 * @param statPanel
+	 */
 	private void initAdditionalPanels(StatPanel statPanel) {
 		YoutubeModel ytModel = new YoutubeModel();
 		StatController statController = new StatController(this, statPanel, statsModel, ytModel);
@@ -136,14 +169,26 @@ public class SubStatPanel extends JPanel implements Observer {
 		jpCenter.add(youtubePanel, "eugene");
 	}
 
+	/**
+	 * Method to reset the displayStats ArrayList field.
+	 */
 	public void resetDisplayStats() {
 		displayStats.clear();
 	}
 
+	/**
+	 * Method to return the statNumber int field.
+	 * @return int statistic number
+	 */
 	public int getStat() {
 		return statNumber;
 	}
 
+	/**
+	 * Method to update the displayed statistic when changed.
+	 * @param i
+	 * @throws Exception
+	 */
 	private void updateStatistic(int i) throws Exception {
 		CardLayout cards = (CardLayout) (jpCenter.getLayout());
 		cards.show(jpCenter, "default");
@@ -180,14 +225,13 @@ public class SubStatPanel extends JPanel implements Observer {
 			cards.show(jpCenter, "Munkhtulga");
 		}
 	}
-	// Add actionlistener to button. Set stat (currentStatnumber +1).
-	// Within setstat, compare to the values inside a static arraylist. if it is
-	// contained, increase. etc,etc. Then pass to current setstat method when
-	// found available stat.
 
 	@Override
+	/**
+	 * Update method for MVC structure.
+	 */
 	public void update(Observable arg0, Object arg1) {
-	    if (arg1 instanceof MapUS) {
+	    if (arg0 instanceof MapUS) {
 			timePanel.setLikeliestState(mapModel.getLikeliestState());
 			timePanel.setCurrentStartYear(statsModel.getCurrentStartYear());
 			timePanel.setCurrentEndYear(statsModel.getCurrentEndYear());
