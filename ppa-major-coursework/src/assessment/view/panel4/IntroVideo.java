@@ -34,7 +34,7 @@ public class IntroVideo extends JPanel {
         this.unitedEarthDirectorate = unitedEarthDirectorate;
         this.ufoFrame = ufoFrame;
         setLayout(new BorderLayout());
-        imageLocation = "images/Welcome Back Commander.gif";
+        imageLocation = "images/Welcome-Back-Commander.gif";
         jlWelcome = new JLabel();
         add(jlWelcome, BorderLayout.CENTER);
     }
