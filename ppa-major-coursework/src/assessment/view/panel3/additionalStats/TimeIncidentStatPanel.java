@@ -12,6 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import assessment.model.panel2.StateUS;
+
+import java.util.ConcurrentModificationException;
 import java.util.TreeMap; 
 
 /** 
@@ -174,20 +176,22 @@ public class TimeIncidentStatPanel extends JPanel {
 			g.drawString("0", (int)(getWidth() * 0.1), (int)(getHeight() * 0.85));
 			
 			drawMarkers(g); 
-			drawPoints(g); 
+			try {
+				drawPoints(g); 
+			} catch (ConcurrentModificationException exc) {
+				System.out.println("Incidents changing while painting");
+			}
 			
 		} else {
 			repaint(); 
-			
-			if (!rangeValid() && !"Not specified.".equals(likeliestState.getAbbreviation())){
+			if ("Not specified.".equals(likeliestState.getAbbreviation())) {
+				centerLabel.setText("<html><div style='text-align: center;'>" + "No likeliest state specified.  " 
+						+ "</div></html>");
+			} else {
 				centerLabel.setText("<html><div style='text-align: center;'>" + "Total incident count in likeliest state: " 
 					+ likeliestState.getIncidentsCount() + " Please choose time range of at least 5 years to \n see graph" 
 					 + "</div></html>");
-			} else {
-				centerLabel.setText("<html><div style='text-align: center;'>" + "No likeliest state specified. Please choose another date range" 
-						+ "</div></html>");
-			} 
-		
+			}
 			centerLabel.setVisible(true);
 		}
 	
