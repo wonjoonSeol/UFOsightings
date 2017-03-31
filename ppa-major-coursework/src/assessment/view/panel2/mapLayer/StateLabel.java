@@ -82,14 +82,27 @@ public class StateLabel extends JLabel implements Observer {
 		}
 	}
 
+	/** 
+	 * Returns the size scaled to be positioned correctly
+	 * @return int scaledSize
+	 */
 	public int getScaledSize() {
 		return scaledSize; 
 	}
 	
+	/** 
+	 * Returns the state this label is for 	
+	 * @return
+	 */
 	public StateUS getState() {
 		return state; 
 	}
 	
+	
+	/** 
+	 * Updates by changing size as according to the corresponding state, 
+	 * and its incident count
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		if (state.getIncidentsCount() == 0) {

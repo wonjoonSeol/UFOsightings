@@ -12,12 +12,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date; 
 
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
@@ -25,19 +21,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextPane;
-import javax.swing.ListModel;
 import javax.swing.border.EmptyBorder;
-
-import com.joestelmach.natty.DateGroup;
-import com.joestelmach.natty.Parser;
 
 import api.ripley.Incident;
 import assessment.model.panel2.comparators.CityComparator;
@@ -48,6 +36,12 @@ import assessment.model.panel2.comparators.TimeComparator;
 import assessment.model.panel2.StateUS; 
 import assessment.view.panel2.mapLayer.StateLabel;
 
+/** 
+ * Pop-up window when a state marker is clicked that displays the list of 
+ * incidents in a rendered format for the specific state the marker was for
+ * @author Munkhtulga Battogtokh
+ *
+ */
 public class StateIncidentFrame extends JFrame {
 	
 	/**
@@ -59,20 +53,26 @@ public class StateIncidentFrame extends JFrame {
 	private StateLabel sourceLabel; 	// the label from which the frame is called
 	private StateUS state; 
 	
-	private DefaultListModel<Incident> listModel; 
-	private ArrayList<Incident> timeSortedList; 
-	private ArrayList<Incident> citySortedList; 
-	private ArrayList<Incident> shapeSortedList; 
-	private ArrayList<Incident> durationSortedList; 
-	private ArrayList<Incident> postedSortedList; 
-	private ArrayList<Incident> unsortedList; 
+	private DefaultListModel<Incident> listModel; 	// list model
+	private ArrayList<Incident> timeSortedList; 	// list version to store incidents sorted by time 
+	private ArrayList<Incident> citySortedList; 	// list version to store incidents sorted by city
+	private ArrayList<Incident> shapeSortedList; 	// list version to store incidents sorted by shape
+	private ArrayList<Incident> durationSortedList; // list version to store incidents sorted by duration
+	private ArrayList<Incident> postedSortedList; 	// list version to store incidents sorted by posted date
+	private ArrayList<Incident> unsortedList; 		// list version that is unsorted
 	
 	private TimeComparator<Incident> timeComparator; 
 	private CityComparator<Incident> cityComparator; 
 	private ShapeComparator<Incident> shapeComparator; 
 	private DurationComparator<Incident> durationComparator; 
-	private PostedComparator<Incident> postedComparator; 
+	private PostedComparator<Incident> postedComparator;  // comparators in this paragraph of fields
 	
+	/** 
+	 * Constructs a frame object of this class based on a given state, and 
+	 * label for that state. 
+	 * @param state StateUS the model state
+	 * @param sourceLabel StateUS the view representation
+	 */
 	public StateIncidentFrame(StateUS state, StateLabel sourceLabel) {
 		super(state.getName() + " (" + state.getAbbreviation() + ")"); 
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE); 
@@ -92,10 +92,13 @@ public class StateIncidentFrame extends JFrame {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void initWidgets() {
+	private void initWidgets() {
 		// Restore the size of the calling label upon close 
 		this.addWindowListener(new WindowAdapter() {
-					
+			
+			/** 
+			 * Resets size of the StateLabel from which this StateIncidentFrame was called
+			 */
 			@Override
 			public void windowClosing(WindowEvent e) {
 				sourceLabel.changeSize(sourceLabel.getScaledSize());
@@ -117,6 +120,10 @@ public class StateIncidentFrame extends JFrame {
 		// Single click results in a dialog displaying the details of the incident 
 		incidentsList.addMouseListener(new MouseAdapter() {
 			
+			/** 
+			 * Opens the summary of the incident selected from JList the anonymous 
+			 * MouseAdapter is registered with, namely the incidentsList of outer class
+			 */
 			public void mouseClicked(MouseEvent e) {
 				
 				JList<Incident> list = (JList<Incident>) e.getSource(); 
@@ -189,6 +196,12 @@ public class StateIncidentFrame extends JFrame {
 	 *
 	 */
 	public class sortListener implements ActionListener {
+		
+		/** 
+		 * Overrides parent method actionpPerformed to perform sorting ordering as 
+		 * selected by user when the sortListener is registered with the JCombobox 
+		 * of the outer class. 
+		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			@SuppressWarnings("unchecked")
@@ -208,6 +221,14 @@ public class StateIncidentFrame extends JFrame {
 			
 		}
 		
+		/** 
+		 * Sorts the listModel of the outerclass by given comparator. Updates the 
+		 * corresponding sorted list version of the outer class, eg: TimeSortedList if 
+		 * user selects to sort by date and time. Gives initial population to the sorted list 
+		 * versions if used the first time. 
+		 * @param comparator Comparator<Incident> compares incidents 
+		 * @param list ArrayList<Incident> uses this list to update the listmodel 
+		 */
 		public void sortBy(Comparator<Incident> comparator, ArrayList<Incident> list) {
 			listModel.clear();
 			

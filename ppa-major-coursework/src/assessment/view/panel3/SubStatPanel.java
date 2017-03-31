@@ -187,7 +187,7 @@ public class SubStatPanel extends JPanel implements Observer {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-	    if (arg1 instanceof MapUS) {
+	    if (arg0 instanceof MapUS) {
 			timePanel.setLikeliestState(mapModel.getLikeliestState());
 			timePanel.setCurrentStartYear(statsModel.getCurrentStartYear());
 			timePanel.setCurrentEndYear(statsModel.getCurrentEndYear());

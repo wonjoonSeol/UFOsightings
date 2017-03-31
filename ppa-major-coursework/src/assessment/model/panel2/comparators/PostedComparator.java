@@ -9,7 +9,7 @@ import com.joestelmach.natty.Parser;
 import api.ripley.Incident;
 
 /** 
- * 
+ * Comparator type that can compare instances of Incident class by the "posted" attribute. 
  * @author Munkhtulga Battogtokh
  *
  * @param <Object> not Incident, as generic type accepts any object unregardless of this parameter
@@ -17,8 +17,11 @@ import api.ripley.Incident;
 @SuppressWarnings("hiding")
 public class PostedComparator<Object> implements Comparator<Object> {
 
-private Parser parser; 
+	private Parser parser; //date parser
 	
+	/** 
+	 * Constructs an instance of this class, initialising the parser for the object created. 
+	 */
 	public PostedComparator() {
 		this.parser = new Parser(); 
 	}

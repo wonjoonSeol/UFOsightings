@@ -10,7 +10,9 @@ import api.ripley.Incident;
 
 /** 
  * Compares incidents based on the chronological order of the date and time on which 
- * they happened. NOTE: this class will do any meaningful comparison on objects of 
+ * they happened.
+ * 
+ * NOTE: this class, and comparators in this package will do any meaningful comparison on objects of 
  * Incident type only. Even if the generic type was declared to be of Incident, one can 
  * pass any object to the generic type. In order to limit the functionality to only 
  * Incident types, the generic type is checked by instanceof if it is of this type. 
@@ -22,9 +24,11 @@ import api.ripley.Incident;
 @SuppressWarnings("hiding")
 public class TimeComparator<Object> implements Comparator<Object> {
 	
-	private Parser parser; 
+	private Parser parser;  //Date parser
 	
-	
+	/** 
+	 * Creates an instance of this class, initialising the parser for this object
+	 */
 	public TimeComparator() {
 		this.parser = new Parser(); 
 	}
