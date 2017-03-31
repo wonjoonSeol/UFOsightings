@@ -28,6 +28,11 @@ public class StatsModel extends Observable {
     private double percentage;
     private int difference;
     private int previousRandomNumber;
+    private int numberOfHoax;
+    private int nonUSsight;
+	private double stateSideCount;
+	private	double internCount;
+	private String distributionPercentage;
 
     public StatsModel(Model model, Ripley ripley) {
         super();
@@ -58,7 +63,7 @@ public class StatsModel extends Observable {
 		calculateChange(1977);
 		information.add("1977;Star War franchise started;This year, the number of reportings were " + (-difference) + " less than the previous year");
     }
-///54 57
+
     private void calculateChange(int year) {
 		ArrayList<Incident> previousIncidents = ripley.getIncidentsInRange(Model.appendStartYear(year-1), model.appendEndYear(year-1));
 		ArrayList<Incident> incidents = ripley.getIncidentsInRange(Model.appendStartYear(year), model.appendEndYear(year));
@@ -73,68 +78,48 @@ public class StatsModel extends Observable {
 		} while (previousRandomNumber == index);
     	previousRandomNumber = index;
         setChanged();
-        notifyObservers(information.get(index));
+        notifyObservers("Information;" + information.get(index));
     }
-	/*
-	 * Return the number of hoaxes within the current dataset.
-	 */
-	public int getNumHoaxes() {
-		List<Incident> data = model.getRequestedData();
-		int count = 0;
-		for (Incident i : data) { // Iterate through the incident list, increase
-								// count if a HOAX match is found.
-			if (i.getSummary().toLowerCase().contains("hoax")) {
-				count++;
-			}
-		}
-		return count; // Return counter variable.
-	}
-	/*
-	 * BRITTON FORSYTH Individual Statistic.
-	 * Formats for the user a ratio of international to USA stateside sightings recorded.
-	 */
-	public String countryDistributionPercentage() {
-		String returnString = "";
-		double stateSideCount = 0;
-		double internCount = 0;
-		List<Incident> data = model.getRequestedData();
 
-		for (Incident i : data) // Iterate through the incident list {
+    public void calculateStats() {
+    	numberOfHoax = 0;
+    	nonUSsight = 0;
+    	stateSideCount = 0;
+    	internCount = 0;
+
+		List<Incident> data = model.getRequestedData();
+    	for (Incident i : data) {
 			if (i.getState().equals("Not specified.")) {
+				nonUSsight++;
 				internCount++;
 			} else {
 				stateSideCount++;
-		}
-		if(data.size() > 0) {
-		double statePercentage = (stateSideCount / data.size()) * 100;
-		double internPercentage = (internCount/data.size()) * 100;
-		String stateDM = new DecimalFormat("#.##").format(statePercentage);
-		String interDM = new DecimalFormat("#.##").format(internPercentage);
-		returnString = "State: " + stateDM + "%" + "<br>" + "International: " + interDM + "%";
-		return returnString;
-
-		} else {
-			return "No incidents found in time period!";
-		}
-	}
-	/*
-	 * Return the number of non-US sightings within the current dataset.
-	 */
-	public int getNonUSSight() {
-		List<Incident> data = model.getRequestedData();
-		int count = 0;
-		for (Incident i : data) { // Iterate through the incident list, increase
-								// count if a Non-US match is found.
-			if (i.getState().equals("Not specified.")) {
-				count++;
 			}
+			if (i.getSummary().toLowerCase().contains("hoax")) numberOfHoax++;
 		}
-		return count; // Return counter variable.
-	}	
+		calculateDistributionPercentage(data.size());
+    	setChanged();
+    	notifyObservers("Data");
+	}
+
+	private void calculateDistributionPercentage(int size) {
+		String returnString = "";
+		if(size > 0) {
+			double statePercentage =  (stateSideCount / size) * 100;
+			double internPercentage = (internCount / size) * 100;
+			String stateDM = new DecimalFormat("#.##").format(statePercentage);   //
+			String interDM = new DecimalFormat("#.##").format(internPercentage);
+			returnString = "State: " + stateDM + "%" + "<br>" + "International: " + interDM + "%";
+		} else {
+			returnString = "No incidents found in time period!";
+		}
+		distributionPercentage = returnString;
+	}
+
 	/*
 	 * EUGENE: Method to return youtube sightings figures.
 	 */
-public String getRequest() throws Exception {
+    public String getRequest() throws Exception {
 		LocalDateTime dateCurrent = LocalDateTime.now();
 		LocalDateTime oneWeekAgo = dateCurrent.minusWeeks(1);
 		String myAPIKey = "AIzaSyBCKhRHvfbPRUHoxdJBfExiSjg9mFWYiFY";
@@ -176,5 +161,17 @@ public String getRequest() throws Exception {
 	 */
 	public int getCurrentEndYear() {
 		return model.getCurrentEndYear(); 
+	}
+
+	public int getNumberOfHoax() {
+		return numberOfHoax;
+	}
+
+	public int getNonUSsight() {
+		return nonUSsight;
+	}
+
+	public String getDistributionPercentage() {
+		return distributionPercentage;
 	}
 }

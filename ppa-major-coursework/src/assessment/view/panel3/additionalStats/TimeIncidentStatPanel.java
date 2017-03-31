@@ -13,9 +13,7 @@ import java.util.Observer;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 import assessment.model.Model;
 import assessment.model.panel2.MapUS;
@@ -54,7 +52,7 @@ public class TimeIncidentStatPanel extends JPanel {
 		this.likeliestState = likeliestState; 
 		
 		// Initialise label to appear if range not valid
-		this.centerLabel = new JLabel(); 
+		this.centerLabel = new JLabel("", SwingConstants.CENTER);
 		add(centerLabel, BorderLayout.CENTER); 
 		
 		

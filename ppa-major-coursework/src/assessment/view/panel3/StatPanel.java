@@ -51,7 +51,6 @@ public class StatPanel extends JPanel{
 		for (int i = 0; i < subPanels.length; i++) {
 			retString += subPanels[i].getStat() + " ";
 		}
-
 		try {
 			saveWriter = new BufferedWriter(new FileWriter(savePath));
 			saveWriter.write(retString);
@@ -64,7 +63,6 @@ public class StatPanel extends JPanel{
 	private void readFromFile() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(savePath));
-			System.out.println("setting up reader");
 			String line = reader.readLine();
 			if (!line.isEmpty()) {
 				stats = line.split(" ");
@@ -73,7 +71,6 @@ public class StatPanel extends JPanel{
 				setDefaultSubPanels();
 			}
 		} catch (IOException e) {
-			System.out.println("We are reaching this part");
 			setDefaultSubPanels();
 		}
 	}

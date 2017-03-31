@@ -2,7 +2,6 @@ package assessment.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import assessment.controller.Controller;
@@ -36,6 +35,7 @@ public class UFOFrame extends JFrame implements Observer {
 	private JComboBox<String> jcTo;
 	private String loadingText;
 	private MapUS panel2Model;
+	private StatsModel statsModel;
 	private String processingText;
     private int ripleyMinYear;
     private int ripleyMaxYear;
@@ -45,7 +45,7 @@ public class UFOFrame extends JFrame implements Observer {
 		this.controller = controller;
 		this.ripley = ripley;
 		this.model = model;
-		model.addObserver(this); 
+		model.addObserver(this);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(800, 660));
 		setResizable(false);
@@ -60,6 +60,14 @@ public class UFOFrame extends JFrame implements Observer {
 		initBottom();
 		loadingScreen();
 		pack();
+	}
+
+	private void initLoadingGif() {
+		ImageIcon loadingIcon = new ImageIcon("images/loading250.gif");
+		jlLog.setIcon(loadingIcon);
+		jlLog.setVerticalTextPosition(JLabel.BOTTOM);		//Set the position of the text, relative to the icon
+		jlLog.setHorizontalTextPosition(JLabel.CENTER);
+		jlLog.setIconTextGap(60);							//Set the gap between the text and the icon
 	}
 
 	private void initTop() {
@@ -78,6 +86,7 @@ public class UFOFrame extends JFrame implements Observer {
 
 	private void initCenter() {
 		jlLog = new JLabel("", SwingConstants.CENTER);
+
 		jpCenter = new JPanel();
 		jpCenter.setBorder(BorderFactory.createLineBorder(Color.black));
 		jpCenter.setPreferredSize(new Dimension(800, 400));
@@ -87,8 +96,7 @@ public class UFOFrame extends JFrame implements Observer {
 		this.panel2Model = new MapUS();
 		jpCenter.add(new MapPanel(panel2Model));
 		
-
-		StatsModel statsModel = new StatsModel(model, ripley);
+		statsModel = new StatsModel(model, ripley);
 		panel3 = new StatPanel(statsModel, panel2Model);
 		jpCenter.add(panel3);
 		initPanel4();
@@ -124,7 +132,7 @@ public class UFOFrame extends JFrame implements Observer {
 		jcTo.addItem("-");
 		jcFrom.addItem("-");
 
-        for (int i = ripleyMinYear; i < ripleyMaxYear; i++) {
+        for (int i = ripleyMinYear; i <= ripleyMaxYear; i++) {
             jcFrom.addItem(i + "");
             jcTo.addItem(i + "");
         }
@@ -191,25 +199,20 @@ public class UFOFrame extends JFrame implements Observer {
 		} else if (command.equalsIgnoreCase("wrongStart")) {
 			jlLog.setText(loadingText + "<b>Please provide correct start and end dates</b><br></div></html>");
 
-		} else if (commandParts[0].equals("DATA")) {
-			String string = "";
-			for (int i = 1; i < commandParts.length; i++) {
-				string += commandParts[i] + " ";
-			}
-			jlLog.setText(processingText + string
+		} else if (command.equalsIgnoreCase("loadingStart")) {
+        	initLoadingGif();
+
+		} else if (command.equalsIgnoreCase("data")) {
+			panel3.initStats();
+			panel2Model.distributeIncidents(model.getRequestedData());
+			statsModel.calculateStats();
+
+			jlLog.setIcon(null);
+			String duration = Model.calculateDuration(model.timeTakenToLoad(System.currentTimeMillis()));
+			jlLog.setText(processingText + duration
 					+ "<br><br><b>Please now interact with this data using<br>the buttons to the left and the right.</b></div></html>");
 			jbLeft.setEnabled(true);
 			jbRight.setEnabled(true);
-			try {
-				panel3.initStats();
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			panel2Model.distributeIncidents(model.getRequestedData());
 		}
 	}
 }
