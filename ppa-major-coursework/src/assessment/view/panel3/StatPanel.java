@@ -6,7 +6,15 @@ import javax.swing.JPanel;
 
 import assessment.model.panel2.MapUS;
 import assessment.model.panel3.StatsModel;
-
+/**
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This view class creates and manages the main statistics panel within which are placed 4 subStatPanels.
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
+ */
 public class StatPanel extends JPanel{
 
 	private StatsModel statsModel;
@@ -16,6 +24,11 @@ public class StatPanel extends JPanel{
 	private static String savePath;
 	private String[] stats;
 
+	/**
+	 * Constructor to create new instance of StatPanel, initialize fields, and read saved statistics numbers from a local Save file.
+	 * @param statsModel
+	 * @param mapModel
+	 */
 	public StatPanel(StatsModel statsModel, MapUS mapModel) {
 		super();
 		savePath = "Save";
@@ -27,6 +40,9 @@ public class StatPanel extends JPanel{
 		initWidgets();
 	}
 	
+	/**
+	 * Method to initiate the subPanel widgets contained within the StatPanel.
+	 */
 	public void initWidgets() {
 		setLayout(new GridLayout(2, 2, 8, 8));
 		for (int i = 0; i < subPanels.length; i++) {
@@ -35,6 +51,9 @@ public class StatPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * Method to initiate the statistics to be displayed according to contents of the stats Array field.
+	 */
 	public void initStats() {
 			subPanels[0].resetDisplayStats();
 	    for (int i = 0; i < subPanels.length; i++) {
@@ -46,6 +65,9 @@ public class StatPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * Method to save the current statistics types being displayed in the panel.
+	 */
 	public void panelSave() {
 		String retString = "";
 		for (int i = 0; i < subPanels.length; i++) {
@@ -60,6 +82,9 @@ public class StatPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * Method to read the saved statistics numbers from a local Save file.
+	 */
 	private void readFromFile() {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(savePath));
@@ -75,6 +100,9 @@ public class StatPanel extends JPanel{
 		}
 	}
 
+	/**
+	 * Method to set default statistics to be displayed.
+	 */
 	private void setDefaultSubPanels() {
 		for (int i = 0; i < subPanels.length; i++) {
 		    stats[i] = i + "";

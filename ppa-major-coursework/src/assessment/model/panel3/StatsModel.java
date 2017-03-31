@@ -19,7 +19,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by wonjoonseol on 26/03/2017.
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This model class manages statistics calculation on data returned from Ripley API.
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
  */
 public class StatsModel extends Observable {
     private ArrayList<String> information;
@@ -34,6 +40,12 @@ public class StatsModel extends Observable {
 	private	double internCount;
 	private String distributionPercentage;
 
+/**
+* Constructor StatsModel constructs with Ripley API. This initialises important fields to be used in statistics retrieval and calculation.
+*
+* @param ripley Ripley api
+* @param model Model data
+*/
     public StatsModel(Model model, Ripley ripley) {
         super();
         this.ripley = ripley;
@@ -42,7 +54,9 @@ public class StatsModel extends Observable {
         setInformation();
         previousRandomNumber = -1;
     }
-
+    /**
+    * Method to set all results for Wonjoon Seol's additional statistic.
+    */
     private void setInformation() {
         calculateChange(1947);
         information.add("1947;Rosewell UFO Crash happened;US Airforce allegedly captured a crashed UFO and the aline. This was widely covered by the media and has "+ (int)percentage + "% increase in the number of reports from the previous year");
@@ -64,6 +78,10 @@ public class StatsModel extends Observable {
 		information.add("1977;Star War franchise started;This year, the number of reportings were " + (-difference) + " less than the previous year");
     }
 
+   /**
+   * Method to calculate incident number changes after key events for Wonjoon Seol's individual statistic.
+   * @param year
+   */
     private void calculateChange(int year) {
 		ArrayList<Incident> previousIncidents = ripley.getIncidentsInRange(Model.appendStartYear(year-1), model.appendEndYear(year-1));
 		ArrayList<Incident> incidents = ripley.getIncidentsInRange(Model.appendStartYear(year), model.appendEndYear(year));
@@ -71,6 +89,9 @@ public class StatsModel extends Observable {
 		difference = incidents.size() - previousIncidents.size();
 	}
 
+   /**
+   * Method to send a random String of information to be displayed for Wonjoon Seol's individual statistic.
+   */
     public void sendRandomInformation() {
         int index;
     	do {
@@ -81,6 +102,9 @@ public class StatsModel extends Observable {
         notifyObservers("Information;" + information.get(index));
     }
 
+    /**
+     * Method to calculate all statistics for the statistic panel once, and set fields accordingly.
+     */
     public void calculateStats() {
     	numberOfHoax = 0;
     	nonUSsight = 0;
@@ -102,6 +126,10 @@ public class StatsModel extends Observable {
     	notifyObservers("Data");
 	}
 
+    /**
+     * Method to calculate stateside versus international sightings for Britton Forsyth's individual statistic.
+     * @param size
+     */
 	private void calculateDistributionPercentage(int size) {
 		String returnString = "";
 		if(size > 0) {
@@ -116,8 +144,11 @@ public class StatsModel extends Observable {
 		distributionPercentage = returnString;
 	}
 
-	/*
-	 * EUGENE: Method to return youtube sightings figures.
+	
+	/**
+	 * Method to return youtube sightings figures.
+	 * @return String total videos uploaded in past week
+	 * @throws Exception
 	 */
     public String getRequest() throws Exception {
 		LocalDateTime dateCurrent = LocalDateTime.now();
@@ -163,14 +194,26 @@ public class StatsModel extends Observable {
 		return model.getCurrentEndYear(); 
 	}
 
+	/**
+	 * Returns the number of hoaxes in selected date range
+	 * @return int number of hoaxes
+	 */
 	public int getNumberOfHoax() {
 		return numberOfHoax;
 	}
 
+	/**
+	 * Returns the number of non-US sightings in selected date range
+	 * @return int number of non-US sightings
+	 */
 	public int getNonUSsight() {
 		return nonUSsight;
 	}
 
+	/**
+	 * Returns the distribution percentage of stateSide vs International sightings in selected date range
+	 * @return String worldwide distribution percentage
+	 */
 	public String getDistributionPercentage() {
 		return distributionPercentage;
 	}
