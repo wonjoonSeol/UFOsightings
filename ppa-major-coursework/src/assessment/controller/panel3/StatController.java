@@ -84,7 +84,7 @@ public class StatController implements ActionListener, MouseListener {
 			if (Desktop.isDesktopSupported()) {
 				Desktop desktop = Desktop.getDesktop();
 				try {
-					URI uri = new URI("https://www.youtube.com/watch?v=" + jLabel.getName());
+					URI uri = new URI("https://www.youtube.com/watch?v=" + jLabel.getName()); // Construct URL
 					desktop.browse(uri);
 				} catch (IOException ex) {
 					ex.printStackTrace();
