@@ -13,11 +13,19 @@ import javax.swing.ListCellRenderer;
 import api.ripley.Incident;
 import assessment.model.panel2.comparators.DurationComparator;
 
+/**
+ * Renders list entries so that a JList of incidents would be displayed in desired way
+ * @author Munkhtulga Battogtokh
+ */
 @SuppressWarnings("serial")
 public class IncidentListCellRenderer extends JLabel implements ListCellRenderer<Object> {
 
 	private static final Pattern DURATION_PATTERN = Pattern.compile("(\\d)+");
 	
+	/**
+	 * Overrides the parent method to specialise for rendering 
+	 * incident entries in a JList
+	 */
 	@Override
 	public Component getListCellRendererComponent(@SuppressWarnings("rawtypes") JList list, Object value, int arg2, boolean isSelected, boolean cellHasFocus) {
 		if (value instanceof Incident) {

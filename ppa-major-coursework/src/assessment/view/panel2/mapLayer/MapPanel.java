@@ -4,8 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -13,7 +11,14 @@ import javax.swing.JPanel;
 import assessment.controller.panel2.LabelMouseAdapter;
 import assessment.model.panel2.MapUS;
 
-public class MapPanel extends JPanel implements Observer {
+/** 
+ * An object of this class gives a graphical User Interface view 
+ * of the US map as relevant. 
+ * 
+ * @author Munkhtulga Battogtokh
+ *
+ */
+public class MapPanel extends JPanel {
 	
 	/**
 	 * Removes warning: Default Serial Version ID 
@@ -26,11 +31,14 @@ public class MapPanel extends JPanel implements Observer {
 	private BufferedImage imageMarker; 		// marker image for all state labels
 	private BufferedImage imageMarkerBW; 	// black and white version of marker image for unknown incidents
 	
+	/** 
+	 * Constructs an instance of this class to create an US map view object
+	 * @param map
+	 */
 	public MapPanel(MapUS map) {
 		setLayout(null); // Enables free positioning labels
 		
 		this.map = map;
-		map.addObserver(this);
 		
 		try {
 			imageMap = ImageIO.read(new File("images/map.png"));
@@ -137,15 +145,12 @@ public class MapPanel extends JPanel implements Observer {
 				imageMarker, x, y); 
 	}
 	
+	/** 
+	 * Paints the map image
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(imageMap, 0, 0, getWidth(), getHeight(), null); 	
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
 	}
 }
