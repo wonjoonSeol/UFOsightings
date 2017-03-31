@@ -15,7 +15,15 @@ import assessment.model.panel3.StatsModel;
 import assessment.model.panel3.YoutubeModel;
 import assessment.view.panel3.StatPanel;
 import assessment.view.panel3.SubStatPanel;
-
+/**
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This controller class manages panel switching in the StatPanel statistics panel.
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
+ */
 public class StatController implements ActionListener, MouseListener {
 
 
@@ -24,6 +32,13 @@ public class StatController implements ActionListener, MouseListener {
 	private StatsModel statsModel;
 	private YoutubeModel youtubeModel;
 
+	/**
+	 * Constructor to set field values and create a new instance of StatController.
+	 * @param view
+	 * @param panel3
+	 * @param keyEvent
+	 * @param youtubeModel
+	 */
 	public StatController(SubStatPanel view, StatPanel panel3, StatsModel keyEvent, YoutubeModel youtubeModel) {
 		this.view = view;
 		this.youtubeModel = youtubeModel;
@@ -31,6 +46,9 @@ public class StatController implements ActionListener, MouseListener {
 		this.statsModel = keyEvent;
 	}
 
+	/**
+	 * Method to detect button source, switch panel, and save the new statistic to the panel3 field reference.
+	 */
 	public void actionPerformed(ActionEvent arg0) {
 		
 		// Check button source.
@@ -56,6 +74,9 @@ public class StatController implements ActionListener, MouseListener {
 		}
 	}
 
+	/**
+	 * Method to open a browser page for the selecte youtube URL upon mouse click.
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
         JLabel jLabel = (JLabel) e.getSource();
