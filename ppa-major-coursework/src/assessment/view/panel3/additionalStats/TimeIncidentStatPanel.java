@@ -41,12 +41,11 @@ public class TimeIncidentStatPanel extends JPanel {
 	
 	/** 
 	 * Constructs an instance based on the parameters given 
-	 * @param mapModel MapUS model to be based on
+	 * @param likeliestState MapUS model to be based on
 	 * @param currentStartYear int start of the date range
 	 * @param currentEndYear int end of the date range
 	 */
-	public TimeIncidentStatPanel(StateUS likeliestState, int currentStartYear, 
-									int currentEndYear) {
+	public TimeIncidentStatPanel(StateUS likeliestState, int currentStartYear, int currentEndYear) {
 		setLayout(new BorderLayout()); 
 	
 		this.currentEndYear = currentEndYear; 
@@ -172,16 +171,13 @@ public class TimeIncidentStatPanel extends JPanel {
 			g.drawString("Time", (int)(getWidth() * 0.9), (int)(getHeight() * 0.9));
 			g.drawString("Incident count", (int)(getWidth() * 0.05), (int)(getHeight() * 0.1));
 			g.drawString("Max", (int)(getWidth() * 0.05), (int)(getHeight() * 0.18));
-			
 			g.drawString("0", (int)(getWidth() * 0.1), (int)(getHeight() * 0.85));
-			
-			drawMarkers(g); 
+			drawMarkers(g);
 			try {
-				drawPoints(g); 
-			} catch (ConcurrentModificationException exc) {
-				System.out.println("Incidents changing while painting");
+				drawPoints(g);
+			} catch (ConcurrentModificationException e) {
+				System.out.println("Redrawing time incident frame");
 			}
-			
 		} else {
 			repaint(); 
 			if ("Not specified.".equals(likeliestState.getAbbreviation())) {
