@@ -203,7 +203,7 @@ public class SubStatPanel extends JPanel implements Observer {
 			topLabel.setText("Likeliest State");
 			if (mapModel.getLikeliestState().getAbbreviation().equals("Not specified.")) {
 				centLabel.setText("<html><div style='text-align: center;'>" +
-							"No US state specified. All states equally likely.<br>(Graph is for one random state)"
+							"No US state specified. <br> (no difference in likelihood for all states)"
 									+ "</div></html>");
 			} else {
 				centLabel.setText(mapModel.getLikeliestState().toString());

@@ -1,18 +1,28 @@
 package assessment.model.panel2.comparators;
 
 import java.util.Comparator;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import api.ripley.Incident;
 
+/** 
+ * Comparator type that can compare incidents based on their duration 
+ * @author Munkhtulga Battogtokh
+ *
+ * @param <Object>
+ */
 @SuppressWarnings("hiding")
 public class DurationComparator<Object> implements Comparator<Object> {
 
 	private static final Pattern DURATION_PATTERN = Pattern.compile("(\\d)+"); 
 	private static final Pattern FRACTION_PATTERN = Pattern.compile("(\\d)+/(\\d)+"); 
 	
+	/** 
+	 * Compares to given Incidents considering the lengths of their durations
+	 * @param incident1 Object first Incident (no comparison measure defined for other types) 
+	 * @param incident2 Object second Incident (no comparison measure defined for other types) 
+	 */
 	@Override
 	public int compare(Object incident1, Object incident2) {
 		if (incident1 instanceof Incident && incident2 instanceof Incident) {
@@ -27,16 +37,18 @@ public class DurationComparator<Object> implements Comparator<Object> {
 			duration1 = toMinutes(intExtractor1, duration1String); 
 			duration2 = toMinutes(intExtractor2, duration2String); 
 			
-			if (duration1.compareTo(duration2) <= 0) {
-				return -1; 
-			} else if (duration1.compareTo(duration2) > 0) {
-				return 1; 
-			}
+			return duration1.compareTo(duration2); 
 		}
 		return 0; 
 	}
 	
-	// Add method to take duration format string and return an int to tell how many minutes that is supposed to mean
+	/** 
+	 * Given a string (expected to have some information related to time), parses and returns any time 
+	 * information in minutes, assuming the matcher is designed for extracting time information. 
+	 * @param matcher Matcher matcher to match the given string against
+	 * @param durationString String to be parsed, and contained time information converted to minutes
+	 * @return int duration in minutes
+	 */
 	public static int toMinutes(Matcher matcher, String durationString) {
 		int duration = Integer.MAX_VALUE; 
 		if (matcher.find()) {

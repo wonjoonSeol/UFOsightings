@@ -25,11 +25,7 @@ public class CityComparator<Object> implements Comparator<Object> {
 			String city1 = ((Incident) incident1).getCity(); 
 			String city2 = ((Incident) incident2).getCity();
 		
-			if (city1.compareTo(city2) <= 0) {
-				return -1; 
-			} else if (city1.compareTo(city2) > 0) {
-				return 1; 
-			}
+			return city1.compareTo(city2); 
 		}
 		return 0;
 	}
