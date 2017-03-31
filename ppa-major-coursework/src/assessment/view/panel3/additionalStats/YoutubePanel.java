@@ -9,12 +9,24 @@ import java.util.Observer;
 import javax.swing.*;
 
 import assessment.controller.panel3.StatController;
-
+/**
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This view class creates and manages the youtube sub panel within the statPanel.
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
+ */
 public class YoutubePanel extends JPanel implements Observer{
 	//Declaring fields for the widgets
 	private StatController statController;
 	private JPanel videoPanels;
 
+	/**
+	 * Constructor to instantiate new YoutubePanel and set fields.
+	 * @param statController
+	 */
 	public YoutubePanel(StatController statController) {
 		// TODO Pass controller through the constructor
         this.statController = statController;
@@ -22,6 +34,9 @@ public class YoutubePanel extends JPanel implements Observer{
 		initWidget();
 	}
 
+	/**
+	 * Method to initiate widgets within the panel.
+	 */
 	public void initWidget(){ 
 		//TODO add the key listeners and pass the controller in the args
 		videoPanels = new JPanel();
@@ -31,6 +46,12 @@ public class YoutubePanel extends JPanel implements Observer{
 	}
 
 	//Method to create an ImageIcon and that stores the URL and description	 
+	/**
+	 * Method to create image and URL.
+	 * @param imgURL
+	 * @param description
+	 * @return ImageIcon thumbnail
+	 */
 	private ImageIcon createImageIcon(String imgURL, String description) {
 		URL url = null;
 		try {
@@ -46,7 +67,9 @@ public class YoutubePanel extends JPanel implements Observer{
 			return null;
 		}
 	}
-
+	/**
+	 * Update method for MVC structure.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		String command = (String) arg;
