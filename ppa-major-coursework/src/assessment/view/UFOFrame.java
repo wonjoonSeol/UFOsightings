@@ -18,7 +18,13 @@ import assessment.view.panel4.Login;
 import assessment.view.panel4.UnitedEarthDirectorate;
 
 /**
- * Created by wonjoonseol on 05/03/2017.
+ * <h1>PPA Group Project </h1> <br>
+ * Computer Science <br>
+ * Year 1
+ * <p>
+ * This class represents the main viewer frame
+ *
+ * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
  */
 public class UFOFrame extends JFrame implements Observer {
 
@@ -40,6 +46,13 @@ public class UFOFrame extends JFrame implements Observer {
     private int ripleyMinYear;
     private int ripleyMaxYear;
 
+    /**
+	 * Constructor UFOFrame. This constructs our main frame
+	 *
+	 * @param controller Main controller
+	 * @param ripley Ripley API
+     * @param model Main model for data retrieval and cache management
+	 */
 	public UFOFrame(Controller controller, Ripley ripley, Model model) {
 		super();
 		this.controller = controller;
@@ -62,6 +75,9 @@ public class UFOFrame extends JFrame implements Observer {
 		pack();
 	}
 
+	/**
+	 * play loading gif
+	 */
 	private void initLoadingGif() {
 		ImageIcon loadingIcon = new ImageIcon("images/loading250.gif");
 		jlLog.setIcon(loadingIcon);
@@ -70,6 +86,9 @@ public class UFOFrame extends JFrame implements Observer {
 		jlLog.setIconTextGap(60);							//Set the gap between the text and the icon
 	}
 
+	/**
+	 * Initialise top part of the widgets
+	 */
 	private void initTop() {
 		initJComboBox();
 		JLabel jlFrom = new JLabel("From: ");
@@ -84,6 +103,9 @@ public class UFOFrame extends JFrame implements Observer {
 		add(jpTop, BorderLayout.PAGE_START);
 	}
 
+	/**
+	 * Initialise centre part of the widgets
+	 */
 	private void initCenter() {
 		jlLog = new JLabel("", SwingConstants.CENTER);
 
@@ -98,12 +120,17 @@ public class UFOFrame extends JFrame implements Observer {
 		
 		statsModel = new StatsModel(model, ripley);
 		panel3 = new StatPanel(statsModel, panel2Model);
+
+		/* ------------ Card layout ------------------*/
 		jpCenter.add(panel3);
 		initPanel4();
 		jpCenter.add(panel4);
 		add(jpCenter, BorderLayout.CENTER);
 	}
 
+	/**
+	 * Initialise bottom part of the widgets
+	 */
 	private void initBottom() {
 		JPanel jpBottom = new JPanel(new BorderLayout());
 		jbLeft = new JButton("<");
@@ -124,6 +151,9 @@ public class UFOFrame extends JFrame implements Observer {
 		add(jpBottom, BorderLayout.PAGE_END);
 	}
 
+	/**
+	 * Initialise JComboBox
+	 */
 	private void initJComboBox() {
 		jcFrom = new JComboBox<String>();
 		jcFrom.setName("fromCombo");
@@ -140,6 +170,9 @@ public class UFOFrame extends JFrame implements Observer {
 		jcTo.addActionListener(controller);
 	}
 
+	/**
+	 * Show loading message
+	 */
 	private void loadingScreen() {
 		loadingText = "<html><div Style='text-align: center;'>Welcome to Ripley API v" + ripley.getVersion() + "<br>"
 				+ "Please select the dates above, in order to<br>Begin analysing UFO sighting data.<br><br>";
@@ -147,16 +180,25 @@ public class UFOFrame extends JFrame implements Observer {
 		jlLog.setText(loadingText + ripley.getAcknowledgementString() + "</div></html>");
 	}
 
+	/**
+	 * Switch to next panel
+	 */
 	public void nextCenterPanel() {
 		CardLayout cards = (CardLayout) (jpCenter.getLayout());
 		cards.next(jpCenter);
 	}
 
+	/**
+	 * Switch to previous panel
+	 */
 	public void previousCenterPanel() {
 		CardLayout cards = (CardLayout) (jpCenter.getLayout());
 		cards.previous(jpCenter);
 	}
 
+	/**
+	 * Initialise panel 4
+	 */
 	private void initPanel4(){
 		panel4 = new JPanel(new CardLayout());
 		UnitedEarthDirectorate unitedEarthDirectorate = new UnitedEarthDirectorate();
@@ -171,10 +213,17 @@ public class UFOFrame extends JFrame implements Observer {
 		panel4.add(unitedEarthDirectorate, "Main");
 	}
 
+	/**
+	 * Returns panel4. This is for CardLayout swapping
+	 * @return panel4
+	 */
 	public JPanel getPanel4() {
 		return panel4;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
     @Override
     public void update(Observable o, Object arg) {
         String command = (String) arg;
@@ -199,19 +248,19 @@ public class UFOFrame extends JFrame implements Observer {
 		} else if (command.equalsIgnoreCase("wrongStart")) {
 			jlLog.setText(loadingText + "<b>Please provide correct start and end dates</b><br></div></html>");
 
-		} else if (command.equalsIgnoreCase("loadingStart")) {
+		} else if (command.equalsIgnoreCase("loadingStart")) {		// Start loading animation
         	initLoadingGif();
 
-		} else if (command.equalsIgnoreCase("data")) {
+		} else if (command.equalsIgnoreCase("data")) {				// Data is arrived
 			panel3.initStats();
 			panel2Model.distributeIncidents(model.getRequestedData());
 			statsModel.calculateStats();
 
 			jlLog.setIcon(null);
-			String duration = Model.calculateDuration(model.timeTakenToLoad(System.currentTimeMillis()));
+			String duration = Model.calculateDuration(model.timeTakenToLoad(System.currentTimeMillis()));	// calculate total time taken fetching and processing the data
 			jlLog.setText(processingText + duration
 					+ "<br><br><b>Please now interact with this data using<br>the buttons to the left and the right.</b></div></html>");
-			jbLeft.setEnabled(true);
+			jbLeft.setEnabled(true);			// enable buttons
 			jbRight.setEnabled(true);
 		}
 	}
