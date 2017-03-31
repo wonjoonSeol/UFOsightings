@@ -6,10 +6,18 @@ import java.util.TreeMap;
 
 import api.ripley.Incident;
 
+/** 
+ * Objects of this class represent a map of the United States, containing all of its 50 states. 
+ * 
+ * @author Munkhtulga Battogtokh
+ */
 public class MapUS extends Observable {
 	
 	private TreeMap<String, StateUS> mapNameToState; // treemap of states and their names
 	
+	/** 
+	 * Constructs an instance of this class, initialising the fields for the created object
+	 */
 	public MapUS() {
 		super(); 
 		this.mapNameToState = new TreeMap<>(); 

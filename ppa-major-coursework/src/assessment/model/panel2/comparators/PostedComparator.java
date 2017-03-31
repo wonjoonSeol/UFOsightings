@@ -1,15 +1,14 @@
 package assessment.model.panel2.comparators;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
-
-import com.joestelmach.natty.Parser;
 
 import api.ripley.Incident;
 
 /** 
- * 
+ * Comparator type that can compare instances of Incident class by the "posted" attribute. 
  * @author Munkhtulga Battogtokh
  *
  * @param <Object> not Incident, as generic type accepts any object unregardless of this parameter
@@ -17,11 +16,7 @@ import api.ripley.Incident;
 @SuppressWarnings("hiding")
 public class PostedComparator<Object> implements Comparator<Object> {
 
-private Parser parser; 
-	
-	public PostedComparator() {
-		this.parser = new Parser(); 
-	}
+	private static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); 
 	
 	/** 
 	 * Parses Date objects from the posted time in string form of the passed incidents. 
@@ -34,18 +29,18 @@ private Parser parser;
 		if (incident1 instanceof Incident && incident2 instanceof Incident) {
 			String posted1String = ((Incident) incident1).getPosted(); 
 			String posted2String = ((Incident) incident2).getPosted();
+			
+			try {
+				Date posted1 = formatter.parse(posted1String);
+				Date posted2 = formatter.parse(posted2String); 
+				
+				return posted1.compareTo(posted2); 
+			} catch (ParseException e) {
+				e.printStackTrace();
+				System.out.println("No parseable date found");
+			} 
 		
-			List<Date> posted1DateListWithOneDate = parser.parse(posted1String).get(0).getDates(); 
-			Date posted1 = posted1DateListWithOneDate.get(0); 
-		
-			List<Date> posted2DateListWithOneDate = parser.parse(posted2String).get(0).getDates(); 
-			Date posted2 = posted2DateListWithOneDate.get(0); 
-		
-			if (posted1.compareTo(posted2) <= 0) {
-				return -1; 
-			} else if (posted1.compareTo(posted2) > 0) {
-				return 1; 
-			}
+			
 		}
 		return 0;
 	}

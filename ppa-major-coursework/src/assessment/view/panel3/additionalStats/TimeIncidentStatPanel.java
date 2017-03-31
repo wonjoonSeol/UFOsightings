@@ -3,31 +3,33 @@ package assessment.view.panel3.additionalStats;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import assessment.model.Model;
-import assessment.model.panel2.MapUS;
 import assessment.model.panel2.StateUS;
+
+import java.util.ConcurrentModificationException;
 import java.util.TreeMap; 
 
 /** 
  * A panel that illustrates the correlation of passage of time to relative number of 
  * incidents in the likeliest state. 
+ * 
  * @author Munkhtulga Battogtokh
- *
+ * 
  */
 public class TimeIncidentStatPanel extends JPanel {
 
+	/**
+	 * Serial version
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	private StateUS likeliestState; 			// state the illustrated information is based on
 	private int currentStartYear; 	// start of date range
 	private int currentEndYear; 	// end of date range
@@ -151,6 +153,10 @@ public class TimeIncidentStatPanel extends JPanel {
 		g.drawString(verticalRange + "", (int)(getWidth() * 0.07), (int)(getHeight() * 0.24));	
 	}
 	
+	
+	/** 
+	 * Overrides parent method to draw graph, and its components on the right places
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -170,7 +176,11 @@ public class TimeIncidentStatPanel extends JPanel {
 			g.drawString("0", (int)(getWidth() * 0.1), (int)(getHeight() * 0.85));
 			
 			drawMarkers(g); 
-			drawPoints(g); 
+			try {
+				drawPoints(g); 
+			} catch (ConcurrentModificationException exc) {
+				System.out.println("Incidents changing while painting");
+			}
 			
 		} else {
 			repaint(); 
@@ -187,14 +197,26 @@ public class TimeIncidentStatPanel extends JPanel {
 	
 	}
 	
+	/** 
+	 * Sets the StateUS on which the graph is based 
+	 * @param likeliestState StateUS the current likeliest state
+	 */
 	public void setLikeliestState(StateUS likeliestState) {
 		this.likeliestState = likeliestState; 
 	}
 	
+	/** 
+	 * Specifies the current start year of the time range for the graph
+	 * @param currentStartYear int the start year
+	 */
 	public void setCurrentStartYear(int currentStartYear) {
 		this.currentStartYear = currentStartYear; 
 	}
 	
+	/** 
+	 * Specifies the current end year of the time range for the graph
+	 * @param currentEndYear int the end year
+	 */	
 	public void setCurrentEndYear(int currentEndYear) {
 		this.currentEndYear = currentEndYear; 
 	}
