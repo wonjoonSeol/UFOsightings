@@ -15,8 +15,8 @@ import api.ripley.Incident;
 @SuppressWarnings("hiding")
 public class DurationComparator<Object> implements Comparator<Object> {
 
-	private static final Pattern DURATION_PATTERN = Pattern.compile("(\\d)+"); 
-	private static final Pattern FRACTION_PATTERN = Pattern.compile("(\\d)+/(\\d)+"); 
+	private static final Pattern DURATION_PATTERN = Pattern.compile("(\\d)+"); 		 	// Pattern for matching duration
+	private static final Pattern FRACTION_PATTERN = Pattern.compile("(\\d)+/(\\d)+"); 	// Pattern for matching fraction 
 	
 	/** 
 	 * Compares to given Incidents considering the lengths of their durations
