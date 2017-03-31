@@ -113,15 +113,15 @@ public class UFOFrame extends JFrame implements Observer {
 		jpCenter.setBorder(BorderFactory.createLineBorder(Color.black));
 		jpCenter.setPreferredSize(new Dimension(800, 400));
 		jpCenter.setLayout(new CardLayout());
-		jpCenter.add(jlLog);
-		
+
 		this.panel2Model = new MapUS();
-		jpCenter.add(new MapPanel(panel2Model));
-		
+
 		statsModel = new StatsModel(model, ripley);
 		panel3 = new StatPanel(statsModel, panel2Model);
 
 		/* ------------ Card layout ------------------*/
+		jpCenter.add(jlLog, "Loading");
+		jpCenter.add(new MapPanel(panel2Model));
 		jpCenter.add(panel3);
 		initPanel4();
 		jpCenter.add(panel4);

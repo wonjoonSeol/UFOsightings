@@ -73,7 +73,7 @@ public class Login extends JPanel implements Observer{
 
         String string = "<html><div Style='text-align: center;'><b><br><br><br><br><br><br>" +
                 "<br><br><br><br><br><br><br><br><br><br><br><br><br><font color=\"white\">" +
-                "Please authenticate your name, Commmander</font><br><font color=\"Gray\", size = \"3\">i" +
+                "Please authenticate your name, Commmander</font><br><font color=\"Gray\", size = \"3\">" +
                 "※ Make sure you have suitable audio system set up for the military communication</font><br><br></div></html>";
         JLabel label = new JLabel(string, SwingConstants.CENTER);
 

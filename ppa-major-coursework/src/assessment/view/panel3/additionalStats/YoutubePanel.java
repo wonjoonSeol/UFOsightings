@@ -19,16 +19,15 @@ import assessment.controller.panel3.StatController;
  * @author Britton Forsyth(k1630500), Eugene Fong(k1630435), Mooeo Munkhtulga(k1631010), Wonjoon Seol(k1631098)
  */
 public class YoutubePanel extends JPanel implements Observer{
-	//Declaring fields for the widgets
 	private StatController statController;
 	private JPanel videoPanels;
 
 	/**
 	 * Constructor to instantiate new YoutubePanel and set fields.
-	 * @param statController
+	 * Set layout of main panel and call method to initiated widgets.
+	 * @param statController for Mouse Listener.
 	 */
 	public YoutubePanel(StatController statController) {
-		// TODO Pass controller through the constructor
         this.statController = statController;
 		setLayout(new BorderLayout());
 		initWidget();
@@ -38,19 +37,17 @@ public class YoutubePanel extends JPanel implements Observer{
 	 * Method to initiate widgets within the panel.
 	 */
 	public void initWidget(){ 
-		//TODO add the key listeners and pass the controller in the args
 		videoPanels = new JPanel();
 		videoPanels.setLayout(new GridLayout(0, 1));
 		add(videoPanels, BorderLayout.CENTER);
 		videoPanels.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	}
-
-	//Method to create an ImageIcon and that stores the URL and description	 
+ 
 	/**
-	 * Method to create image and URL.
-	 * @param imgURL
-	 * @param description
-	 * @return ImageIcon thumbnail
+	 * Method to create an ImageIcon and that stores the URL and description	
+	 * @param imgURL for video thumbnail. 
+	 * @param description for video title.
+	 * @return ImageIcon with video title and thumbnail URL.
 	 */
 	private ImageIcon createImageIcon(String imgURL, String description) {
 		URL url = null;
@@ -69,6 +66,7 @@ public class YoutubePanel extends JPanel implements Observer{
 	}
 	/**
 	 * Update method for MVC structure.
+	 * Adding mouse listener to label and set name as the Video ID. 
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
